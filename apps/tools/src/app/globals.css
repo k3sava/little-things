@@ -267,8 +267,9 @@ body:not(:has(.kami-playground)) {
 body:has(.kami-playground) {
   font-family: var(--kami-font-body);
 }
-.kami-scope canvas { display: none !important; }
-/* Default: blob canvas off; only zen opts in. */
+/* Decorative blob canvas off by default; only zen opts in. (Must NOT be a
+   blanket `canvas` rule — that hid functional tool canvases: og-image,
+   qr-code, favicon, screenshot-beautifier.) */
 .kami-blob-canvas { display: none; }
 
 /* Headings: ALL CAPS BLOCK */
