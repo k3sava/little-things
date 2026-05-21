@@ -433,50 +433,114 @@ export default function ComparisonTableContent({ faqPassages }: { faqPassages?: 
   }, [table, showToast]);
 
   const downloadPng = useCallback(async () => {
-    const el = previewRef.current;
-    if (!el) return;
+    // Draw the table directly with the Canvas 2D API. The previous approach
+    // rasterised an SVG <foreignObject>, which Chromium taints — toBlob() then
+    // throws "Tainted canvases may not be exported", so PNG export never worked.
     try {
-      const canvas = document.createElement("canvas");
       const scale = 2;
-      canvas.width = el.scrollWidth * scale;
-      canvas.height = el.scrollHeight * scale;
+      const padX = 16;
+      const rowH = 44;
+      const headH = 48;
+      const font = "14px system-ui, -apple-system, sans-serif";
+      const headFont = "600 14px system-ui, -apple-system, sans-serif";
+
+      const measure = document.createElement("canvas").getContext("2d");
+      if (!measure) return;
+      measure.font = headFont;
+
+      const cols = table.columns; // [feature, ...options]
+      const cellText = (v: CellValue) =>
+        v.type === "check" ? "✓" : v.type === "cross" ? "✗" : v.type === "partial" ? "~" : (v.text || "—");
+
+      // Column widths: feature column fits longest feature/label; option columns
+      // fit their widest cell, with sane min/max.
+      const colW = cols.map((c, ci) => {
+        let w = measure.measureText(c).width;
+        for (const row of table.rows) {
+          measure.font = ci === 0 ? font : font;
+          const t = ci === 0 ? row.feature : cellText(row.values[ci - 1] ?? { type: "cross" });
+          w = Math.max(w, measure.measureText(t).width);
+          measure.font = headFont;
+        }
+        const min = ci === 0 ? 160 : 90;
+        return Math.min(Math.max(w + padX * 2, min), 360);
+      });
+      const totalW = colW.reduce((a, b) => a + b, 0);
+      const totalH = headH + table.rows.length * rowH;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = totalW * scale;
+      canvas.height = totalH * scale;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
+      ctx.scale(scale, scale);
+      ctx.textBaseline = "middle";
 
-      const svgData = `
-        <foreignObject width="${el.scrollWidth}" height="${el.scrollHeight}">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:system-ui,sans-serif;">
-            ${generateHtml(table)}
-          </div>
-        </foreignObject>`;
-      const svgBlob = new Blob(
-        [`<svg xmlns="http://www.w3.org/2000/svg" width="${el.scrollWidth}" height="${el.scrollHeight}">${svgData}</svg>`],
-        { type: "image/svg+xml;charset=utf-8" },
-      );
-      const url = URL.createObjectURL(svgBlob);
-      const img = new Image();
-      img.onload = () => {
-        ctx.scale(scale, scale);
-        ctx.drawImage(img, 0, 0);
-        URL.revokeObjectURL(url);
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            showToast("PNG export failed");
-            return;
-          }
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = "comparison-table.png";
-          a.click();
-          URL.revokeObjectURL(a.href);
-          showToast("PNG downloaded");
-        }, "image/png");
-      };
-      img.onerror = () => {
-        URL.revokeObjectURL(url);
-        showToast("PNG export failed - try HTML or Markdown instead");
-      };
-      img.src = url;
+      // background
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      // header band
+      ctx.fillStyle = "#111827";
+      ctx.fillRect(0, 0, totalW, headH);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = headFont;
+      let x = 0;
+      cols.forEach((c, ci) => {
+        ctx.textAlign = ci === 0 ? "left" : "center";
+        const tx = ci === 0 ? x + padX : x + colW[ci] / 2;
+        ctx.fillText(c, tx, headH / 2);
+        x += colW[ci];
+      });
+
+      // rows
+      table.rows.forEach((row, ri) => {
+        const y = headH + ri * rowH;
+        if (ri % 2 === 1) {
+          ctx.fillStyle = "#f9fafb";
+          ctx.fillRect(0, y, totalW, rowH);
+        }
+        // feature label
+        ctx.font = "600 14px system-ui, sans-serif";
+        ctx.fillStyle = "#111827";
+        ctx.textAlign = "left";
+        ctx.fillText(row.feature, padX, y + rowH / 2);
+        // cells
+        let cx = colW[0];
+        row.values.forEach((v, vi) => {
+          const w = colW[vi + 1] ?? 90;
+          ctx.textAlign = "center";
+          ctx.font = font;
+          if (v.type === "check") { ctx.fillStyle = "#16a34a"; ctx.fillText("✓", cx + w / 2, y + rowH / 2); }
+          else if (v.type === "cross") { ctx.fillStyle = "#dc2626"; ctx.fillText("✗", cx + w / 2, y + rowH / 2); }
+          else if (v.type === "partial") { ctx.fillStyle = "#d97706"; ctx.fillText("~", cx + w / 2, y + rowH / 2); }
+          else { ctx.fillStyle = "#374151"; ctx.fillText(v.text || "—", cx + w / 2, y + rowH / 2); }
+          cx += w;
+        });
+      });
+
+      // grid lines
+      ctx.strokeStyle = "#e5e7eb";
+      ctx.lineWidth = 1;
+      for (let r = 0; r <= table.rows.length; r++) {
+        const y = headH + r * rowH;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(totalW, y); ctx.stroke();
+      }
+      let gx = 0;
+      for (let c = 0; c < colW.length; c++) {
+        gx += colW[c];
+        ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, totalH); ctx.stroke();
+      }
+
+      canvas.toBlob((blob) => {
+        if (!blob) { showToast("PNG export failed"); return; }
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "comparison-table.png";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("PNG downloaded");
+      }, "image/png");
     } catch {
       showToast("PNG export failed - try HTML or Markdown instead");
     }

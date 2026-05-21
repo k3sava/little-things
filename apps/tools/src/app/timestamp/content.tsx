@@ -175,7 +175,10 @@ type Granularity = "s" | "ms" | "us";
 // --- Component ---
 
 export default function TimestampContent({ faqPassages }: { faqPassages?: FaqEntry[] } = {}) {
-  const [now, setNow] = useState(Math.floor(Date.now() / 1000));
+  // Start at 0 so SSG output and first client render match; real time is set
+  // on mount below. Initializing from Date.now() here caused a hydration
+  // mismatch (build-time value vs runtime value → React #418/#423/#425).
+  const [now, setNow] = useState(0);
   const [{ ts: tsInput }, setToolState] = useToolState({ ts: "" });
   const setTsInput = useCallback((v: string) => setToolState({ ts: v }), [setToolState]);
   const [dateInput, setDateInput] = useState("");
@@ -187,6 +190,11 @@ export default function TimestampContent({ faqPassages }: { faqPassages?: FaqEnt
   const [granularity, setGranularity] = useState<Granularity>("s");
 
   const [metroCPivot, setMetroCPivot] = useState<"input" | "output">("input");
+
+  // Set real time once after mount (client-only) to avoid hydration mismatch.
+  useEffect(() => {
+    setNow(Math.floor(Date.now() / 1000));
+  }, []);
 
   // Live clock
   useEffect(() => {
