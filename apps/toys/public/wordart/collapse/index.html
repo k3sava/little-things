@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Collapse — wordart</title>
+<link rel="stylesheet" href="../shared/chrome.css">
+<link rel="stylesheet" href="../shared/gui.css">
+<script src="../shared/theme.js"></script>
+
+    <link rel="canonical" href="https://toys.iamkesava.com/wordart/collapse/">
+    <meta property="og:url" content="https://toys.iamkesava.com/wordart/collapse/">
+    <meta property="og:title" content="wordart — Collapse, by Kesava">
+    <meta property="og:description" content="Type a phrase, switch effects. 24 canvas typography effects — 3D cylinder wrap, Archimedean spiral, ribbon twist, aurora glow, chromatic aberration, constellation scatter, liquid drip, construct mosaic, cascade waterfall, clutter scatter, coil spiral, collapse gravity, interference Moiré, and more. Animate mode, interactive cursor mode, PNG + MP4 export.">
+    <meta property="og:image" content="https://toys.iamkesava.com/wordart/collapse/og.svg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wordart — Collapse, by Kesava">
+    <meta name="twitter:description" content="Type a phrase, switch effects. 24 canvas typography effects — 3D cylinder wrap, Archimedean spiral, ribbon twist, aurora glow, chromatic aberration, constellation scatter, liquid drip, construct mosaic, cascade waterfall, clutter scatter, coil spiral, collapse gravity, interference Moiré, and more. Animate mode, interactive cursor mode, PNG + MP4 export.">
+    <meta name="twitter:image" content="https://toys.iamkesava.com/wordart/collapse/og.svg">
+    <meta name="author" content="Kesava">
+    <meta name="description" content="Type a phrase, switch effects. 24 canvas typography effects — 3D cylinder wrap, Archimedean spiral, ribbon twist, aurora glow, chromatic aberration, constellation scatter, liquid drip, construct mosaic, cascade waterfall, clutter scatter, coil spiral, collapse gravity, interference Moiré, and more. Animate mode, interactive cursor mode, PNG + MP4 export.">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://toys.iamkesava.com/wordart/collapse/","name":"wordart — Collapse","description":"Type a phrase, switch effects. 24 canvas typography effects — 3D cylinder wrap, Archimedean spiral, ribbon twist, aurora glow, chromatic aberration, constellation scatter, liquid drip, construct mosaic, cascade waterfall, clutter scatter, coil spiral, collapse gravity, interference Moiré, and more. Animate mode, interactive cursor mode, PNG + MP4 export.","url":"https://toys.iamkesava.com/wordart/collapse/","keywords":"typography, type, effects, canvas, generative, 3D, cylinder, spiral, ribbon, aurora, chromatic, constellation, liquid, halftone, dither, glitch","author":{"@type":"Person","name":"Kesava","url":"https://iamkesava.com"},"publisher":{"@type":"Organization","name":"little toys","url":"https://toys.iamkesava.com"},"codeRepository":"https://github.com/k3sava/wordart/collapse","license":"https://opensource.org/licenses/MIT"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"iamkesava","item":"https://iamkesava.com"},{"@type":"ListItem","position":2,"name":"toys","item":"https://toys.iamkesava.com/"},{"@type":"ListItem","position":3,"name":"wordart — Collapse","item":"https://toys.iamkesava.com/wordart/collapse/"}]}]}</script>
+  
+    <link rel="stylesheet" href="/_chrome/theme-patch.css">
+  </head>
+<body class="wa-effect">
+
+<header class="wa-top">
+  <div class="theme-switcher-container">
+    <button class="theme-switcher-pill" aria-label="Cycle theme" title="Cycle theme">
+      <span class="theme-switcher-pill-icon">●</span>
+    </button>
+  </div>
+  <nav class="kami-breadcrumb"><a href="https://apps.iamkesava.com">home</a><span class="sep">&middot;</span><a href="https://toys.iamkesava.com/">toys</a></nav>
+  <div class="grow"></div>
+  <nav class="effect-nav compact" aria-label="Effect navigation">
+    <a class="effect-nav-arrow" href="../coil/" title="Previous effect (coil)" aria-label="Previous">‹</a>
+    <button type="button" class="effect-nav-current" id="effect-nav-open" aria-haspopup="dialog" aria-expanded="false" title="Browse all effects">
+      <span class="effect-nav-name">collapse</span>
+      <span class="effect-nav-chev">›</span>
+    </button>
+    <a class="effect-nav-arrow" href="../constellation/" title="Next effect (constellation)" aria-label="Next">›</a>
+  </nav>
+  <div class="wa-actions">
+      <button id="export-png" title="save image"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="9" rx="1.5"/><path d="M2,8 l3,-2.5 2.5,2 2.5,-2 4.5,3"/><circle cx="5.5" cy="5.5" r=".9" fill="currentColor" stroke="none"/><line x1="8" y1="12.5" x2="8" y2="15.5"/><polyline points="6,14 8,15.5 10,14"/></svg></button>
+      <button id="export-mp4" title="record video"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="3.5" width="10" height="9" rx="1.5"/><polygon points="11.5,6.5 14.5,5 14.5,11 11.5,9.5" fill="currentColor" stroke="none"/></svg></button>
+      <button id="toggle-controls" title="Toggle controls (C)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/><circle cx="10" cy="4" r="1.6" fill="var(--bg,#fff)"/><circle cx="5" cy="8" r="1.6" fill="var(--bg,#fff)"/><circle cx="11" cy="12" r="1.6" fill="var(--bg,#fff)"/></svg></button>
+      <button id="help-btn" title="Keyboard shortcuts">?</button>
+    </div>
+</header>
+
+<main class="wa-stage">
+  <canvas id="cv"></canvas>
+</main>
+
+<aside class="wg" id="panel">
+  <div class="wg-body">
+    <div class="wg-row wg-slider" data-key="gravity"     data-min="1"   data-max="20"  data-step="0.1"><div class="wg-name">Gravity</div><div class="wg-widget"><div class="wg-track"><div class="wg-fill"></div></div><input type="number" inputmode="numeric"></div></div>
+    <div class="wg-row wg-slider" data-key="stagger"     data-min="0"   data-max="1"   data-step="0.01"><div class="wg-name">Stagger</div><div class="wg-widget"><div class="wg-track"><div class="wg-fill"></div></div><input type="number" inputmode="numeric"></div></div>
+    <div class="wg-row wg-slider" data-key="bounce"      data-min="0"   data-max="1"   data-step="0.01"><div class="wg-name">Bounce</div><div class="wg-widget"><div class="wg-track"><div class="wg-fill"></div></div><input type="number" inputmode="numeric"></div></div>
+    <div class="wg-row wg-bool"   data-key="animate"><div class="wg-name">Animate</div><label class="wg-widget"><input type="checkbox"></label></div>
+    <div class="wg-row wg-bool"   data-key="interactive"><div class="wg-name">Interactive</div><label class="wg-widget"><input type="checkbox"></label></div>
+    <div class="wg-row wg-text"   data-key="text"><div class="wg-name">Text</div><div class="wg-widget"><input type="text"></div></div>
+    <div class="wg-row wg-slider" data-key="textSize" data-min="100" data-max="600" data-step="1"><div class="wg-name">Text size</div><div class="wg-widget"><div class="wg-track"><div class="wg-fill"></div></div><input type="number" inputmode="numeric"></div></div>
+    <div class="wg-row wg-bool"   data-key="bold"><div class="wg-name">Bold</div><label class="wg-widget"><input type="checkbox"></label></div>
+    <div class="wg-row wg-bool"   data-key="italic"><div class="wg-name">Italic</div><label class="wg-widget"><input type="checkbox"></label></div>
+    <div class="wg-row wg-color"  data-key="bg"><div class="wg-name">Background</div><div class="wg-widget"><div class="wg-swatch"><input type="color"></div><input type="text" spellcheck="false"></div></div>
+    <div class="wg-row wg-bool"   data-key="invert"><div class="wg-name">Invert</div><label class="wg-widget"><input type="checkbox"></label></div>
+  </div>
+  <div class="wg-credit">Inspired by <a href="https://spacetypegenerator.com/crash" target="_blank" rel="noopener">Space Type Generator /crash</a> by kielm — falling and stacking letter physics</div>
+</aside>
+
+<div class="wa-rec" role="status"><span class="dot"></span><span class="label">Recording</span><div class="track"><div class="bar"></div></div></div>
+
+<footer class="wa-bottom">
+  <div class="row aeo"><a href="https://toys.iamkesava.com/llms.txt">llms.txt</a><span class="sep">·</span><a href="https://toys.iamkesava.com/sitemap.xml">sitemap</a><span class="sep">·</span><a href="https://toys.iamkesava.com/toys.json">toys.json</a></div>
+
+  <nav class="row sister" aria-label="Sister sites">
+    <span><a href="https://apps.iamkesava.com/">apps</a></span><span class="sep">·</span>
+    <span><a href="https://tools.iamkesava.com/">tools</a></span><span class="sep">·</span>
+    <span class="current">toys</span><span class="sep">·</span>
+    <span><a href="https://codex.iamkesava.com/">codex</a></span>
+  </nav>
+  <div class="row made">
+    made by <a href="https://iamkesava.com" rel="author">kesava</a> <span class="sep">·</span> <a href="https://github.com/k3sava/wordart" rel="noopener">github</a>
+  </div>
+</footer>
+
+<script src="../shared/state.js" defer></script>
+<script src="../shared/keys.js" defer></script>
+<script src="../shared/gui.js" defer></script>
+<script src="../shared/export.js" defer></script>
+<script src="../shared/interact.js" defer></script>
+<script src="effect.js" defer></script>
+</body>
+</html>
