@@ -1,3 +1,5 @@
+@import "kami-css/kami.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -2072,16 +2074,18 @@ html[data-theme] .kami-scope a.bg-gray-900:hover {
   flex-wrap: wrap;
 }
 
-/* Brutalist theme overrides — keep sharp edges and offset shadows */
-.tool-shell-header { background: #fff; border-bottom: 2px solid #000; }
-.tool-shell-panel { border-radius: 0; border: 2px solid #000; }
-.kc-range::-webkit-slider-thumb { border-radius: 0; }
-.kc-segment,
-.kc-stepper,
-.kc-select { border-radius: 0; border: 2px solid #000; }
-.kc-segment-btn { border-radius: 0; }
-.kc-swatch { border-radius: 0; border: 2px solid #000; }
-.tool-action-btn {
+/* Brutalist theme overrides — keep sharp edges and offset shadows.
+   Scoped to brutalist (+ no-theme default) so other skins fall through
+   to the token-driven base rules above. */
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-shell-header { background: #fff; border-bottom: 2px solid #000; }
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-shell-panel { border-radius: 0; border: 2px solid #000; }
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-range::-webkit-slider-thumb { border-radius: 0; }
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-segment,
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-stepper,
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-select { border-radius: 0; border: 2px solid #000; }
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-segment-btn { border-radius: 0; }
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-swatch { border-radius: 0; border: 2px solid #000; }
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-action-btn {
   border-radius: 0;
   border: 2px solid #000;
   background: #fff;
@@ -2092,24 +2096,24 @@ html[data-theme] .kami-scope a.bg-gray-900:hover {
   box-shadow: 3px 3px 0 #000;
   transition: none;
 }
-.tool-action-btn:hover:not(:disabled) {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-action-btn:hover:not(:disabled) {
   background: #d946ef;
   color: #000;
   box-shadow: 5px 5px 0 #000;
   transform: translate(-2px, -2px);
 }
-.tool-action-btn[data-variant="solid"] {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-action-btn[data-variant="solid"] {
   background: #000;
   color: #fff;
   border: 2px solid #000;
 }
-.tool-action-btn[data-variant="solid"]:hover:not(:disabled) {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-action-btn[data-variant="solid"]:hover:not(:disabled) {
   background: #d946ef;
   color: #000;
   box-shadow: 5px 5px 0 #000;
   transform: translate(-2px, -2px);
 }
-.tool-icon-btn {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-icon-btn {
   border-radius: 0;
   border: 2px solid #000;
   background: #fff;
@@ -2117,24 +2121,24 @@ html[data-theme] .kami-scope a.bg-gray-900:hover {
   box-shadow: 2px 2px 0 #000;
   transition: none;
 }
-.tool-icon-btn:hover:not(:disabled) {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-icon-btn:hover:not(:disabled) {
   background: #d946ef;
   color: #000;
   box-shadow: 3px 3px 0 #000;
   transform: translate(-1px, -1px);
 }
-.tool-icon-btn[data-active="true"] {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-icon-btn[data-active="true"] {
   background: #000;
   color: #fff;
 }
-.tool-icon-btn[data-variant="solid"] {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .tool-icon-btn[data-variant="solid"] {
   background: #000;
   color: #fff;
   border: 2px solid #000;
 }
 
 /* Brutalist kc component overrides */
-.kc-segment-btn[data-active="true"] {
+:is(:root:not([data-theme]), [data-theme="brutalist"]) .kc-segment-btn[data-active="true"] {
   background: #000;
   color: #fff;
   box-shadow: none;
