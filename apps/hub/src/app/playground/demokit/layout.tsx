@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { KamiBreadcrumb } from "@/components/kami-breadcrumb";
+import { KamiFooter } from "@/components/kami-footer";
 
 export const dynamic = "force-dynamic";
 
@@ -32,14 +32,16 @@ export default function DemoKitLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="kami-playground min-h-screen w-full kami-text">
-      <Breadcrumb
-        items={[
-          { label: "home", href: "https://apps.iamkesava.com" },
-          { label: "playground", href: "/playground" },
-          { label: "demokit" },
-        ]}
-      />
+    <div className="kami-page min-h-screen w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3">
+        <KamiBreadcrumb
+          items={[
+            { label: "home", href: "/" },
+            { label: "playground", href: "/playground" },
+            { label: "demokit" },
+          ]}
+        />
+      </div>
       <header className="border-b px-4 sm:px-6 py-4 kami-border-bottom-strong">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <a href="/playground/demokit" className="flex items-center gap-2">
@@ -56,7 +58,7 @@ export default function DemoKitLayout({
         </div>
       </header>
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">{children}</main>
-      <Footer />
+      <KamiFooter current="apps" />
     </div>
   );
 }

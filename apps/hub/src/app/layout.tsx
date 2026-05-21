@@ -116,7 +116,7 @@ export default function RootLayout({
         <link rel="author" href="https://iamkesava.com/" />
         <JsonLd data={rootLd()} />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased kami-page">
         <div className="kami-mobile-bar" aria-hidden="true" />
         <BlobCanvas />
         <div style={{ position: "relative", zIndex: 10 }}>{children}</div>

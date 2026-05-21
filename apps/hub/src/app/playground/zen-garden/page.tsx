@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JsonLd, solutionLd } from "@/lib/json-ld";
-import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { KamiBreadcrumb } from "@/components/kami-breadcrumb";
+import { KamiFooter } from "@/components/kami-footer";
 
 export const dynamic = "force-dynamic";
 
@@ -33,22 +33,22 @@ export default function ZenGardenPage() {
   return (
     <>
       <JsonLd data={solutionLd({"url":"https://apps.iamkesava.com/playground/zen-garden","name":"Ink and Void","description":"A CSS Zen Garden submission using modern CSS. Scroll-driven animations, oklch color, @property, subgrid, container queries. 1800 lines of pure CSS, zero images, zero JavaScript."})} />
-      <div className="kami-playground flex min-h-screen flex-col kami-text">
-      <Breadcrumb
-        items={[
-          { label: "home", href: "https://apps.iamkesava.com" },
-          { label: "playground", href: "/playground" },
-          { label: "zen garden" },
-        ]}
-      />
+      <div className="kami-page flex min-h-screen flex-col">
+      <div className="mx-auto w-full max-w-[900px] px-8 pt-3">
+        <KamiBreadcrumb
+          items={[
+            { label: "home", href: "/" },
+            { label: "playground", href: "/playground" },
+            { label: "zen garden" },
+          ]}
+        />
+      </div>
       <iframe
         src="/zen-garden.html"
         className="w-full flex-1 border-0"
         title="Ink and Void, CSS Zen Garden"
       />
-      <div className="mx-auto max-w-[900px] px-8">
-        <Footer />
-      </div>
+      <KamiFooter current="apps" />
     </div>
   </>
   );
