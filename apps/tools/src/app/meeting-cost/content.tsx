@@ -1,0 +1,382 @@
+"use client";
+
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
+import {
+  ToolShell,
+  ControlGroup,
+  ToolActionButton,
+} from "@/components/tools/tool-shell";
+import type { FaqEntry } from "@/lib/json-ld";
+import { MeetingCostUrlSync } from "./url-sync";
+
+// --- Constants ---
+
+const SALARY_OPTIONS = [
+  { label: "$50,000", value: 50000 },
+  { label: "$75,000", value: 75000 },
+  { label: "$100,000", value: 100000 },
+  { label: "$125,000", value: 125000 },
+  { label: "$150,000", value: 150000 },
+  { label: "$200,000", value: 200000 },
+];
+
+const HOURS_PER_YEAR = 2080;
+const MINUTES_PER_HOUR = 60;
+
+// Cost per minute: (attendees * salary) / (hours_per_year * 60)
+function costPerMinute(attendees: number, salary: number): number {
+  return (attendees * salary) / (HOURS_PER_YEAR * MINUTES_PER_HOUR);
+}
+
+function formatDollars(amount: number): string {
+  if (amount >= 1000) {
+    return `$${(amount / 1000).toFixed(2)}k`;
+  }
+  return `$${amount.toFixed(2)}`;
+}
+
+function formatElapsed(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+// --- Equivalences ---
+
+interface Equivalence {
+  label: (cost: number) => string;
+}
+
+const EQUIVALENCES: Equivalence[] = [
+  {
+    label: (cost) => {
+      const cups = cost / 5;
+      return cups < 1
+        ? `That's ${(cups * 100).toFixed(0)}% of a decent cup of coffee`
+        : `That's ${cups.toFixed(1)} cups of good coffee`;
+    },
+  },
+  {
+    label: (cost) => {
+      // % of weekly salary at $100k
+      const weeklyAt100k = 100000 / 52;
+      const pct = (cost / weeklyAt100k) * 100;
+      return `That's ${pct.toFixed(1)}% of someone's weekly salary (at $100k/yr)`;
+    },
+  },
+  {
+    label: (cost) => {
+      // Rotating punchy equivalences
+      const options = [
+        { threshold: 5, text: `That's a Spotify Premium month` },
+        { threshold: 10, text: `That's an Uber across town` },
+        { threshold: 25, text: `That's a decent dinner for two` },
+        { threshold: 50, text: `That's a flight upgrade` },
+        { threshold: 100, text: `That's a flight from NYC to Boston` },
+        { threshold: 300, text: `That's a one-way flight to Miami` },
+        { threshold: 500, text: `That's a weekend hotel stay` },
+        { threshold: 1000, text: `That's a transatlantic flight` },
+        { threshold: Infinity, text: `That's someone's rent` },
+      ];
+      const match = options.find((o) => cost < o.threshold);
+      return match ? match.text : `That's a lot`;
+    },
+  },
+];
+
+// --- Component ---
+
+interface MeetingCostContentProps {
+  faqPassages?: FaqEntry[];
+}
+
+export default function MeetingCostContent({ faqPassages }: MeetingCostContentProps) {
+  const [attendees, setAttendees] = useState(6);
+  const [salary, setSalary] = useState(100000);
+
+  // Read URL params on mount (client only) — avoids useSearchParams at top level
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const a = parseInt(params.get("attendees") ?? "6", 10);
+    const s = parseInt(params.get("salary") ?? "100000", 10);
+    if (!isNaN(a) && a >= 2 && a <= 20) setAttendees(a);
+    const validSalary = SALARY_OPTIONS.some((o) => o.value === s);
+    if (validSalary) setSalary(s);
+  }, []);
+  const [running, setRunning] = useState(false);
+  const [elapsed, setElapsed] = useState(0); // seconds
+  const startTimeRef = useRef<number | null>(null);
+  const baseElapsedRef = useRef(0); // seconds accumulated before latest start
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [metroCPivot, setMetroCPivot] = useState<"input" | "output">("input");
+
+  const cpm = costPerMinute(attendees, salary);
+  const totalCost = cpm * (elapsed / 60);
+
+  const start = useCallback(() => {
+    if (running) return;
+    startTimeRef.current = Date.now();
+    setRunning(true);
+  }, [running]);
+
+  const stop = useCallback(() => {
+    if (!running) return;
+    if (startTimeRef.current !== null) {
+      baseElapsedRef.current += Math.floor((Date.now() - startTimeRef.current) / 1000);
+    }
+    startTimeRef.current = null;
+    setRunning(false);
+  }, [running]);
+
+  const reset = useCallback(() => {
+    stop();
+    baseElapsedRef.current = 0;
+    startTimeRef.current = null;
+    setElapsed(0);
+    setRunning(false);
+  }, [stop]);
+
+  useEffect(() => {
+    if (running) {
+      intervalRef.current = setInterval(() => {
+        if (startTimeRef.current !== null) {
+          const sinceStart = Math.floor((Date.now() - startTimeRef.current) / 1000);
+          setElapsed(baseElapsedRef.current + sinceStart);
+        }
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [running]);
+
+
+
+  const has30MinWarning = elapsed >= 30 * 60;
+  const hasEmailVerdict = elapsed >= 45 * 60;
+
+  const cardStyle = {
+    background: "var(--kami-surface-solid)",
+    border: "1px solid var(--kami-border-strong)",
+    borderRadius: "var(--kami-card-radius, 0.75rem)",
+  } as const;
+
+  const inputStyle = {
+    background: "var(--kami-input-bg, var(--kami-surface-solid))",
+    color: "var(--kami-text)",
+    border: "1px solid var(--kami-border-strong)",
+    borderRadius: "var(--kami-input-radius, 0.5rem)",
+  } as const;
+
+  return (
+    <>
+      <Suspense fallback={null}>
+        <MeetingCostUrlSync attendees={attendees} salary={salary} />
+      </Suspense>
+    <ToolShell
+      title="Meeting Cost Meter"
+      tagline="The live cost of this meeting, in real time."
+      accent="#ef4444"
+      faqPassages={faqPassages}
+      actions={
+        <>
+          {!running ? (
+            <ToolActionButton onClick={start} variant="solid">
+              Start Meeting
+            </ToolActionButton>
+          ) : (
+            <ToolActionButton onClick={stop} variant="outline">
+              Pause
+            </ToolActionButton>
+          )}
+          <ToolActionButton onClick={reset} variant="ghost">
+            Reset
+          </ToolActionButton>
+        </>
+      }
+      controls={
+        <>
+          <ControlGroup label="Attendees">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold tabular-nums">{attendees}</span>
+                <span className="text-xs kami-text-dim">people</span>
+              </div>
+              <input
+                type="range"
+                min={2}
+                max={20}
+                step={1}
+                value={attendees}
+                onChange={(e) => setAttendees(Number(e.target.value))}
+                className="w-full"
+                style={{ accentColor: "#ef4444" }}
+              />
+              <div className="flex justify-between">
+                <span className="text-xs kami-text-dim">2</span>
+                <span className="text-xs kami-text-dim">20</span>
+              </div>
+            </div>
+          </ControlGroup>
+
+          <ControlGroup label="Average annual salary">
+            <select
+              value={salary}
+              onChange={(e) => setSalary(Number(e.target.value))}
+              className="w-full px-3 py-2 text-sm focus:outline-none"
+              style={{ ...inputStyle, minHeight: 44 }}
+            >
+              {SALARY_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </ControlGroup>
+
+          <div className="p-3" style={{ ...cardStyle, border: "1px solid var(--kami-border)" }}>
+            <p className="text-xs kami-text-dim">Cost per minute</p>
+            <p className="text-lg font-bold tabular-nums mt-0.5">
+              {formatDollars(cpm)}
+              <span className="text-sm font-normal ml-1 kami-text-dim">/min</span>
+            </p>
+          </div>
+        </>
+      }
+    >
+      <div className="flex flex-col gap-4 w-full">
+        <nav className="canvas-metro-pivot" role="tablist" aria-label="View">
+          <button role="tab" aria-selected={metroCPivot === "input"}
+            className={`metro-pivot-item${metroCPivot === "input" ? " is-active" : ""}`}
+            onClick={() => setMetroCPivot("input")}>Setup</button>
+          <button role="tab" aria-selected={metroCPivot === "output"}
+            className={`metro-pivot-item${metroCPivot === "output" ? " is-active" : ""}`}
+            onClick={() => setMetroCPivot("output")}>Output</button>
+        </nav>
+
+        {/* Main cost display */}
+        <div className="canvas-section glass-canvas-section" data-panel="output">
+        <div className="flex flex-col gap-4">
+        <div className="p-6 flex flex-col items-center justify-center min-h-48" style={cardStyle}>
+          {!running && elapsed === 0 ? (
+            <>
+              {/* Pre-start state */}
+              <p className="text-5xl font-bold tabular-nums kami-text-error">
+                {formatDollars(cpm)}
+                <span className="text-2xl font-normal ml-1 kami-text-dim">/min</span>
+              </p>
+              <p className="mt-2 text-sm kami-text-dim">
+                {attendees} people · ${salary.toLocaleString("en-US")}/yr avg
+              </p>
+            </>
+          ) : (
+            <>
+              {/* Running / paused state */}
+              <p
+                className="font-bold tabular-nums"
+                style={{
+                  fontSize: "clamp(3rem, 10vw, 5rem)",
+                  lineHeight: 1,
+                  color: running ? "#ef4444" : "var(--kami-text)",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {formatDollars(totalCost)}
+              </p>
+              <p className="mt-2 text-xl font-mono tabular-nums kami-text-dim">
+                {formatElapsed(elapsed)}
+              </p>
+              <p className="mt-1 text-xs kami-text-dim">
+                {running ? "and counting..." : "paused"}
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Equivalences — only shown once meeting has started */}
+        {elapsed > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {EQUIVALENCES.map((eq, i) => (
+              <div key={i} className="p-4" style={cardStyle}>
+                <p className="text-sm kami-text-muted">
+                  {eq.label(totalCost)}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 30-minute warning */}
+        {has30MinWarning && !hasEmailVerdict && (
+          <div
+            className="p-4"
+            style={{
+              ...cardStyle,
+              borderLeft: "3px solid #ef4444",
+            }}
+          >
+            <p className="text-sm kami-text-muted">
+              This meeting has been going for 30 minutes. Just saying.
+            </p>
+          </div>
+        )}
+
+        {/* 45-minute verdict */}
+        {hasEmailVerdict && (
+          <div
+            className="p-4"
+            style={{
+              ...cardStyle,
+              borderLeft: "3px solid #ef4444",
+            }}
+          >
+            <p className="text-sm font-medium kami-text-error">
+              This could have been an email.
+            </p>
+            <p className="text-xs mt-1 kami-text-dim">
+              45 minutes × {attendees} people = {attendees * 45} person-minutes. Someone write the summary.
+            </p>
+          </div>
+        )}
+
+        {/* Formula note */}
+        <div className="p-3" style={{ ...cardStyle, border: "1px solid var(--kami-border)" }}>
+          <p className="text-xs kami-text-dim">
+            Formula: (attendees × salary ÷ 2,080 hrs ÷ 60 min) × minutes elapsed
+            · Current rate: {formatDollars(cpm)}/min · {attendees} people · ${salary.toLocaleString("en-US")}/yr avg salary
+          </p>
+        </div>
+        </div>
+        </div>
+
+        <div className="canvas-section glass-canvas-section" data-panel="input">
+          <div className="p-4" style={cardStyle}>
+            <p className="text-xs font-medium uppercase tracking-wider mb-2 kami-text-dim">
+              Meeting setup
+            </p>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm kami-text-muted">Attendees</span>
+                <span className="text-sm font-semibold tabular-nums">{attendees} people</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm kami-text-muted">Avg salary</span>
+                <span className="text-sm font-semibold tabular-nums">${salary.toLocaleString("en-US")}/yr</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm kami-text-muted">Cost per minute</span>
+                <span className="text-sm font-semibold tabular-nums kami-text-error">{formatDollars(cpm)}/min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ToolShell>
+    </>
+  );
+}

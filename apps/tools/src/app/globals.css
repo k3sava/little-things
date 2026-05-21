@@ -1,0 +1,3755 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Override theme-forced text-transform where literal string fidelity matters
+   (e.g. case-converter result cards that must show the actual converted
+   string). Applied at top of file so themed rules can't reach it; kept
+   !important because the theme rules win on specificity otherwise. */
+.kami-scope button.case-preserve,
+.kami-scope button.case-preserve * {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+@layer base {
+  :root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-foreground: #ffffff;
+    --bg-warm: #f6f6f4;
+    --bg-white: #ffffff;
+    --bg-muted: #f3f4f6;
+    --bg-subtle: #eceef1;
+    --text-primary: #111111;
+    --text-body: #333333;
+    --text-muted: #767676;
+    --border: #d7d7db;
+    --success: #16a34a;
+    --destructive: #ef4444;
+
+    /* ============================================================
+       Kami design tokens — brutalist is the default skin.
+       A future skin engine will override these via data-skin.
+       ============================================================ */
+
+    /* surface & text */
+    --kami-bg: #ffffff;
+    --kami-surface: #ffffff;
+    --kami-surface-solid: #ffffff;
+    --kami-border: #000000;
+    --kami-border-strong: #000000;
+    --kami-text: #000000;
+    --kami-text-muted: #000000;
+    --kami-text-dim: #666666;
+    --kami-accent: #d946ef;
+
+    /* primary CTA (solid link-button) */
+    --kami-cta-bg: #000000;
+    --kami-cta-bg-hover: #d946ef;
+    --kami-cta-text: #ffffff;
+    --kami-cta-radius: 0;
+    --kami-cta-shadow: 4px 4px 0 #000;
+
+    /* secondary CTA (bordered link-button) */
+    --kami-cta2-bg: #ffffff;
+    --kami-cta2-bg-hover: #d946ef;
+    --kami-cta2-text: #000000;
+    --kami-cta2-border: #000000;
+
+    /* tile hover overlay (the card flip) */
+    --kami-overlay-bg: #000000;
+    --kami-overlay-text: #ffffff;
+    --kami-overlay-text-dim: #cccccc;
+
+    /* breadcrumb */
+    --kami-breadcrumb: #666666;
+    --kami-breadcrumb-hover: #d946ef;
+
+    /* footer */
+    --kami-footer: #666666;
+    --kami-footer-link: #000000;
+    --kami-footer-link-hover: #d946ef;
+
+    /* ---- semantic status tokens ---- */
+    --kami-error:          #ef4444;
+    --kami-error-bg:       #fef2f2;
+    --kami-error-border:   #fecaca;
+    --kami-success:        #16a34a;
+    --kami-success-bg:     #f0fdf4;
+    --kami-success-border: #bbf7d0;
+    --kami-warning:        #f59e0b;
+    --kami-warning-bg:     #fffbeb;
+    --kami-warning-border: #fde68a;
+
+    /* ---- design-language tokens ---- */
+    --kami-font-display: var(--font-mono), ui-monospace, monospace;
+    --kami-font-body: var(--font-mono), ui-monospace, monospace;
+    --kami-font-mono: var(--font-mono), ui-monospace, monospace;
+    --kami-heading-case: uppercase;
+    --kami-heading-tracking: 0.08em;
+    --kami-heading-weight: 700;
+    --kami-body-tracking: 0;
+    --kami-body-leading: 1.55;
+
+    /* Card construction */
+    --kami-card-radius: 0;
+    --kami-card-border: 2px solid #000;
+    --kami-card-shadow: 4px 4px 0 #000;
+    --kami-card-shadow-hover: 6px 6px 0 #d946ef;
+    --kami-card-hover-transform: translate(-2px, -2px);
+
+    /* Motion */
+    --kami-motion-fast: 40ms;
+    --kami-motion-base: 60ms;
+    --kami-motion-slow: 80ms;
+    --kami-motion-ease: steps(1);
+
+    /* Divider */
+    --kami-divider-style: 2px solid #000;
+    --kami-divider-marker: "";
+
+    /* Input */
+    --kami-input-bg: #ffffff;
+    --kami-input-border: 2px solid #000;
+    --kami-input-radius: 0;
+    --kami-input-focus-ring: 0 4px 0 #d946ef;
+    --kami-caret: #d946ef;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--bg-warm);
+    color: var(--text-primary);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DARK MODE — Phase 8
+   Auto: prefers-color-scheme: dark
+   Manual: html[data-dark] (set by ThemeSwitcher, persisted in kami.dark)
+   Per-theme overrides follow the base block for themes with hardcoded colours.
+   ══════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) { :root { --kami-dark: 1; } }
+html[data-dark] { --kami-dark: 1; }
+
+/* Base dark tokens (default + brutalist + zen pick these up automatically) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kami-bg: #111111;
+    --kami-surface: rgba(28,28,30,0.85);
+    --kami-surface-solid: #1c1c1e;
+    --kami-border: rgba(60,60,67,0.29);
+    --kami-border-strong: #38383a;
+    --kami-text: #f5f5f7;
+    --kami-text-muted: #aeaeb2;
+    --kami-text-dim: #636366;
+    --kami-cta-bg: #f5f5f7;
+    --kami-cta-bg-hover: #e0e0e2;
+    --kami-cta-text: #111111;
+    --kami-cta2-bg: #1c1c1e;
+    --kami-cta2-bg-hover: #2c2c2e;
+    --kami-cta2-text: #aeaeb2;
+    --kami-cta2-border: #38383a;
+    --kami-input-bg: #1c1c1e;
+    --kami-input-border: 1px solid #38383a;
+    --kami-accent: #4db3ff;
+    --kami-card-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --kami-card-shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+    --bg-warm: #111111;
+    --bg-white: #1c1c1e;
+    --text-primary: #f5f5f7;
+    --text-body: #aeaeb2;
+    --text-muted: #636366;
+    --border: #38383a;
+  }
+}
+html[data-dark]:not([data-theme]),
+html[data-dark][data-theme] {
+  --kami-bg: #111111;
+  --kami-surface: rgba(28,28,30,0.85);
+  --kami-surface-solid: #1c1c1e;
+  --kami-border: rgba(60,60,67,0.29);
+  --kami-border-strong: #38383a;
+  --kami-text: #f5f5f7;
+  --kami-text-muted: #aeaeb2;
+  --kami-text-dim: #636366;
+  --kami-cta-bg: #f5f5f7;
+  --kami-cta-bg-hover: #e0e0e2;
+  --kami-cta-text: #111111;
+  --kami-cta2-bg: #1c1c1e;
+  --kami-cta2-bg-hover: #2c2c2e;
+  --kami-cta2-text: #aeaeb2;
+  --kami-cta2-border: #38383a;
+  --kami-input-bg: #1c1c1e;
+  --kami-input-border: 1px solid #38383a;
+  --kami-accent: #4db3ff;
+  --kami-card-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  --kami-card-shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+  --bg-warm: #111111;
+  --bg-white: #1c1c1e;
+  --text-primary: #f5f5f7;
+  --text-body: #aeaeb2;
+  --text-muted: #636366;
+  --border: #38383a;
+}
+
+/* Terminal is already true-black — no dark override needed */
+
+/* Editorial dark — warm dark paper */
+
+
+/* Glass dark — deep indigo frost */
+
+
+/* Material dark — MD3 dark scheme */
+
+
+/* Metro dark — flat dark with bold accent */
+
+
+/* Hub-page dark overrides — brutalist/editorial/zen body:not(:has(.kami-playground))
+   use hardcoded light hex values; override here at specificity (0,3,2) */
+@media (prefers-color-scheme: dark) {
+  body:not(:has(.kami-playground)),
+}
+
+/* Help Center Article Prose */
+@layer components {
+  .article-content h2 {
+    @apply text-2xl font-semibold mt-10 mb-4 text-[var(--text-primary)] scroll-mt-20;
+  }
+  .article-content h3 {
+    @apply text-xl font-semibold mt-8 mb-3 text-[var(--text-primary)] scroll-mt-20;
+  }
+  .article-content p {
+    @apply text-base leading-relaxed text-[var(--text-body)] mb-4;
+  }
+  .article-content ul, .article-content ol {
+    @apply mb-4 pl-6;
+  }
+  .article-content ul {
+    @apply list-disc;
+  }
+  .article-content ol {
+    @apply list-decimal;
+  }
+  .article-content li {
+    @apply text-base leading-relaxed text-[var(--text-body)] mb-1.5;
+  }
+  .article-content a {
+    @apply text-[var(--primary)] hover:underline;
+  }
+  .article-content strong {
+    @apply font-semibold text-[var(--text-primary)];
+  }
+  .article-content code {
+    @apply rounded bg-[var(--bg-muted)] px-1.5 py-0.5 text-sm font-mono;
+  }
+  .article-content pre {
+    @apply rounded-lg bg-[var(--bg-muted)] p-4 mb-4 overflow-x-auto;
+  }
+  .article-content pre code {
+    @apply bg-transparent p-0;
+  }
+  .article-content table {
+    @apply w-full text-sm mb-4;
+  }
+  .article-content thead {
+    @apply border-b;
+  }
+  .article-content th {
+    @apply px-3 py-2 text-left font-semibold text-[var(--text-primary)];
+  }
+  .article-content td {
+    @apply px-3 py-2 text-[var(--text-body)] border-b;
+  }
+  .article-content hr {
+    @apply my-8 border-t;
+  }
+  .article-content .callout p {
+    @apply mb-0;
+  }
+}
+
+/* ===== Tools Design System ===== */
+
+/* Light theme variables - used by command palette, copy toast */
+.tools-light {
+  --tools-bg: #fafafa;
+  --tools-surface: #ffffff;
+  --tools-surface-alt: #f5f5f5;
+  --tools-surface-hover: #f0f0f0;
+  --tools-border: #e5e5ea;
+  --tools-border-hover: #d4d4d4;
+  --tools-text: #1d1d1f;
+  --tools-text-secondary: #525252;
+  --tools-text-muted: #bbb;
+}
+
+/* Command palette */
+.command-palette {
+  background: var(--tools-surface);
+  border-color: var(--tools-border);
+  color: var(--tools-text);
+}
+.command-palette input { color: var(--tools-text); }
+.command-palette kbd { border-color: var(--tools-border); color: var(--tools-text-muted); }
+.command-palette-selected { background: var(--tools-surface-hover); }
+
+/* Copy toast */
+.copy-toast {
+  background: var(--tools-surface);
+  border-color: var(--tools-border);
+  color: var(--tools-text);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ===== Animations ===== */
+@keyframes cmdPaletteIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Theme Engine ===== */
+
+/* Theme transition */
+html[data-theme] body,
+html[data-theme] body * {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ============================================================
+   BRUTALIST - "Concrete Press"
+   School: Total Design + Mevis & Van Deursen + Berlin techno flyer
+   Philosophy: monospace shouting on white paper. Magenta is the
+   only non-black/white color. Zero radius. Offset-solid shadows.
+   Hover = slam. Motion = instant.
+   ============================================================ */
+{
+  --kami-bg: #ffffff;
+  --kami-surface: #ffffff;
+  --kami-surface-solid: #ffffff;
+  --kami-border: #000000;
+  --kami-border-strong: #000000;
+  --kami-text: #000000;
+  --kami-text-muted: #000000;
+  --kami-text-dim: #666666;
+  --kami-accent: #d946ef;
+
+  --kami-cta-bg: #000000;
+  --kami-cta-bg-hover: #d946ef;
+  --kami-cta-text: #ffffff;
+  --kami-cta-radius: 0;
+  --kami-cta-shadow: 4px 4px 0 #000;
+
+  --kami-cta2-bg: #ffffff;
+  --kami-cta2-bg-hover: #d946ef;
+  --kami-cta2-text: #000000;
+  --kami-cta2-border: #000000;
+
+  --kami-overlay-bg: #000000;
+  --kami-overlay-text: #ffffff;
+  --kami-overlay-text-dim: #cccccc;
+
+  --kami-breadcrumb: #666666;
+  --kami-breadcrumb-hover: #d946ef;
+
+  --kami-footer: #666666;
+  --kami-footer-link: #000000;
+  --kami-footer-link-hover: #d946ef;
+
+  /* design-language */
+  --kami-font-display: var(--font-mono), ui-monospace, monospace;
+  --kami-font-body: var(--font-mono), ui-monospace, monospace;
+  --kami-heading-case: uppercase;
+  --kami-heading-tracking: 0.08em;
+  --kami-heading-weight: 700;
+  --kami-body-tracking: 0;
+  --kami-body-leading: 1.55;
+
+  --kami-card-radius: 0;
+  --kami-card-border: 2px solid #000;
+  --kami-card-shadow: 4px 4px 0 #000;
+  --kami-card-shadow-hover: 6px 6px 0 #d946ef;
+  --kami-card-hover-transform: translate(-2px, -2px);
+
+  --kami-motion-fast: 40ms;
+  --kami-motion-base: 60ms;
+  --kami-motion-slow: 80ms;
+  --kami-motion-ease: steps(1);
+
+  --kami-divider-style: 2px solid #000;
+
+  --kami-input-bg: #ffffff;
+  --kami-input-border: 2px solid #000;
+  --kami-input-radius: 0;
+  --kami-input-focus-ring: 0 4px 0 #d946ef;
+  --kami-caret: #d946ef;
+}
+body:not(:has(.kami-playground)) {
+  background-color: #fff;
+  color: #000;
+  font-family: var(--kami-font-body);
+}
+body:has(.kami-playground) {
+  font-family: var(--kami-font-body);
+}
+.kami-scope canvas { display: none !important; }
+/* Default: blob canvas off; only zen opts in. */
+.kami-blob-canvas { display: none; }
+
+/* Headings: ALL CAPS BLOCK */
+.kami-scope h1,
+.kami-scope h2,
+.kami-scope h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  font-family: var(--kami-font-display);
+}
+/* Text-link anchors - scoped to prose/content context only */
+.kami-scope p a,
+.kami-scope li a,
+.kami-scope .kami-content a {
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #000;
+  transition: color 40ms steps(1), text-decoration-color 40ms steps(1);
+}
+.kami-scope p a:hover,
+.kami-scope li a:hover,
+.kami-scope .kami-content a:hover {
+  color: #d946ef;
+  text-decoration-color: #d946ef;
+  background: transparent;
+}
+/* Inputs */
+.kami-scope input[type="text"],
+.kami-scope input[type="search"],
+.kami-scope input[type="number"],
+.kami-scope input[type="email"],
+.kami-scope textarea,
+.kami-scope select {
+  background: #fff !important;
+  border: 2px solid #000 !important;
+  border-radius: 0 !important;
+  color: #000 !important;
+  caret-color: #d946ef !important;
+  font-family: var(--kami-font-body) !important;
+}
+.kami-scope input:focus,
+.kami-scope textarea:focus,
+.kami-scope select:focus {
+  outline: none !important;
+  box-shadow: 0 4px 0 #d946ef !important;
+}
+
+/* ============================================================
+   EDITORIAL - "Supplement"
+   School: Vignelli Canon + Penguin/Tschichold + NYT Magazine
+   Philosophy: cream paper, serif display, hairline rules, slow
+   dignified hovers. Pressed into the page.
+   ============================================================ */
+
+/* Headings: serif display, italic for h1 */
+/* Small-caps section labels */
+/* Anchor links: sienna, underline draws in on hover — prose/content context only */
+/* Inputs: handwritten-form underline style */
+/* Editorial disclosure buttons (full-width collapsible section headers) */
+
+/* ============================================================
+   TERMINAL - "Phosphor"
+   School: Hackers (1995) + Unix man pages + lazygit/btop
+   Philosophy: deep dark bg, phosphor green, amber hover accents.
+   Brackets on buttons. `> ` prefix on headings. Scanline overlay.
+   Terminals don't animate - motion is instant.
+   ============================================================ */
+/* Scanline overlay */
+
+/* Headings with `> ` prefix */
+/* Anchor links: amber with subtle glow on hover — prose/content context only */
+/* Inputs: terminal-style */
+/* Catch hardcoded page text colors inside scope */
+
+/* ============================================================
+   ZEN - "Breath"
+   School: Kenya Hara / Muji / Ryoanji Ma
+   Philosophy: rice paper, deliberate emptiness, wide tracking,
+   moss accent, no borders - soft washes. Meditative 500-600ms
+   hovers, dots instead of lines, ensō section marker.
+   ============================================================ */
+
+/* Ensure hub content stacks above the blob canvas (z-index: 0) */
+
+/* Headings: serif display, light weight, wide tracking, lowercase feel */
+/* Anchor links: underline draws slowly — prose/content context only */
+/* Inputs: underline only, moss on focus */
+/* Zen layout - more breathing room */
+/* Zen fade-in animation */
+@keyframes zenFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Theme Switcher Styles ===== */
+
+.theme-switcher-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+}
+
+.theme-switcher-container {
+  position: fixed;
+  top: 0.85rem;
+  left: 1.8rem;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.theme-switcher-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border, #e5e5ea);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary, #1d1d1f);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.theme-switcher-pill:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-color: #ccc;
+}
+
+.theme-switcher-pill {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 0;
+  color: #000;
+  box-shadow: 2px 2px 0 #000;
+  font-weight: 700;
+}
+.theme-switcher-pill:hover {
+  background: #d946ef;
+  color: #000;
+  box-shadow: 3px 3px 0 #000;
+  transform: translate(-1px, -1px);
+}
+
+.theme-switcher-pill-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.theme-switcher-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--border, #e5e5ea);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  min-width: 140px;
+}
+.theme-switcher-picker {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 0;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.theme-switcher-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary, #1d1d1f);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+.theme-switcher-option {
+  border-radius: 0;
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.05em;
+}
+.theme-switcher-option:hover {
+  background: rgba(0,0,0,0.05);
+}
+.theme-switcher-option:hover {
+  background: #d946ef;
+  color: #000;
+}
+.theme-switcher-option.active {
+  background: rgba(0,0,0,0.06);
+  font-weight: 600;
+}
+.theme-switcher-option.active {
+  background: #000;
+  color: #fff;
+}
+
+.theme-switcher-option-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  line-height: 1;
+}
+
+.theme-switcher-divider {
+  height: 1px;
+  background: var(--kami-border, rgba(0,0,0,0.1));
+  margin: 4px 0;
+}
+
+.theme-dark-toggle {
+  font-size: 11px;
+  opacity: 0.7;
+}
+.theme-dark-toggle.active {
+  opacity: 1;
+}
+
+/* ============================================================
+   Kami shared component skins - bind design tokens to the
+   classes actually used across the site. These rules run for
+   ALL themes (including classic/default) so every page responds.
+   ============================================================ */
+
+/* --- Primary link-button (`bg-gray-900` CTAs) - themed only --- */
+html[data-theme] a[class*="bg-gray-900"] {
+  background-color: var(--kami-cta-bg) !important;
+  color: var(--kami-cta-text) !important;
+  border-color: var(--kami-cta-bg) !important;
+  border-radius: var(--kami-cta-radius) !important;
+  box-shadow: var(--kami-cta-shadow) !important;
+  text-decoration: none !important;
+}
+html[data-theme] a[class*="bg-gray-900"]:hover {
+  background-color: var(--kami-cta-bg-hover) !important;
+  color: var(--kami-cta-text) !important;
+}
+html[data-theme] a[class*="bg-gray-900"] * {
+  color: var(--kami-cta-text) !important;
+}
+
+/* --- Secondary link-button (`border-gray-200` CTAs) - themed only --- */
+html[data-theme] a[class*="border-gray-200"][class*="rounded"] {
+  background-color: var(--kami-cta2-bg) !important;
+  color: var(--kami-cta2-text) !important;
+  border-color: var(--kami-cta2-border) !important;
+  border-radius: var(--kami-cta-radius) !important;
+  text-decoration: none !important;
+}
+html[data-theme] a[class*="border-gray-200"][class*="rounded"]:hover {
+  background-color: var(--kami-cta2-bg-hover) !important;
+  color: var(--kami-cta2-text) !important;
+}
+
+/* --- AppCard tile (.kami-tile) - uses design-language tokens --- */
+.kami-tile {
+  background-color: var(--kami-surface-solid) !important;
+  border: var(--kami-card-border) !important;
+  border-radius: var(--kami-card-radius) !important;
+  box-shadow: var(--kami-card-shadow) !important;
+  transition:
+    background-color var(--kami-motion-base) var(--kami-motion-ease),
+    border-color var(--kami-motion-base) var(--kami-motion-ease),
+    box-shadow var(--kami-motion-base) var(--kami-motion-ease),
+    transform var(--kami-motion-base) var(--kami-motion-ease) !important;
+}
+.kami-tile:hover {
+  box-shadow: var(--kami-card-shadow-hover) !important;
+  transform: var(--kami-card-hover-transform) !important;
+}
+.kami-tile .kami-tile-overlay {
+  background-color: var(--kami-overlay-bg) !important;
+  color: var(--kami-overlay-text) !important;
+  border-radius: var(--kami-card-radius) !important;
+}
+
+/* --- Kami text helpers bound to tokens --- */
+.kami-text       { color: var(--kami-text) !important; }
+.kami-text-muted { color: var(--kami-text-muted) !important; }
+.kami-text-dim   { color: var(--kami-text-dim) !important; }
+.kami-text-error   { color: var(--kami-error, #ef4444) !important; }
+.kami-text-success { color: var(--kami-success, #16a34a) !important; }
+.kami-text-warning { color: var(--kami-warning, #f59e0b) !important; }
+.kami-text-accent  { color: var(--kami-accent, var(--kami-cta-bg)) !important; }
+.kami-text-cta     { color: var(--kami-cta-text) !important; }
+.kami-bg-error     { background-color: var(--kami-error-bg, #fef2f2) !important; }
+.kami-bg-success   { background-color: var(--kami-success-bg, #f0fdf4) !important; }
+.kami-bg-warning   { background-color: var(--kami-warning-bg, #fffbeb) !important; }
+.kami-bg-surface   { background-color: var(--kami-surface) !important; }
+.kami-border-bottom { border-bottom: 1px solid var(--kami-border) !important; }
+.kami-border-top    { border-top:    1px solid var(--kami-border) !important; }
+.kami-border-right  { border-right:  1px solid var(--kami-border) !important; }
+.kami-border-all    { border:        1px solid var(--kami-border) !important; }
+.kami-border-strong-all { border:   1px solid var(--kami-border-strong) !important; }
+.kami-surface { background-color: var(--kami-surface-solid) !important; border-color: var(--kami-border-strong) !important; }
+
+/* --- Kami page text overrides (catch inline hardcoded hex still present) --- */
+html[data-theme] [style*="color: #1d1d1f"],
+html[data-theme] [style*="color:#1d1d1f"],
+html[data-theme] [style*="color: #111827"],
+html[data-theme] [style*="color:#111827"] {
+  color: var(--kami-text) !important;
+}
+html[data-theme] [style*="color: #6b7280"],
+html[data-theme] [style*="color:#6b7280"],
+html[data-theme] [style*="color: #6B7280"] {
+  color: var(--kami-text-muted) !important;
+}
+html[data-theme] [style*="color: #bbb"],
+html[data-theme] [style*="color:#bbb"] {
+  color: var(--kami-text-dim) !important;
+}
+
+/* --- Footer (`.kami-footer`) --- */
+.kami-footer {
+  font-family: var(--kami-font-body, 'DM Sans', sans-serif);
+  font-size: 0.8rem;
+  padding: 3rem 0 2rem;
+  text-align: center;
+  color: var(--kami-footer);
+}
+.kami-footer a {
+  color: var(--kami-footer-link) !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: color 0.2s ease;
+}
+.kami-footer a:hover {
+  color: var(--kami-footer-link-hover) !important;
+  background: transparent !important;
+}
+.kami-footer-aeo {
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  color: var(--kami-text-muted, #4a4a4a);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.kami-footer-nav {
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: var(--kami-text-muted, #4a4a4a);
+  margin-bottom: 0.6rem;
+}
+.kami-footer-credit {
+  font-family: var(--kami-font-body, 'DM Sans', sans-serif);
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+.kami-footer-sep {
+  opacity: 0.4;
+  margin: 0 0.35rem;
+  user-select: none;
+}
+.kami-footer-current {
+  font-weight: 600;
+  color: var(--kami-text);
+}
+.kami-breadcrumb {
+  color: var(--kami-breadcrumb);
+}
+.kami-breadcrumb-fixed {
+  position: fixed;
+  top: 1.2rem;
+  left: 5rem;
+  z-index: 100;
+}
+.kami-breadcrumb a {
+  color: var(--kami-breadcrumb) !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: color 0.2s ease;
+}
+.kami-breadcrumb a:hover {
+  color: var(--kami-breadcrumb-hover) !important;
+  background: transparent !important;
+}
+
+/* ===== Mobile Top Bar ===== */
+.kami-mobile-bar {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .kami-mobile-bar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: var(--kami-surface-solid, #fff);
+    border-bottom: var(--kami-card-border, 1px solid #e5e5ea);
+    z-index: 99;
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  .theme-switcher-container {
+    top: 8px !important;
+    left: 12px !important;
+  }
+
+  .kami-breadcrumb-fixed {
+    top: 15px !important;
+    left: 48px !important;
+  }
+
+  /* Share button into the bar */
+  .kami-share-btn {
+    top: 8px !important;
+    right: 12px !important;
+  }
+
+  /* Push page content below the fixed bar */
+  .kami-scope,
+  .kami-playground {
+    padding-top: 48px;
+  }
+
+  /* Playground pages: bar matches dark bg */
+  body:has(.kami-playground) .kami-mobile-bar {
+    background: rgba(0,0,0,0.85);
+    border-bottom-color: rgba(255,255,255,0.1);
+  }
+
+  /* Per-theme bar backgrounds */
+  .kami-mobile-bar {
+    background: #fff;
+    border-bottom: 2px solid #000;
+    border-radius: 0;
+    backdrop-filter: none;
+  }
+}
+
+/* --- Playground pages: align fixed controls with 44px header bar --- */
+body:has(.kami-playground) .theme-switcher-container {
+  top: 9px;
+}
+body:has(.kami-playground) .kami-share-btn {
+  top: 6px !important;
+}
+
+/* --- Playground pages: breadcrumb & footer always light on dark backgrounds --- */
+.kami-playground .kami-breadcrumb,
+.kami-playground .kami-breadcrumb a {
+  color: rgba(255,255,255,0.5) !important;
+}
+.kami-playground .kami-breadcrumb a:hover {
+  color: rgba(255,255,255,0.85) !important;
+}
+.kami-playground .kami-footer {
+  color: rgba(255,255,255,0.4) !important;
+}
+.kami-playground .kami-footer a {
+  color: rgba(255,255,255,0.5) !important;
+}
+.kami-playground .kami-footer a:hover {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+/* --- Terminal: primary CTA should not inherit the green-text anchor rule --- */
+
+/* --- Overlay CTA pill (e.g. textkit "Open tool") --- */
+/* Kill any theme-anchor underline/background hover and use a distinct affordance. */
+.kami-overlay-btn-primary,
+.kami-overlay-btn-primary * {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  text-shadow: none !important;
+}
+.kami-overlay-btn-primary {
+  transition: transform var(--kami-motion-base) var(--kami-motion-ease),
+              box-shadow var(--kami-motion-base) var(--kami-motion-ease),
+              filter var(--kami-motion-base) var(--kami-motion-ease) !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  border-radius: var(--kami-cta-radius) !important;
+  font-family: var(--kami-font-display) !important;
+}
+.kami-tile:hover .kami-overlay-btn-primary {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  filter: brightness(1.04);
+}
+/* Brutalist overlay CTA - flat white-on-black, magenta slam on tile hover */
+.kami-overlay-btn-primary,
+a.kami-overlay-btn-primary {
+  background: #fff !important;
+  color: #000 !important;
+  text-decoration: none !important;
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.kami-tile:hover .kami-overlay-btn-primary {
+  box-shadow: 4px 4px 0 #d946ef !important;
+  transform: translate(-2px, -2px);
+}
+/* Terminal overlay CTA - bracketed amber */
+/* Editorial overlay CTA - cream on ink, italic */
+/* Zen overlay CTA - thin pill */
+
+/* --- Share button (fixed top-right) - per-theme treatment --- */
+.kami-share-btn {
+  transition:
+    background var(--kami-motion-base) var(--kami-motion-ease),
+    color var(--kami-motion-base) var(--kami-motion-ease),
+    border-color var(--kami-motion-base) var(--kami-motion-ease),
+    box-shadow var(--kami-motion-base) var(--kami-motion-ease),
+    transform var(--kami-motion-base) var(--kami-motion-ease) !important;
+  font-family: var(--kami-font-body) !important;
+}
+.kami-share-btn:hover {
+  background: var(--kami-text) !important;
+  color: var(--kami-surface-solid) !important;
+  border-color: var(--kami-text) !important;
+  transform: translateY(-1px);
+}
+/* Brutalist: sharp, offset-shadow */
+.kami-share-btn {
+  border-radius: 0 !important;
+  border: 2px solid #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.kami-share-btn:hover {
+  background: #d946ef !important;
+  color: #000 !important;
+  box-shadow: 3px 3px 0 #000 !important;
+  transform: translate(-1px, -1px);
+}
+/* Editorial: hairline cream pill, sienna on hover */
+/* Terminal: bracketed dashed amber */
+/* Zen: thin moss pill */
+
+/* ============================================================
+   Kami button utilities
+   -----------------------------------------------------------
+   Used by comparison-table and other tool components.
+   ============================================================ */
+.kami-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--kami-cta-bg);
+  color: var(--kami-cta-text);
+  border-radius: var(--kami-cta-radius);
+  border: none;
+  cursor: pointer;
+  transition: opacity 150ms;
+}
+.kami-btn-primary:hover { opacity: 0.85; }
+
+.kami-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--kami-surface-solid);
+  color: var(--kami-text);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: var(--kami-cta-radius);
+  cursor: pointer;
+  transition: opacity 150ms;
+}
+.kami-btn-secondary:hover { opacity: 0.85; }
+
+/* ============================================================
+   Tool-page panel overrides
+   -----------------------------------------------------------
+   Many tool components use hardcoded Tailwind gray classes
+   (bg-white, border-gray-200, text-gray-900, etc.) instead of
+   theme tokens. When those components render inside .kami-scope,
+   remap the common palette so panels, stat cards, and inputs
+   inherit the active theme without touching each component.
+   ============================================================ */
+
+/* Surface / background */
+html[data-theme] .kami-scope .bg-white,
+html[data-theme] .kami-scope [class*="bg-white/"] {
+  background-color: var(--kami-surface-solid) !important;
+  background: var(--kami-surface-solid) !important;
+}
+html[data-theme] .kami-scope .bg-gray-50,
+html[data-theme] .kami-scope [class*="bg-gray-50/"] {
+  background-color: var(--kami-surface-solid) !important;
+}
+html[data-theme] .kami-scope .bg-gray-100 {
+  background-color: color-mix(in srgb, var(--kami-text) 8%, transparent) !important;
+}
+
+/* Borders */
+html[data-theme] .kami-scope .border-gray-100,
+html[data-theme] .kami-scope .border-gray-200,
+html[data-theme] .kami-scope .border-gray-300 {
+  border-color: var(--kami-border-strong) !important;
+}
+
+/* Text */
+html[data-theme] .kami-scope .text-gray-900,
+html[data-theme] .kami-scope .text-gray-800 {
+  color: var(--kami-text) !important;
+}
+html[data-theme] .kami-scope .text-gray-700,
+html[data-theme] .kami-scope .text-gray-600,
+html[data-theme] .kami-scope .text-gray-500 {
+  color: var(--kami-text-muted) !important;
+}
+html[data-theme] .kami-scope .text-gray-400,
+html[data-theme] .kami-scope .text-gray-300 {
+  color: var(--kami-text-dim) !important;
+}
+html[data-theme] .kami-scope .placeholder\:text-gray-400::placeholder,
+html[data-theme] .kami-scope .placeholder\:text-gray-500::placeholder {
+  color: var(--kami-text-dim) !important;
+}
+
+/* Intermediate background */
+html[data-theme] .kami-scope .bg-gray-200 {
+  background-color: color-mix(in srgb, var(--kami-text) 12%, transparent) !important;
+}
+
+/* Hover backgrounds */
+html[data-theme] .kami-scope .hover\:bg-gray-50:hover {
+  background-color: var(--kami-surface-solid) !important;
+}
+html[data-theme] .kami-scope .hover\:bg-gray-100:hover {
+  background-color: color-mix(in srgb, var(--kami-text) 8%, transparent) !important;
+}
+html[data-theme] .kami-scope .hover\:bg-gray-200:hover {
+  background-color: color-mix(in srgb, var(--kami-text) 12%, transparent) !important;
+}
+
+/* Hover borders */
+html[data-theme] .kami-scope .hover\:border-gray-300:hover,
+html[data-theme] .kami-scope .hover\:border-gray-400:hover {
+  border-color: var(--kami-border-strong) !important;
+}
+
+/* Hover text colors */
+html[data-theme] .kami-scope .hover\:text-gray-600:hover,
+html[data-theme] .kami-scope .hover\:text-gray-700:hover {
+  color: var(--kami-text-muted) !important;
+}
+html[data-theme] .kami-scope .hover\:text-gray-900:hover {
+  color: var(--kami-text) !important;
+}
+
+/* Focus rings */
+html[data-theme] .kami-scope .ring-gray-200,
+html[data-theme] .kami-scope .focus\:ring-gray-200:focus {
+  --tw-ring-color: var(--kami-border-strong) !important;
+}
+
+/* Focus border */
+html[data-theme] .kami-scope .focus\:border-gray-300:focus {
+  border-color: var(--kami-border-strong) !important;
+}
+
+/* Dividers */
+html[data-theme] .kami-scope .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+html[data-theme] .kami-scope .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--kami-border-strong) !important;
+}
+
+/* --- Theme-specific overrides for intermediate classes --- */
+
+/* Brutalist */
+.kami-scope .bg-gray-200 {
+  background-color: rgba(0, 0, 0, 0.10) !important;
+}
+.kami-scope .hover\:bg-gray-50:hover,
+.kami-scope .hover\:bg-gray-100:hover,
+.kami-scope .hover\:bg-gray-200:hover {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
+.kami-scope .hover\:border-gray-300:hover,
+.kami-scope .hover\:border-gray-400:hover {
+  border-color: #000 !important;
+}
+.kami-scope .ring-gray-200,
+.kami-scope .focus\:ring-gray-200:focus {
+  --tw-ring-color: #000 !important;
+}
+.kami-scope .focus\:border-gray-300:focus {
+  border-color: #000 !important;
+}
+.kami-scope .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+.kami-scope .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #000 !important;
+}
+
+/* Terminal */
+
+/* Editorial */
+
+/* Zen */
+
+/* Panel radius - only on elements that are also surfaces, so pills
+   and status bars keep their own shape. */
+html[data-theme] .kami-scope .bg-white.rounded-lg,
+html[data-theme] .kami-scope .bg-white.rounded-xl,
+html[data-theme] .kami-scope .bg-white.rounded-2xl,
+html[data-theme] .kami-scope .bg-gray-50.rounded-lg,
+html[data-theme] .kami-scope .bg-gray-50.rounded-xl,
+html[data-theme] .kami-scope .bg-gray-50.rounded-2xl {
+  border-radius: var(--kami-card-radius) !important;
+}
+
+/* Shadow remap */
+html[data-theme] .kami-scope .shadow-sm,
+html[data-theme] .kami-scope .shadow {
+  box-shadow: var(--kami-card-shadow) !important;
+}
+html[data-theme] .kami-scope .shadow-md,
+html[data-theme] .kami-scope .shadow-lg {
+  box-shadow: var(--kami-card-shadow-hover) !important;
+}
+
+/* Brutalist: force panels to use brutalist card construction */
+.kami-scope .bg-white.rounded-lg,
+.kami-scope .bg-white.rounded-xl,
+.kami-scope .bg-white.rounded-2xl,
+.kami-scope .bg-gray-50.rounded-lg,
+.kami-scope .bg-gray-50.rounded-xl,
+.kami-scope .bg-gray-50.rounded-2xl {
+  border: 2px solid #000 !important;
+  box-shadow: 4px 4px 0 #000 !important;
+}
+
+/* Editorial: hairline, no shadow */
+
+/* Terminal: transparent panel on dark bg with dashed phosphor border */
+
+/* Zen: soft wash, no border */
+
+/* Input fields inside tool pages (character-counter goal input, etc.) */
+html[data-theme] .kami-scope input[type="text"],
+html[data-theme] .kami-scope input[type="number"],
+html[data-theme] .kami-scope input[type="search"],
+html[data-theme] .kami-scope input[type="email"],
+html[data-theme] .kami-scope input[type="url"],
+html[data-theme] .kami-scope textarea {
+  background: var(--kami-input-bg) !important;
+  border: var(--kami-input-border) !important;
+  border-radius: var(--kami-input-radius) !important;
+  color: var(--kami-text) !important;
+  caret-color: var(--kami-caret) !important;
+  font-family: var(--kami-font-body) !important;
+}
+html[data-theme] .kami-scope input[type="text"]:focus,
+html[data-theme] .kami-scope input[type="number"]:focus,
+html[data-theme] .kami-scope input[type="search"]:focus,
+html[data-theme] .kami-scope input[type="email"]:focus,
+html[data-theme] .kami-scope input[type="url"]:focus,
+html[data-theme] .kami-scope textarea:focus {
+  outline: none !important;
+  box-shadow: var(--kami-input-focus-ring) !important;
+  border-color: var(--kami-accent) !important;
+}
+
+/* CTA buttons & links inside tool pages - the common pattern
+   is bg-gray-900 text-white. Remap to brand CTA token. */
+html[data-theme] .kami-scope button.bg-gray-900,
+html[data-theme] .kami-scope a.bg-gray-900 {
+  background-color: var(--kami-cta-bg) !important;
+  color: var(--kami-cta-text) !important;
+  border-radius: var(--kami-cta-radius) !important;
+  font-family: var(--kami-font-display) !important;
+}
+html[data-theme] .kami-scope button.bg-gray-900:hover,
+html[data-theme] .kami-scope a.bg-gray-900:hover {
+  background-color: var(--kami-cta-bg-hover) !important;
+}
+.kami-scope button.bg-gray-900,
+.kami-scope a.bg-gray-900 {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+  border-radius: 0 !important;
+  box-shadow: 3px 3px 0 #000 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.kami-scope button.bg-gray-900:hover,
+.kami-scope a.bg-gray-900:hover {
+  background: #000 !important;
+  color: #fff !important;
+  box-shadow: 4px 4px 0 #d946ef !important;
+  transform: translate(-1px, -1px);
+}
+/* --- Terminal CTAs --- */
+
+/* --- Editorial CTAs --- */
+
+/* --- Zen CTAs --- */
+
+/* --- Brutalist CTAs (secondary) --- */
+.kami-scope a.bg-white,
+.kami-scope button.bg-white {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  border-radius: 0 !important;
+  box-shadow: 3px 3px 0 #000 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--kami-font-display) !important;
+}
+.kami-scope a.bg-white:hover,
+.kami-scope button.bg-white:hover {
+  background: #fff !important;
+  color: #000 !important;
+  box-shadow: 4px 4px 0 #d946ef !important;
+  transform: translate(-1px, -1px);
+}
+
+/* ============================================================
+   Semantic color callouts (info, warn, success, danger).
+   Light themes keep the original Tailwind hue at low saturation;
+   terminal/brutalist neutralize to surface so contrast holds.
+   ============================================================ */
+
+/* Terminal: dark phosphor green - flatten light callout backgrounds */
+
+/* Brutalist: keep saturated callouts but force sharp edges + flat shadow */
+.kami-scope [class*="bg-amber-"],
+.kami-scope [class*="bg-yellow-"],
+.kami-scope [class*="bg-blue-"],
+.kami-scope [class*="bg-green-"],
+.kami-scope [class*="bg-red-"],
+.kami-scope [class*="bg-indigo-"],
+.kami-scope [class*="bg-purple-"] {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Editorial: soften to parchment tone */
+
+/* Zen: ultra-soft, near-invisible callouts */
+
+/* All themes: darker callout variants (-500/-900/-950) lose their punch
+   in non-default themes; keep them theme-appropriate */
+
+/* ============================================================
+   ToolShell — mobile-first app-shell layout for every tool.
+   ============================================================ */
+.tool-shell {
+  --tool-shell-panel-w: 320px;
+  --tool-shell-header-h: 64px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+/* ── Tool Shell Header — 3-column grid layout ───────────────────────────────
+   grid-template-columns: 1fr auto 1fr
+   Left col (1fr): theme switcher, left-aligned
+   Center col (auto): title + tagline + breadcrumb, centered
+   Right col (1fr): action buttons, right-aligned
+   Both flanking cols are equal 1fr so center is always geometrically centered. */
+.tool-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: var(--tool-shell-header-h);
+  padding: 0 14px;
+  background: color-mix(in srgb, var(--kami-bg) 92%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--kami-border-strong);
+}
+@media (min-width: 768px) {
+  .tool-shell-header { padding: 0 20px; }
+}
+
+/* Left: theme switcher + breadcrumb */
+.tool-shell-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Center: title + tagline — centered in its column */
+.tool-shell-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 0 8px;
+}
+
+/* Right: actions — right-aligned in its column */
+.tool-shell-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+/* Title row: optional accent dot + h1 — centered */
+.tool-shell-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.tool-shell-accent-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+  background-color: var(--tool-accent, transparent);
+}
+.tool-shell-title {
+  font-family: var(--kami-font-display);
+  font-size: 13px;
+  font-weight: var(--kami-heading-weight, 600);
+  letter-spacing: var(--kami-heading-tracking, -0.01em);
+  text-transform: var(--kami-heading-case, none);
+  color: var(--kami-text);
+  line-height: 1.1;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+@media (min-width: 640px) {
+  .tool-shell-title { font-size: 14px; }
+}
+
+/* Tagline: below title, hidden on very small screens */
+.tool-shell-tagline {
+  font-size: 10px;
+  color: var(--kami-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+  margin: 2px 0 0;
+  display: none;
+}
+@media (min-width: 480px) {
+  .tool-shell-tagline { display: block; }
+}
+
+/* Breadcrumb: in left column next to theme switcher */
+.tool-shell-breadcrumb {
+  display: none;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 9px;
+  line-height: 1;
+  color: var(--kami-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0.55;
+  min-width: 0;
+}
+@media (min-width: 480px) {
+  .tool-shell-breadcrumb { display: flex; }
+}
+.tool-shell-breadcrumb a {
+  color: var(--kami-text-dim);
+  text-decoration: none;
+  border-bottom: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.tool-shell-breadcrumb a:hover {
+  color: var(--kami-text-muted);
+  opacity: 1;
+  background: transparent;
+}
+.tool-shell-breadcrumb-sep {
+  margin: 0 3px;
+  opacity: 0.5;
+  flex: 0 0 auto;
+}
+
+/* Inline theme switcher — pill sized to match action buttons */
+.tool-theme-inline {
+  position: relative;
+  flex: 0 0 auto;
+}
+.tool-theme-inline .theme-switcher-pill {
+  width: auto;
+  height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.tool-theme-inline-picker {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 10100;
+}
+
+/* Body grid */
+.tool-shell-body {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 0;
+}
+.tool-shell-body.has-controls {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .tool-shell-body.has-controls {
+    grid-template-columns: 1fr var(--tool-shell-panel-w);
+  }
+  .tool-shell-body.has-controls.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+  .tool-shell-body.sidebar-collapsed .tool-shell-panel {
+    display: none;
+  }
+}
+/* Only visible at desktop — hidden on mobile where bottom sheet handles controls */
+.tool-sidebar-toggle-btn {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .tool-sidebar-toggle-btn { display: flex; }
+}
+
+.tool-shell-canvas {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  padding: 16px;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+  .tool-shell-canvas {
+    padding: 20px 24px 32px;
+  }
+}
+
+/* Side panel: desktop = sticky sidebar, mobile = snapping bottom sheet */
+.tool-shell-panel {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 50;
+  background: var(--kami-surface-solid);
+  border-top: 1px solid var(--kami-border-strong);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+  height: 85dvh;
+  max-height: 85dvh;
+  transform: translateY(85dvh);
+  transition: transform 280ms var(--kami-motion-ease, cubic-bezier(0.2,0,0,1));
+  display: flex;
+  flex-direction: column;
+}
+/* Snap states */
+.tool-shell-panel[data-snap="peek"] { transform: translateY(calc(85dvh - 40dvh)); }
+.tool-shell-panel[data-snap="full"] { transform: translateY(0); }
+.tool-shell-panel[data-snap="closed"] { transform: translateY(85dvh); }
+/* Legacy class fallback */
+.tool-shell-panel.is-open { transform: translateY(0); }
+@media (min-width: 1024px) {
+  .tool-shell-panel {
+    position: sticky;
+    top: var(--tool-shell-header-h);
+    inset: auto;
+    transform: none !important;
+    max-height: calc(100dvh - var(--tool-shell-header-h));
+    border-top: none;
+    border-left: 1px solid var(--kami-border-strong);
+    border-radius: 0;
+    box-shadow: none;
+    background: color-mix(in srgb, var(--kami-bg) 60%, var(--kami-surface-solid));
+    z-index: 5;
+    overflow-y: auto;
+  }
+}
+
+.tool-shell-panel-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--kami-border-strong);
+  border-radius: 999px;
+  margin: 8px auto;
+  flex: 0 0 auto;
+  cursor: grab;
+  touch-action: none;
+  padding: 10px 24px; /* fat hit target */
+  box-sizing: content-box;
+  background-clip: content-box;
+}
+.tool-shell-panel-handle:active { cursor: grabbing; }
+@media (min-width: 1024px) {
+  .tool-shell-panel-handle { display: none; }
+}
+
+/* FAB — controls sheet trigger, mobile only */
+.tool-sheet-fab { display: none; }
+@media (max-width: 768px) {
+  .tool-sheet-fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 16px;
+    bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: var(--kami-accent, #0a0a0a);
+    color: var(--kami-accent-text, #fff);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+    z-index: 48;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  }
+  .tool-sheet-fab.is-active {
+    background: var(--kami-text, #0a0a0a);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .tool-sheet-fab.is-active svg {
+    transform: rotate(90deg);
+    transition: transform 0.18s;
+  }
+}
+
+.tool-shell-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px 12px;
+  border-bottom: 1px solid var(--kami-border-strong);
+  flex: 0 0 auto;
+}
+.tool-shell-panel-inner {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Info drawer (mobile only, full-width) */
+.tool-shell-info {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 60;
+  background: var(--kami-surface-solid);
+  border-top: 1px solid var(--kami-border-strong);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+  transform: translateY(100%);
+  transition: transform 280ms cubic-bezier(0.2,0,0,1);
+  max-height: 80dvh;
+  display: flex;
+  flex-direction: column;
+}
+.tool-shell-info.is-open { transform: translateY(0); }
+
+.tool-shell-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0,0,0,0.35);
+  border: 0;
+  cursor: pointer;
+  animation: kamiFadeIn 200ms ease;
+}
+@keyframes kamiFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (min-width: 1024px) {
+  .tool-shell-backdrop { display: none; }
+}
+
+/* ── Mobile bottom action bar (matches .wa-mode-bottom pattern from wordart) ── */
+/* Hidden on desktop; revealed on mobile above the footer. */
+.tool-mode-bottom { display: none; }
+@media (max-width: 640px) {
+  .tool-mode-bottom {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: env(safe-area-inset-bottom, 0px);
+    height: 44px;
+    display: flex;
+    z-index: 49;
+    background: var(--bar-bg, var(--kami-header-bg, rgba(246,246,244,0.92)));
+    border-top: 1px solid var(--bar-border, var(--kami-border, rgba(0,0,0,0.08)));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  .tool-mode-btn {
+    flex: 1;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    border-right: 1px solid var(--bar-border, var(--kami-border, rgba(0,0,0,0.08)));
+    background: transparent;
+    color: var(--kami-text);
+    font-family: var(--kami-font-body, system-ui, sans-serif);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .tool-mode-btn:last-child { border-right: none; }
+  .tool-mode-btn.is-active {
+    background: var(--kami-accent, #0a0a0a);
+    color: var(--kami-accent-text, #ffffff);
+  }
+  /* Add bottom padding to tool content so it's not hidden behind mode bar */
+  .tool-shell-canvas { padding-bottom: 52px; }
+  /* Panel bottom sheet clears the mode bar */
+  .tool-shell-panel, .tool-shell-info {
+    bottom: calc(44px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ── Material FAB (desktop + mobile, shown only on material theme) ────────── */
+.tool-material-fab {
+  display: none;
+}
+
+.tool-shell-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--kami-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.tool-shell-icon-btn:hover {
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+  color: var(--kami-text);
+}
+
+/* Toolbar action button (used in actions slot) */
+.tool-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kami-text-muted);
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+.tool-action-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+  color: var(--kami-text);
+}
+.tool-action-btn[data-variant="solid"] {
+  background: var(--kami-cta-bg);
+  color: var(--kami-cta-text);
+  border-color: var(--kami-cta-bg);
+}
+.tool-action-btn[data-variant="solid"]:hover:not(:disabled) {
+  background: var(--kami-cta-bg-hover);
+}
+.tool-action-btn[data-variant="outline"] {
+  border-color: var(--kami-border-strong);
+  color: var(--kami-text);
+}
+.tool-action-btn[data-variant="outline"]:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+}
+.tool-action-btn[data-variant="danger"] {
+  color: #dc2626;
+}
+.tool-action-btn[data-variant="danger"]:hover:not(:disabled) {
+  background: rgba(220,38,38,0.08);
+}
+.tool-action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Icon-only variant */
+.tool-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kami-text-muted);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.tool-icon-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+  color: var(--kami-text);
+}
+.tool-icon-btn[data-active="true"] {
+  background: var(--kami-cta-bg);
+  color: var(--kami-cta-text);
+}
+.tool-icon-btn[data-variant="solid"] {
+  background: var(--kami-cta-bg);
+  color: var(--kami-cta-text);
+}
+.tool-icon-btn[data-variant="outline"] {
+  border-color: var(--kami-border-strong);
+}
+.tool-icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Canvas-level toolbar (e.g. for editors with their own button row) */
+.canvas-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  background: var(--kami-surface-solid);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* Control group styling */
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.control-group.is-inline { flex-direction: row; align-items: center; }
+.control-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.control-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--kami-text-muted);
+}
+.control-group-hint {
+  font-size: 11px;
+  color: var(--kami-text-dim);
+}
+.control-group-body { display: flex; flex-direction: column; gap: 8px; }
+
+/* ============================================================
+   Touch-friendly control primitives (Slider, Stepper, Segment, ...)
+   ============================================================ */
+.kc-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--kami-text-muted);
+  letter-spacing: 0.02em;
+}
+.kc-hint {
+  font-size: 11px;
+  color: var(--kami-text-dim);
+  margin-top: 2px;
+  display: block;
+}
+.kc-value {
+  font-family: var(--kami-font-mono);
+  font-size: 12px;
+  color: var(--kami-text);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+}
+
+/* Slider */
+.kc-slider { display: flex; flex-direction: column; gap: 6px; }
+.kc-slider-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.kc-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+  --kc-fill: 50%;
+}
+.kc-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+    var(--kami-cta-bg) 0%, var(--kami-cta-bg) var(--kc-fill),
+    color-mix(in srgb, var(--kami-text) 12%, transparent) var(--kc-fill),
+    color-mix(in srgb, var(--kami-text) 12%, transparent) 100%);
+}
+.kc-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kami-text) 12%, transparent);
+}
+.kc-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--kami-cta-bg);
+}
+.kc-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  border-radius: 999px;
+  background: var(--kami-surface-solid);
+  border: 2px solid var(--kami-cta-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 100ms ease;
+}
+.kc-range::-webkit-slider-thumb:active { transform: scale(1.15); }
+.kc-range::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 999px;
+  background: var(--kami-surface-solid);
+  border: 2px solid var(--kami-cta-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+/* Number stepper */
+.kc-stepper-wrap { display: flex; flex-direction: column; gap: 6px; }
+.kc-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--kami-surface-solid);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: 10px;
+  overflow: hidden;
+  height: 40px;
+}
+.kc-stepper-btn {
+  width: 40px;
+  background: transparent;
+  border: 0;
+  color: var(--kami-text);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.kc-stepper-btn:active { background: color-mix(in srgb, var(--kami-text) 10%, transparent); }
+.kc-stepper-input {
+  width: 70px;
+  border: 0;
+  border-left: 1px solid var(--kami-border-strong);
+  border-right: 1px solid var(--kami-border-strong);
+  text-align: center;
+  background: transparent;
+  color: var(--kami-text);
+  font-size: 14px;
+  font-family: var(--kami-font-mono);
+  outline: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.kc-stepper-input::-webkit-outer-spin-button,
+.kc-stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.kc-stepper-unit {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--kami-text-dim);
+  border-right: 1px solid var(--kami-border-strong);
+}
+
+/* Segment */
+.kc-segment-wrap { display: flex; flex-direction: column; gap: 6px; }
+.kc-segment {
+  display: inline-flex;
+  align-items: stretch;
+  padding: 4px;
+  gap: 2px;
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+  border-radius: 10px;
+  border: 1px solid var(--kami-border-strong);
+}
+.kc-segment.is-full { display: flex; width: 100%; }
+.kc-segment-btn {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--kami-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+  white-space: nowrap;
+}
+.kc-segment.is-sm .kc-segment-btn { min-height: 44px; font-size: 12px; padding: 0 10px; }
+.kc-segment-btn[data-active="true"] {
+  background: var(--kami-surface-solid);
+  color: var(--kami-text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Toggle */
+.kc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.kc-toggle-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.kc-toggle-track {
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 26px;
+  padding: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kami-text) 18%, transparent);
+  transition: background 180ms ease;
+  flex: 0 0 auto;
+}
+.kc-toggle-track[data-on="true"] { background: var(--kami-cta-bg); }
+.kc-toggle-knob {
+  width: 22px; height: 22px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform 180ms cubic-bezier(0.2,0,0,1);
+}
+.kc-toggle-track[data-on="true"] .kc-toggle-knob { transform: translateX(18px); }
+
+/* Swatch grid */
+.kc-swatch-wrap { display: flex; flex-direction: column; gap: 8px; }
+.kc-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  gap: 6px;
+}
+.kc-swatch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  border: 1px solid var(--kami-border-strong);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.kc-swatch:hover { transform: scale(1.05); }
+.kc-swatch[data-active="true"] {
+  box-shadow: 0 0 0 2px var(--kami-surface-solid), 0 0 0 4px var(--kami-cta-bg);
+}
+.kc-swatch.is-custom {
+  background: repeating-conic-gradient(#f3f4f6 0% 25%, #fff 0% 50%) 50% / 12px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.kc-swatch-custom-icon {
+  font-weight: 600;
+  color: var(--kami-text-muted);
+}
+
+/* Select */
+.kc-select-wrap { display: flex; flex-direction: column; gap: 6px; }
+.kc-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 36px 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--kami-border-strong);
+  background: var(--kami-surface-solid)
+    url("data:image/svg+xml,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat right 12px center;
+  color: var(--kami-text);
+  font-size: 14px;
+  cursor: pointer;
+}
+.kc-select:focus { outline: 2px solid var(--kami-cta-bg); outline-offset: 1px; }
+
+/* Action row */
+.kc-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Brutalist theme overrides — keep sharp edges and offset shadows */
+.tool-shell-header { background: #fff; border-bottom: 2px solid #000; }
+.tool-shell-panel { border-radius: 0; border: 2px solid #000; }
+.kc-range::-webkit-slider-thumb { border-radius: 0; }
+.kc-segment,
+.kc-stepper,
+.kc-select { border-radius: 0; border: 2px solid #000; }
+.kc-segment-btn { border-radius: 0; }
+.kc-swatch { border-radius: 0; border: 2px solid #000; }
+.tool-action-btn {
+  border-radius: 0;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  font-family: var(--kami-font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: 3px 3px 0 #000;
+  transition: none;
+}
+.tool-action-btn:hover:not(:disabled) {
+  background: #d946ef;
+  color: #000;
+  box-shadow: 5px 5px 0 #000;
+  transform: translate(-2px, -2px);
+}
+.tool-action-btn[data-variant="solid"] {
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+}
+.tool-action-btn[data-variant="solid"]:hover:not(:disabled) {
+  background: #d946ef;
+  color: #000;
+  box-shadow: 5px 5px 0 #000;
+  transform: translate(-2px, -2px);
+}
+.tool-icon-btn {
+  border-radius: 0;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  box-shadow: 2px 2px 0 #000;
+  transition: none;
+}
+.tool-icon-btn:hover:not(:disabled) {
+  background: #d946ef;
+  color: #000;
+  box-shadow: 3px 3px 0 #000;
+  transform: translate(-1px, -1px);
+}
+.tool-icon-btn[data-active="true"] {
+  background: #000;
+  color: #fff;
+}
+.tool-icon-btn[data-variant="solid"] {
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+}
+
+/* Brutalist kc component overrides */
+.kc-segment-btn[data-active="true"] {
+  background: #000;
+  color: #fff;
+  box-shadow: none;
+}
+
+/* Editorial theme overrides — serif, hairline, slow hover */
+
+/* Editorial disclosure / w-full buttons (were previously in the broad button block) */
+
+
+/* Terminal theme overrides — phosphor amber, dashed, instant */
+
+/* Zen theme overrides — moss, thin pill, slow breath */
+
+
+/* ============================================================
+   Tools hub homepage — wordart/pixart-style compact layout
+   ============================================================ */
+.tools-hub-search-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: 8px;
+  padding-bottom: 12px;
+  background: color-mix(in srgb, var(--kami-bg) 92%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  margin-bottom: 16px;
+}
+.tools-hub-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--kami-surface-solid);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  color: var(--kami-text-muted);
+}
+.tools-hub-search:focus-within {
+  border-color: var(--kami-cta-bg);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kami-cta-bg) 18%, transparent);
+}
+.tools-hub-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--kami-text);
+  font-size: 15px;
+  caret-color: var(--kami-caret);
+}
+.tools-hub-search-input::placeholder { color: var(--kami-text-dim); }
+.tools-hub-search-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+  color: var(--kami-text-muted);
+  border: 0;
+  font-size: 18px;
+  cursor: pointer;
+}
+.tools-hub-search-clear:hover { background: color-mix(in srgb, var(--kami-text) 12%, transparent); }
+.tools-hub-search-kbd {
+  display: none;
+  font-family: var(--kami-font-mono);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--kami-text) 6%, transparent);
+  color: var(--kami-text-dim);
+  border: 1px solid var(--kami-border-strong);
+}
+@media (min-width: 768px) {
+  .tools-hub-search-kbd { display: inline-flex; }
+}
+
+.tools-hub-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 2px 4px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tools-hub-chips::-webkit-scrollbar { display: none; }
+.tools-hub-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--kami-surface-solid);
+  color: var(--kami-text-muted);
+  border: 1px solid var(--kami-border-strong);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+  flex: 0 0 auto;
+}
+.tools-hub-chip:hover { color: var(--kami-text); }
+.tools-hub-chip[data-active="true"] {
+  background: var(--kami-cta-bg);
+  color: var(--kami-cta-text);
+  border-color: var(--kami-cta-bg);
+}
+.tools-hub-chip-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 999px;
+}
+.tools-hub-chip-count {
+  font-size: 11px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.tools-hub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+@media (min-width: 480px) {
+  .tools-hub-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .tools-hub-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1200px) {
+  .tools-hub-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+}
+
+/* Brutalist overrides */
+.tools-hub-search { border-radius: 0; border: 2px solid #000; box-shadow: 4px 4px 0 #000; }
+.tools-hub-chip { border-radius: 0; border: 2px solid #000; }
+
+
+/* Tool pages own their header chrome — hide the global mobile bar. */
+body:has(.tool-shell) .kami-mobile-bar { display: none; }
+/* The ToolShell sticky header sticks at top:0 now that the mobile bar is gone. */
+
+/* On mobile, .kami-scope's 48px padding-top is for the global mobile bar.
+   Tool pages use the ToolShell sticky header instead — reset to 0. */
+@media (max-width: 639px) {
+  .kami-scope:has(.tool-shell) {
+    padding-top: 0;
+  }
+}
+
+
+/* On tool pages: share + theme switcher live inside the tool-shell header.
+   Hide the global floating versions. */
+body:has(.tool-shell) .kami-share-btn { display: none !important; }
+body:has(.tool-shell) .theme-switcher-container { display: none !important; }
+
+/* ── Tool splash / help overlay (matches .wa-splash pattern from wordart) ── */
+.tool-splash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.86);
+  color: #fff;
+  font-family: var(--kami-font-body, system-ui, sans-serif);
+  z-index: 1000;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  cursor: pointer;
+}
+.tool-splash-inner {
+  max-width: 580px;
+  padding: 40px;
+  text-align: center;
+}
+.tool-splash-title {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.tool-splash-tag {
+  font-size: 13px;
+  opacity: 0.6;
+  margin-bottom: 36px;
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  letter-spacing: 0.02em;
+}
+.tool-splash-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 24px;
+  text-align: left;
+  margin-bottom: 36px;
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.tool-splash-grid > span:nth-child(odd)  { justify-self: end; opacity: 0.9; }
+.tool-splash-grid > span:nth-child(even) { opacity: 0.7; }
+.tool-splash-grid kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  margin: 0 1px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 3px;
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  min-width: 18px;
+  text-align: center;
+}
+.tool-splash-tap {
+  font-size: 10px;
+  opacity: 0.45;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+}
+@media (max-width: 640px) {
+  .tool-splash-inner { padding: 24px 20px; max-width: 100%; }
+  .tool-splash-title { font-size: 30px; margin-bottom: 6px; }
+  .tool-splash-tag   { font-size: 11px; margin-bottom: 22px; }
+  .tool-splash-grid  {
+    grid-template-columns: 1fr;
+    gap: 14px 0;
+    margin-bottom: 24px;
+    font-size: 11px;
+    text-align: center;
+  }
+  .tool-splash-grid > span:nth-child(odd)  { justify-self: center; }
+  .tool-splash-grid > span:nth-child(even) { margin-top: -8px; }
+}
+.tool-help-btn {
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 28px;
+}
+
+
+/* CopyableValue */
+.kc-copyable {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--kami-surface-solid);
+  border: 1px solid var(--kami-border-strong);
+  min-height: 40px;
+  max-width: 100%;
+}
+.kc-copyable.is-full { display: flex; width: 100%; }
+.kc-copyable-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--kami-text-muted);
+  flex: 0 0 auto;
+}
+.kc-copyable-value {
+  font-size: 13px;
+  color: var(--kami-text);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kc-copyable-value.is-mono {
+  font-family: var(--kami-font-mono);
+}
+.kc-copyable-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: 0;
+  color: var(--kami-text-muted);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.kc-copyable-btn:hover {
+  background: color-mix(in srgb, var(--kami-text) 8%, transparent);
+  color: var(--kami-text);
+}
+
+/* StatCard / StatGrid */
+.kc-stat {
+  position: relative;
+  padding: 14px;
+  background: var(--kami-surface-solid);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+.kc-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--kc-stat-accent, var(--kami-cta-bg));
+  opacity: 0.65;
+}
+.kc-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kami-text-muted);
+}
+.kc-stat-value {
+  font-family: var(--kami-font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--kami-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.kc-stat-sub {
+  font-size: 11px;
+  color: var(--kami-text-dim);
+}
+.kc-stat-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+}
+.kc-stat-grid.is-3 { grid-template-columns: repeat(2, 1fr); }
+.kc-stat-grid.is-4 { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 640px) {
+  .kc-stat-grid.is-3 { grid-template-columns: repeat(3, 1fr); }
+  .kc-stat-grid.is-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+.kc-copyable,
+.kc-stat {
+  border-radius: 0;
+  border: 2px solid #000;
+}
+
+/* ============================================================
+   Touch / mobile — form factor parity
+   Strategy: every interactive element >= 44px touch target,
+   keyboard-only affordances hidden on narrow screens,
+   bottom sheet handles swipe-friendly dismiss.
+   Mirrors the wordart chrome.css mobile section.
+   ============================================================ */
+
+@media (max-width: 767px) {
+  /* Hide keyboard-shortcut help button — no physical keyboard on phones */
+  .tool-help-btn { display: none; }
+
+  /* Theme pill in header: ensure 44px touch area */
+  .tool-theme-inline .theme-switcher-pill {
+    min-width: 44px;
+    height: 44px;
+    padding: 0 12px;
+  }
+
+  /* Action/icon buttons in header: 44px touch area */
+  .tool-icon-btn,
+  .tool-shell-icon-btn {
+    min-width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  /* Control group touch targets */
+  .kc-segment-btn {
+    min-height: 44px;
+    padding: 0 14px;
+  }
+  .kc-stepper { height: 48px; }
+  .kc-stepper-btn { width: 48px; font-size: 20px; }
+  .kc-stepper-input { width: 80px; font-size: 16px; }
+
+  /* Panel inner: more padding for thumb reach */
+  .tool-shell-panel-inner { padding: 20px 16px; gap: 22px; }
+
+  /* Range slider: fatter thumb for touch */
+  .kc-range::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-top: -11px;
+  }
+
+  /* Ensure select uses native picker (best touch UX) */
+  .kc-select { font-size: 16px; } /* prevents iOS zoom on focus */
+}
+
+/* Between 640-767px (small tablets, large phones landscape) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .tool-shell-header { padding: 0 16px; }
+}
+
+/* Prevent iOS double-tap zoom on buttons */
+.tool-action-btn,
+.tool-icon-btn,
+.kc-segment-btn,
+.kc-stepper-btn,
+.tool-shell-icon-btn {
+  touch-action: manipulation;
+}
+
+/* Canvas inside tools: allow touch pan and zoom (don't block scroll) */
+.tool-shell-canvas { touch-action: pan-y; }
+
+/* On touch devices, remove hover-only shadow effects that don't translate */
+@media (hover: none) {
+  .kami-tile:hover { transform: none; }
+  .tool-action-btn:hover:not(:disabled) {
+    transform: none;
+    box-shadow: 3px 3px 0 #000;
+  }
+  .tool-icon-btn:hover:not(:disabled) {
+    transform: none;
+    box-shadow: 2px 2px 0 #000;
+  }
+}
+
+
+/* ============================================================
+   GLASS — "Liquid Light"
+   School: Apple HIG 2024 / iOS 26 / visionOS / WWDC 2025
+   Philosophy: Every surface is a frosted window into a gradient
+   wallpaper behind it. Vibrancy, specular highlights, spring
+   motion, and SF Pro hierarchy. Translucent, layered, alive.
+   ============================================================ */
+
+/* Gradient wallpaper — fixed to viewport so surfaces "reveal" it */
+
+
+/* Glass headings */
+
+/* Glass text links */
+
+/* Glass inputs */
+
+/* Glass tool-shell header — frosted bar */
+
+/* Glass panel — sidebar frosted */
+
+/* Glass action buttons — iOS pill buttons */
+
+/* Glass icon buttons — circular capsules */
+
+/* Glass segment control — iOS style pill */
+
+/* Glass kami-tile (homepage tiles) */
+
+/* Glass kc-select / stepper */
+
+/* Glass theme-switcher pill */
+
+/* ============================================================
+   MATERIAL — "Dynamic Elevation"
+   School: Google Material Design 3 (Material You), 2022–2025
+   Philosophy: Dynamic color derived from a seed (#6750A4 purple).
+   Tonal surfaces elevate via overlay. Type scale: Google Sans +
+   Roboto Flex. Emphasized decelerate motion. Ripple-ready.
+   ============================================================ */
+
+
+/* M3 headings */
+
+/* M3 text links */
+
+/* M3 inputs — filled variant with bottom border */
+
+/* M3 tool-shell header — surface level 2 (surface + 8% primary overlay) */
+
+/* M3 panel — surface level 1 */
+
+/* M3 action buttons — filled / tonal / text button variants */
+
+/* M3 icon buttons */
+
+/* M3 segment control */
+
+/* M3 kami-tile */
+
+/* M3 theme-switcher pill */
+
+/* M3 select / kc-select */
+
+/* ============================================================
+   METRO — "Fluent Grid"
+   School: Microsoft Metro 2010 / Fluent Design 2 (2025)
+   Philosophy: Typography IS the design. Flat color fields,
+   Segoe UI Variable, dense 4px grid, Mica/Acrylic materials.
+   Motion: brisk 83ms / 167ms / 250ms durations. Windows accent
+   blue #0078D4 signals every interactive element.
+   ============================================================ */
+
+/* Metro/Zune body — pure white like the Zune HD and Windows Phone 7/8 */
+
+/* Metro headings */
+
+/* Metro text links */
+
+/* Metro inputs */
+
+/* Metro tool-shell header — Acrylic (luminous mica surface) */
+/* Metro header style — see later rule for the definitive override */
+
+/* Metro panel — no background, no shadow, flat border */
+
+/* Metro action buttons — Fluent command button */
+
+/* Metro icon buttons */
+
+/* Metro segment control — pivot-style */
+
+/* Metro kami-tile */
+
+/* Metro kc-select / stepper */
+
+/* Metro theme-switcher pill */
+
+
+/* ============================================================
+   STRUCTURAL LAYOUT OVERRIDES — Phase 2
+   Beyond token remapping: geometry, density, type scale,
+   component shapes, interaction patterns, range inputs.
+   These are the changes that make each theme FEEL like its
+   design language, not just look like it.
+   ============================================================ */
+
+/* ────────────────────────────────────────────────────────────
+   GLASS: Floating Frosted Spatial UI
+   iOS 26 / visionOS: surfaces float above the wallpaper,
+   hierarchy through depth not borders.
+   ──────────────────────────────────────────────────────────── */
+
+/* Floating header — the single biggest layout departure */
+
+
+/* Floating panel — detached sheet on desktop */
+
+
+/* iOS HIG type scale */
+
+
+/* Glass tiles — spacious, large-format iOS-style cards */
+
+
+/* Glass range inputs — iOS continuous slider */
+
+/* Glass spring easing on all interactive elements */
+
+/* Glass accent dot — blue */
+
+/* ────────────────────────────────────────────────────────────
+   MATERIAL: M3 Elevated Information Architecture
+   Material Design 3: tonal color system, type scale,
+   emphasized decelerate motion, state layers.
+   ──────────────────────────────────────────────────────────── */
+
+
+
+/* M3 type scale */
+
+
+/* M3 dense 4-col tile grid */
+
+
+/* M3 range inputs — continuous slider, 4dp track */
+
+/* M3 state layer ripple */
+
+/* M3 panel: navigation drawer proportions */
+
+/* M3 accent dot — purple */
+
+/* ────────────────────────────────────────────────────────────
+   METRO: Fluent 2 Dense Command Surface
+   Microsoft Fluent Design 2: 4px grid, Mica/Acrylic,
+   compact command bar, typographic hierarchy.
+   ──────────────────────────────────────────────────────────── */
+
+
+
+/* Metro: title and tagline hidden in header — shown as panoramic large-title block instead */
+
+/* Dense 4-col Metro grid */
+
+
+/* Acrylic panel */
+
+/* Metro range inputs — flat 2px track, square accent thumb */
+
+/* Metro compact control groups — 4px grid rhythm */
+
+/* Metro accent dot — Windows blue */
+
+/* ── tools-hub-grid density overrides per design language ─── */
+/* Glass: spacious 2-col wide-format cards */
+
+
+
+/* Material: enforce 4-col from 900px with 12px gap */
+
+
+/* Metro: 4-col from 900px with 8px gap */
+
+
+/* ── Glass: Large Title (iOS HIG) ─────────────────────────── */
+.tool-shell-large-title {
+  display: none;
+}
+
+/* ── Metro: Zune/WP7-8 panoramic large title ──────────────── */
+/* On mobile clip the panoramic overflow */
+
+
+/* ── Material: Navigation Rail ─────────────────────────────── */
+.tool-shell-nav-rail {
+  display: none;
+}
+
+
+/* ── Metro: AppBarButton pattern — icon + label stacked ────── */
+.tool-action-btn-label {
+  display: none;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* ── Per-theme toast positioning and style ─────────────────── */
+/* Glass: frosted pill, bottom center, spring slide-up */
+
+/* Material: Snackbar — bottom left, dark surface, M3 */
+
+/* Metro: Info bar — top below command bar, light surface */
+
+/* ── Per-theme checkbox redesign ──────────────────────────── */
+
+/* Glass: blue rounded checkbox with spring */
+
+/* Material: M3 checkbox */
+
+/* Metro: Fluent checkbox */
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHASE 5 — Homepage hero section per-theme
+   Target: .tools-hub > main > div.mb-5 (the h1 + p block)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Glass hero */
+
+/* Material hero */
+
+/* Metro hero */
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHASE 3 — Per-theme tool canvas layout
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Glass canvas: generous max-width, centered, spacious */
+
+
+/* Material canvas: full-width, M3 standard padding */
+
+
+/* Metro canvas: dense, compact padding on 4px grid */
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHASE 3 — Per-theme control group density
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Glass: spacious, iOS-style grouped controls */
+
+/* Material: M3 list-item style control groups */
+
+/* Metro: compact 4px-grid control groups */
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHASE 3 — Per-theme file drop zone (.kami-file-drop)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Glass: frosted card with blue dashed border */
+
+/* Material: M3 dashed outlined container */
+
+/* Metro: flat white with Fluent dashed border */
+
+/* ============================================================
+   PER-COMPONENT PATTERN OVERRIDES — ALL TOOLS
+   Covers every UI pattern across 55+ tools. These rules ensure
+   each tool is genuinely redesigned per design language, not
+   just token-swapped.
+   ============================================================ */
+
+/* ──────────────────────────────────────────────────────────
+   CODE / MONO OUTPUT BLOCKS
+   Affects: JSON formatter, JWT decoder, hash generator,
+   base64, regex tester, URL encoder, cron builder, etc.
+   ────────────────────────────────────────────────────────── */
+
+/* Glass: frosted mono output */
+
+/* Material: M3 outlined surface for code */
+
+/* Metro: flat outlined code */
+
+/* ──────────────────────────────────────────────────────────
+   PREVIEW / OUTPUT CARDS
+   Affects: OG image, QR code, email signature, favicon,
+   screenshot beautifier, link-in-bio, gradient preview
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   COLOR SWATCHES & CHIPS
+   Affects: palette generator, contrast checker,
+   color converter, gradient editor
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   DATA TABLES
+   Affects: comparison table, word frequency, rice calculator,
+   aeo scorer, ab-test calculator
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   LARGE NUMBER / STAT DISPLAYS
+   Affects: meeting cost, year progress, real-age,
+   word frequency, caffeine tracker
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   PROGRESS BARS / METERS
+   Affects: year-progress, caffeine, passage-audit,
+   readability-scorer, aeo-readiness-scorer
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   SPLIT PANE / EDITOR LAYOUTS
+   Affects: markdown editor, text diff, find-replace,
+   JSON formatter
+   ────────────────────────────────────────────────────────── */
+
+/* Glass: frosted glass between panes */
+
+/* Material: elevation-0 for editors, tonal divider */
+
+/* Metro: flat editors with 1px border */
+
+/* ──────────────────────────────────────────────────────────
+   BADGES / TAGS / PILLS
+   Affects: aeo-readiness-scorer, readability-scorer,
+   headline-analyzer, schema-generator
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   KEYBOARD SHORTCUTS / KBD ELEMENTS
+   Affects: all tools (shortcuts modal)
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   DIVIDERS / SECTION SEPARATORS
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   VALUE DISPLAY / LABEL PAIRS
+   Affects: all form-heavy tools (meeting cost, caffeine,
+   rice calculator, real-age, etc.)
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   COLOR INPUT (color picker swatch)
+   Affects: all tools with color pickers
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   SCROLL CONTAINERS / OVERFLOW PANELS
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   TOOL PANEL INNER SECTIONS (panel header title, panel body)
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   COPY BUTTON / ACTION INLINE BUTTONS
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   SELECT / DROPDOWN ARROW STYLING
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   MARKDOWN PREVIEW CONTENT — reset M3 display scale
+   .preview-content headings use em-based relative sizing;
+   the M3 clamp() override would dwarf them. Reset to em here.
+   ────────────────────────────────────────────────────────── */
+
+/* ──────────────────────────────────────────────────────────
+   THEME TRANSITION ANIMATIONS
+   Smooth 300ms transitions when switching themes via the
+   theme switcher pill. Applied globally on html element.
+   ────────────────────────────────────────────────────────── */
+html {
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
+}
+*, *::before, *::after {
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+/* Exclude transitions on elements where animation is already defined or unwanted */
+input[type="range"],
+input[type="range"]::-webkit-slider-thumb,
+canvas,
+video,
+img {
+  transition: none !important;
+}
+
+/* ──────────────────────────────────────────────────────────
+   MOBILE BOTTOM SHEET — per design language
+   Applied when .tool-shell-panel.is-open on mobile (<1024px)
+   ────────────────────────────────────────────────────────── */
+
+/* Glass: iOS sheet — frosted, spring easing, large top radius */
+
+
+/* Material: nav drawer — tonal surface, M3 shadow, decelerate easing */
+
+
+/* Metro: flyout — Acrylic, flat top, brisk easing */
+
+
+/* ──────────────────────────────────────────────────────────
+   TAILWIND LARGE DISPLAY UTILITIES — per design language
+   Tailwind classes used in tool canvas displays (stat numbers,
+   cost displays, scores, etc.) need per-theme font treatment.
+   ────────────────────────────────────────────────────────── */
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   CARD / PANEL SURFACE CLASSES — per design language
+   Most tools use cardStyle inline or shared surface classes.
+   Target rounded card containers at the .p-4, .p-6 level
+   combined with Tailwind border utilities.
+   ────────────────────────────────────────────────────────── */
+
+/* Card/panel containers only — exclude buttons/links to prevent text invisibility.
+   Use padding+border combos which are more specific to card containers. */
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 1: NAVIGATION ARCHITECTURE — JSX-level structural components
+   Metro Pivot · Material Ripple · Glass Bottom Tab Bar
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Material M3 Ripple ──────────────────────────────────────────────────── */
+
+@keyframes md-ripple-expand {
+  from { transform: translate(-50%,-50%) scale(0); opacity: 0.18; }
+  to   { transform: translate(-50%,-50%) scale(1); opacity: 0; }
+}
+
+.md-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  background: currentColor;
+  opacity: 0.18;
+  pointer-events: none;
+  animation: md-ripple-expand 500ms cubic-bezier(0.05,0.7,0.1,1.0) forwards;
+}
+
+/* Ensure ripple container has overflow:hidden (set via JS too, belt+suspenders) */
+
+/* ── Metro Pivot control ─────────────────────────────────────────────────── */
+
+/* Hidden unless metro theme is active */
+.tool-shell .metro-pivot { display: none; }
+
+.metro-pivot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  padding: 0 20px;
+  border-bottom: 1px solid #d1d1d1;
+  background: rgba(249,249,249,0.96);
+  backdrop-filter: saturate(120%) blur(40px);
+  -webkit-backdrop-filter: saturate(120%) blur(40px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.metro-pivot::-webkit-scrollbar { display: none; }
+
+.metro-pivot-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px 10px;
+  font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: #484644;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 83ms, border-color 83ms;
+  user-select: none;
+}
+.metro-pivot-item:hover {
+  color: #201f1e;
+}
+.metro-pivot-item.is-active {
+  color: #201f1e;
+  font-weight: 600;
+  border-bottom-color: #0078d4;
+}
+
+/* Metro about pane: full-width content area replacing canvas */
+.metro-about-pane {
+  padding: 24px 32px !important;
+  background: #ffffff !important;
+}
+
+/* Metro command bar: show labels on action buttons in header */
+
+/* Metro header: minimal breadcrumb-only bar — title lives in the panoramic large-title block */
+
+/* Metro breadcrumb: › separator */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 1b: HUB PAGE STRUCTURAL LAYOUTS per design language
+   Glass hero · Material app bar · Metro pivot header
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Winamp-skin: all three themed headers always in DOM; CSS shows one per theme ── */
+.hub-glass-hero    { display: none; }
+.hub-material-appbar { display: none; }
+.hub-metro-header  { display: none; }
+
+
+/* Default heading: hidden when a themed header takes over */
+
+/* Default search wrap: glass/metro have search in their header; material hides only the search input */
+
+/* ── Glass: full-bleed gradient hero with centered frosted search ── */
+
+.hub-glass-hero {
+  position: relative;
+  width: 100%;
+  padding: 80px 24px 56px;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #dce9ff 0%, #f0e8ff 45%, #d9f5e0 100%);
+  border-bottom: 0.5px solid rgba(255,255,255,0.50);
+}
+
+.hub-glass-hero-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hub-glass-hero-eyebrow {
+  font-family: -apple-system, "SF Pro Text", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(60,60,67,0.50);
+  margin: 0;
+}
+
+.hub-glass-hero-title {
+  font-family: -apple-system, "SF Pro Display", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: clamp(40px, 8vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #1d1d1f;
+  margin: 4px 0 8px;
+}
+
+.hub-glass-hero-sub {
+  font-family: -apple-system, "SF Pro Text", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 15px;
+  color: rgba(60,60,67,0.55);
+  margin: 0 0 24px;
+}
+
+.hub-glass-hero-search {
+  width: 100%;
+  max-width: 540px;
+}
+
+.hub-glass-hero-search .tools-hub-search {
+  background: rgba(255,255,255,0.75) !important;
+  border: 1px solid rgba(255,255,255,0.60) !important;
+  border-radius: 14px !important;
+  height: 50px !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.90) !important;
+  font-family: -apple-system, "SF Pro Text", BlinkMacSystemFont, system-ui, sans-serif !important;
+  font-size: 15px !important;
+  transition: border-color 0.25s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.25s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+.hub-glass-hero-search .tools-hub-search:focus-within {
+  border-color: rgba(0,122,255,0.45) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 0 0 3px rgba(0,122,255,0.15),
+              inset 0 0.5px 0 rgba(255,255,255,0.90) !important;
+}
+
+/* Glass hub: chips appear below hero, scrollable strip */
+
+/* Material hub: breadcrumb collides with app-bar label (both at ~19px from top).
+   The app-bar already provides site identity, so hide the floating breadcrumb. */
+
+/* ── Material: top-app-bar–style hub header ── */
+
+.hub-material-appbar {
+  width: 100%;
+  background: color-mix(in srgb, #6750a4 5%, #fffbfe);
+  border-bottom: 1px solid #cac4d0;
+  padding: 0;
+}
+
+.hub-material-appbar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px 12px 72px; /* left: clear fixed theme-switcher (right edge ~61px) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hub-material-appbar-label {
+  font-family: "Google Sans", "Roboto Flex", Roboto, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6750a4;
+  margin: 0 0 2px;
+}
+
+.hub-material-appbar-title {
+  font-family: "Google Sans", "Roboto Flex", Roboto, system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #1c1b1f;
+  margin: 0;
+}
+
+.hub-material-appbar-search {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.hub-material-appbar-search .tools-hub-search {
+  background: color-mix(in srgb, #6750a4 10%, #fffbfe) !important;
+  border: none !important;
+  border-bottom: 2px solid #cac4d0 !important;
+  border-radius: 4px 4px 0 0 !important;
+  height: 48px !important;
+}
+.hub-material-appbar-search .tools-hub-search:focus-within {
+  background: color-mix(in srgb, #6750a4 14%, #fffbfe) !important;
+  border-bottom-color: #6750a4 !important;
+}
+
+/* Material: filter chips below app bar */
+
+/* ── Metro: compact hub header with pivot ── */
+
+.hub-metro-header {
+  width: 100%;
+  background: rgba(243,242,241,0.98);
+  backdrop-filter: saturate(120%) blur(40px);
+  -webkit-backdrop-filter: saturate(120%) blur(40px);
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.hub-metro-header-top {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.hub-metro-title {
+  font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  color: #201f1e;
+  margin: 0;
+  text-transform: lowercase;
+}
+/* specificity 0,0,3,1 beats 0,0,2,2 of the global metro h1 rule */
+
+.hub-metro-search {
+  flex: 1;
+  min-width: 160px;
+  max-width: 320px;
+}
+
+.hub-metro-search .tools-hub-search {
+  background: #ffffff !important;
+  border: 1px solid #8a8a8a !important;
+  border-radius: 2px !important;
+  height: 32px !important;
+  font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif !important;
+  font-size: 13px !important;
+}
+.hub-metro-search .tools-hub-search:focus-within {
+  border-color: #0078d4 !important;
+  box-shadow: 0 0 0 1px #0078d4 !important;
+}
+
+.hub-metro-pivot {
+  padding: 0 24px;
+  background: transparent;
+}
+
+/* Metro hub: no additional chip row (pivot handles navigation) */
+
+/* Metro hub: compact card grid */
+
+/* Material: nav rail active item indicator */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COLLECTION PAGE PER-THEME HEADERS
+   Glass hero · Material header · Metro header
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Hide the default header when glass/material/metro themes are active */
+
+/* ── Glass: accent-tinted gradient hero ── */
+
+.collection-glass-hero {
+  width: 100%;
+  padding: 60px 24px 40px;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 0.5px solid rgba(255,255,255,0.40);
+}
+
+.collection-glass-hero-eyebrow {
+  font-family: -apple-system, "SF Pro Text", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(60,60,67,0.50);
+  margin: 0 0 12px;
+}
+
+.collection-glass-hero-title {
+  font-family: -apple-system, "SF Pro Display", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #1d1d1f;
+  margin: 0 0 12px;
+}
+
+.collection-glass-hero-sub {
+  font-family: -apple-system, "SF Pro Text", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 15px;
+  color: rgba(60,60,67,0.55);
+  max-width: 540px;
+  margin: 0 auto 16px;
+  line-height: 1.55;
+}
+
+.collection-glass-hero-count {
+  display: inline-block;
+  font-family: -apple-system, "SF Pro Text", BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(60,60,67,0.45);
+  background: rgba(255,255,255,0.60);
+  border: 0.5px solid rgba(255,255,255,0.70);
+  border-radius: 20px;
+  padding: 4px 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Material: accent-bordered header ── */
+
+.collection-material-header {
+  width: 100%;
+  background: #fffbfe;
+  padding: 0;
+}
+
+.collection-material-header-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 24px 20px;
+}
+
+.collection-material-header-label {
+  font-family: "Google Sans", "Roboto Flex", Roboto, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6750a4;
+  margin: 0 0 4px;
+}
+
+.collection-material-header-title {
+  font-family: "Google Sans", "Roboto Flex", Roboto, system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #1c1b1f;
+  margin: 0 0 8px;
+}
+
+.collection-material-header-desc {
+  font-family: "Google Sans", Roboto, system-ui, sans-serif;
+  font-size: 14px;
+  color: #49454f;
+  margin: 0 0 12px;
+  max-width: 56ch;
+  line-height: 1.55;
+}
+
+.collection-material-header-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: "Google Sans", Roboto, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6750a4;
+  background: #eaddff;
+  border-radius: 8px;
+  padding: 4px 12px;
+}
+
+/* ── Metro: compact Fluent-style header ── */
+
+.collection-metro-header {
+  width: 100%;
+  background: rgba(243,242,241,0.98);
+  border-bottom: 1px solid #d1d1d1;
+  padding: 20px 24px 16px;
+}
+
+.collection-metro-title {
+  font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: #201f1e;
+  margin: 0 0 6px;
+}
+
+.collection-metro-desc {
+  font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  font-size: 13px;
+  color: #605e5c;
+  margin: 0 0 10px;
+  max-width: 60ch;
+}
+
+.collection-metro-count {
+  display: inline-block;
+  font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0078d4;
+  letter-spacing: 0.01em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* PHASE 2: PER-THEME COMPONENT OVERRIDES                                      */
+/* Covers: tool-shell-panel, tool-shell-canvas, control-group (all parts),     */
+/* tool-action-btn, tool-icon-btn, canvas-toolbar, form elements, kc-range/    */
+/* kc-slider — for glass, material, and metro design languages.                */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/*  GLASS — Apple iOS / macOS style                                             */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Panel – desktop only */
+
+
+/* Canvas */
+
+/* control-group wrapper */
+
+/* control-group header labels */
+
+
+/* control-group body — zero gap, hairline dividers */
+
+
+/* tool-action-btn */
+
+
+
+
+
+
+
+/* tool-icon-btn */
+
+
+
+/* canvas-toolbar */
+
+/* Form elements */
+
+
+/* kc-range slider */
+
+
+
+
+
+
+/* kc-slider wrapper labels */
+
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/*  MATERIAL — Google Material Design 3 style                                  */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Panel – desktop only */
+
+
+/* Canvas */
+
+/* control-group wrapper */
+
+/* control-group header labels */
+
+
+/* control-group body — hairline dividers, M3 row height */
+
+
+
+/* tool-action-btn */
+
+
+
+
+
+
+
+
+/* tool-icon-btn */
+
+
+
+/* canvas-toolbar */
+
+/* Form elements */
+
+
+/* kc-range slider */
+
+
+
+
+
+
+/* kc-slider wrapper labels */
+
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/*  METRO — Microsoft Fluent 2 / Windows style                                 */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Panel – desktop only */
+
+
+/* Canvas */
+
+/* control-group wrapper */
+
+/* control-group header labels */
+
+
+/* control-group body — hairline dividers */
+
+
+/* tool-action-btn */
+
+
+
+
+
+
+
+
+
+
+/* tool-icon-btn */
+
+
+
+
+/* canvas-toolbar */
+
+/* Form elements */
+
+
+
+/* kc-range slider */
+
+
+
+
+
+
+
+/* kc-slider wrapper labels */
+
+
+/* ── end Phase 2 per-theme component overrides ──────────────────────────── */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHASE 3 — Canvas content area per-theme treatment
+   Targets .tool-shell-canvas > div (tool's root element) + large textareas
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── GLASS canvas content ─────────────────────────────────────────────────── */
+
+/* Large standalone textareas in the canvas get full iOS text-view treatment */
+
+/* Code blocks / pre in canvas */
+
+/* Select elements in canvas */
+
+/* Stat / badge chips in canvas */
+
+/* ── MATERIAL canvas content ──────────────────────────────────────────────── */
+
+/* Textareas get M3 filled text field — tonal surface, underline on focus */
+
+/* Code / pre in canvas */
+
+/* Select in canvas */
+
+/* ── METRO canvas content ─────────────────────────────────────────────────── */
+
+/* Textareas — flat Windows ComboBox style */
+
+/* Code / pre in canvas */
+
+/* Select in canvas */
+
+/* ── Toys hub — reuse tools hub search styles for .toys-hub-search ─────── */
+.toys-hub-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 14px;
+  background: var(--kami-surface-solid);
+  border: var(--kami-card-border);
+  border-radius: var(--kami-card-radius);
+  box-shadow: var(--kami-card-shadow);
+  transition: box-shadow 0.18s;
+}
+.toys-hub-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--kami-text);
+  caret-color: var(--kami-caret, currentColor);
+  outline: none;
+  padding: 13px 0;
+}
+.toys-hub-search-input::placeholder {
+  color: var(--kami-text-dim);
+}
+.toys-hub-search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--kami-text-dim);
+  padding: 0 2px;
+}
+
+
+
+/* ── Tool FAQ (AEO / SEO layer) ───────────────────────────────────────────── */
+.tool-faq {
+  padding: 2rem var(--tool-shell-px, 1rem);
+  border-top: 2px solid var(--kami-border, #000);
+  margin-top: 2rem;
+}
+.tool-faq-heading {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--kami-text-muted, #555);
+}
+.tool-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 64ch;
+}
+.tool-faq-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tool-faq-question {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--kami-text, #000);
+}
+.tool-faq-answer {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--kami-text-muted, #555);
+}
