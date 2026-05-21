@@ -4,7 +4,7 @@
   "license": "MIT",
   "last_updated": "2026-05-21",
   "counts": {
-    "toys": 15,
+    "toys": 14,
     "categories": 5
   },
   "categories": [
@@ -13,7 +13,6 @@
       "slug": "audio",
       "toys": [
         "sonicc",
-        "Stem Studio",
         "plink",
         "synth-pad"
       ]
@@ -62,14 +61,6 @@
       "external": false,
       "badge": "music",
       "description": "Keys, drums, pattern sequencer, sampler, and mic recorder. 16 presets, 9 waveforms, 12 FX, stereo knobs, MIDI support, WAV export."
-    },
-    {
-      "slug": "https://apps.iamkesava.com/playground/stem-studio",
-      "title": "Stem Studio",
-      "url": "https://apps.iamkesava.com/playground/stem-studio",
-      "external": true,
-      "badge": "AI audio",
-      "description": "Upload any song and split it into vocals, drums, bass, and other stems with AI. Effects, pitch shift, time stretch, sample maker, and mix export."
     },
     {
       "slug": "plink",

@@ -257,77 +257,11 @@ html[data-theme] body * {
   transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* ============================================================
-   BRUTALIST - "Concrete Press"
-   School: Total Design + Mevis & Van Deursen + Berlin techno flyer
-   Philosophy: monospace shouting on white paper. Magenta is the
-   only non-black/white color. Zero radius. Offset-solid shadows.
-   Hover = slam. Motion = instant.
-   ============================================================ */
-{
-  --kami-bg: #ffffff;
-  --kami-surface: #ffffff;
-  --kami-surface-solid: #ffffff;
-  --kami-border: #000000;
-  --kami-border-strong: #000000;
-  --kami-text: #000000;
-  --kami-text-muted: #000000;
-  --kami-text-dim: #666666;
-  --kami-accent: #d946ef;
-
-  --kami-cta-bg: #000000;
-  --kami-cta-bg-hover: #d946ef;
-  --kami-cta-text: #ffffff;
-  --kami-cta-radius: 0;
-  --kami-cta-shadow: 4px 4px 0 #000;
-
-  --kami-cta2-bg: #ffffff;
-  --kami-cta2-bg-hover: #d946ef;
-  --kami-cta2-text: #000000;
-  --kami-cta2-border: #000000;
-
-  --kami-overlay-bg: #000000;
-  --kami-overlay-text: #ffffff;
-  --kami-overlay-text-dim: #cccccc;
-
-  --kami-breadcrumb: #666666;
-  --kami-breadcrumb-hover: #d946ef;
-
-  --kami-footer: #666666;
-  --kami-footer-link: #000000;
-  --kami-footer-link-hover: #d946ef;
-
-  /* design-language */
-  --kami-font-display: var(--font-mono), ui-monospace, monospace;
-  --kami-font-body: var(--font-mono), ui-monospace, monospace;
-  --kami-heading-case: uppercase;
-  --kami-heading-tracking: 0.08em;
-  --kami-heading-weight: 700;
-  --kami-body-tracking: 0;
-  --kami-body-leading: 1.55;
-
-  --kami-card-radius: 0;
-  --kami-card-border: 2px solid #000;
-  --kami-card-shadow: 4px 4px 0 #000;
-  --kami-card-shadow-hover: 6px 6px 0 #d946ef;
-  --kami-card-hover-transform: translate(-2px, -2px);
-
-  --kami-motion-fast: 40ms;
-  --kami-motion-base: 60ms;
-  --kami-motion-slow: 80ms;
-  --kami-motion-ease: steps(1);
-
-  --kami-divider-style: 2px solid #000;
-
-  --kami-input-bg: #ffffff;
-  --kami-input-border: 2px solid #000;
-  --kami-input-radius: 0;
-  --kami-input-focus-ring: 0 4px 0 #d946ef;
-  --kami-caret: #d946ef;
-}
+/* Skin tokens (8 skins + dark) come from kami-css. The base rules below use
+   var(--kami-*) so every theme reskins; brutalist is kami-css's default. */
 body:not(:has(.kami-playground)) {
-  background-color: #fff;
-  color: #000;
+  background-color: var(--kami-bg);
+  color: var(--kami-text);
   font-family: var(--kami-font-body);
 }
 body:has(.kami-playground) {
@@ -350,18 +284,18 @@ body:has(.kami-playground) {
 .kami-scope p a,
 .kami-scope li a,
 .kami-scope .kami-content a {
-  color: #000;
+  color: var(--kami-text);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 2px;
-  text-decoration-color: #000;
-  transition: color 40ms steps(1), text-decoration-color 40ms steps(1);
+  text-decoration-color: var(--kami-text);
+  transition: color var(--kami-motion-base) var(--kami-motion-ease), text-decoration-color var(--kami-motion-base) var(--kami-motion-ease);
 }
 .kami-scope p a:hover,
 .kami-scope li a:hover,
 .kami-scope .kami-content a:hover {
-  color: #d946ef;
-  text-decoration-color: #d946ef;
+  color: var(--kami-accent);
+  text-decoration-color: var(--kami-accent);
   background: transparent;
 }
 /* Inputs */
@@ -371,18 +305,18 @@ body:has(.kami-playground) {
 .kami-scope input[type="email"],
 .kami-scope textarea,
 .kami-scope select {
-  background: #fff !important;
-  border: 2px solid #000 !important;
-  border-radius: 0 !important;
-  color: #000 !important;
-  caret-color: #d946ef !important;
+  background: var(--kami-input-bg) !important;
+  border: var(--kami-input-border) !important;
+  border-radius: var(--kami-input-radius) !important;
+  color: var(--kami-text) !important;
+  caret-color: var(--kami-caret) !important;
   font-family: var(--kami-font-body) !important;
 }
 .kami-scope input:focus,
 .kami-scope textarea:focus,
 .kami-scope select:focus {
   outline: none !important;
-  box-shadow: 0 4px 0 #d946ef !important;
+  box-shadow: var(--kami-input-focus-ring) !important;
 }
 
 /* ============================================================

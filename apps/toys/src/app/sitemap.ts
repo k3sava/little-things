@@ -4,7 +4,6 @@ import { aggregatedSlugs } from "@/data/toys";
 const BASE = "https://toys.iamkesava.com";
 
 // Hub + every aggregated toy (each lives at /<slug>/, served from public/<slug>/).
-// Stem Studio + Zen Garden remain on apps.iamkesava.com so they don't appear here.
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return [

@@ -25,7 +25,6 @@ export const groups: ToyGroup[] = [
     label: "Audio",
     apps: [
       { slug: "sonicc",     title: "sonicc",      badge: "music",    description: "Keys, drums, pattern sequencer, sampler, and mic recorder. 16 presets, 9 waveforms, 12 FX, stereo knobs, MIDI support, WAV export.", href: "/sonicc/" },
-      { title: "Stem Studio", badge: "AI audio", description: "Upload any song and split it into vocals, drums, bass, and other stems with AI. Effects, pitch shift, time stretch, sample maker, and mix export.", href: "https://apps.iamkesava.com/playground/stem-studio", external: true },
       { slug: "plink",      title: "Plink",       badge: "audio",    description: "Drop marbles and hear them play. A pentatonic plinko board where every bounce is a note. Click pegs to toggle them.", href: "/plink/" },
       { slug: "synth-pad",  title: "Synth Pad",   badge: "audio",    description: "Touch or click and drag to play. An XY pad instrument with pentatonic tuning and warm oscillators.", href: "/synth-pad/" },
     ],

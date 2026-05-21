@@ -2,7 +2,7 @@
 
 > Creative experiments by Kesava. Interactive audio toys, generative visuals, physics simulations, CSS art. All free, all in your browser. Every toy below has its own canonical URL on toys.iamkesava.com; the source code lives in standalone GitHub repos for code-share.
 
-Counts: 15 toys across 5 categories. 13 hosted on toys.iamkesava.com, 2 cross-linked to apps.iamkesava.com.
+Counts: 14 toys across 5 categories. 13 hosted on toys.iamkesava.com, 1 cross-linked to apps.iamkesava.com.
 
 ## Index
 
@@ -21,7 +21,6 @@ Counts: 15 toys across 5 categories. 13 hosted on toys.iamkesava.com, 2 cross-li
 ### Audio
 
 - [sonicc](https://toys.iamkesava.com/sonicc/): Keys, drums, pattern sequencer, sampler, and mic recorder. 16 presets, 9 waveforms, 12 FX, stereo knobs, MIDI support, WAV export. (source: https://github.com/k3sava/sonicc)
-- [Stem Studio](https://apps.iamkesava.com/playground/stem-studio): Upload any song and split it into vocals, drums, bass, and other stems with AI. Effects, pitch shift, time stretch, sample maker, and mix export.
 - [Plink](https://toys.iamkesava.com/plink/): Drop marbles and hear them play. A pentatonic plinko board where every bounce is a note. Click pegs to toggle them. (source: https://github.com/k3sava/plink)
 - [Synth Pad](https://toys.iamkesava.com/synth-pad/): Touch or click and drag to play. An XY pad instrument with pentatonic tuning and warm oscillators. (source: https://github.com/k3sava/synth-pad)
 
