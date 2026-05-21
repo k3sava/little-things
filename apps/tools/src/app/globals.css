@@ -31,92 +31,17 @@
     --destructive: #ef4444;
 
     /* ============================================================
-       Kami design tokens — brutalist is the default skin.
-       A future skin engine will override these via data-skin.
+       Kami design tokens now come from packages/kami-css (imported
+       at top of this file): :root defaults + 8 [data-theme] skins +
+       dark mode. The block formerly here (brutalist-hardcoded
+       --kami-* values) was removed so skin switching actually drives
+       the tool chrome. Only tool-specific tokens kami-css does not
+       define are kept below.
        ============================================================ */
 
-    /* surface & text */
-    --kami-bg: #ffffff;
-    --kami-surface: #ffffff;
-    --kami-surface-solid: #ffffff;
-    --kami-border: #000000;
-    --kami-border-strong: #000000;
-    --kami-text: #000000;
-    --kami-text-muted: #000000;
-    --kami-text-dim: #666666;
-    --kami-accent: #d946ef;
-
-    /* primary CTA (solid link-button) */
-    --kami-cta-bg: #000000;
-    --kami-cta-bg-hover: #d946ef;
-    --kami-cta-text: #ffffff;
-    --kami-cta-radius: 0;
-    --kami-cta-shadow: 4px 4px 0 #000;
-
-    /* secondary CTA (bordered link-button) */
-    --kami-cta2-bg: #ffffff;
-    --kami-cta2-bg-hover: #d946ef;
-    --kami-cta2-text: #000000;
-    --kami-cta2-border: #000000;
-
-    /* tile hover overlay (the card flip) */
-    --kami-overlay-bg: #000000;
-    --kami-overlay-text: #ffffff;
-    --kami-overlay-text-dim: #cccccc;
-
-    /* breadcrumb */
-    --kami-breadcrumb: #666666;
-    --kami-breadcrumb-hover: #d946ef;
-
-    /* footer */
-    --kami-footer: #666666;
-    --kami-footer-link: #000000;
-    --kami-footer-link-hover: #d946ef;
-
-    /* ---- semantic status tokens ---- */
-    --kami-error:          #ef4444;
-    --kami-error-bg:       #fef2f2;
-    --kami-error-border:   #fecaca;
-    --kami-success:        #16a34a;
-    --kami-success-bg:     #f0fdf4;
-    --kami-success-border: #bbf7d0;
-    --kami-warning:        #f59e0b;
-    --kami-warning-bg:     #fffbeb;
-    --kami-warning-border: #fde68a;
-
-    /* ---- design-language tokens ---- */
-    --kami-font-display: var(--font-mono), ui-monospace, monospace;
-    --kami-font-body: var(--font-mono), ui-monospace, monospace;
-    --kami-font-mono: var(--font-mono), ui-monospace, monospace;
-    --kami-heading-case: uppercase;
-    --kami-heading-tracking: 0.08em;
-    --kami-heading-weight: 700;
-    --kami-body-tracking: 0;
-    --kami-body-leading: 1.55;
-
-    /* Card construction */
-    --kami-card-radius: 0;
-    --kami-card-border: 2px solid #000;
-    --kami-card-shadow: 4px 4px 0 #000;
-    --kami-card-shadow-hover: 6px 6px 0 #d946ef;
-    --kami-card-hover-transform: translate(-2px, -2px);
-
-    /* Motion */
-    --kami-motion-fast: 40ms;
-    --kami-motion-base: 60ms;
-    --kami-motion-slow: 80ms;
-    --kami-motion-ease: steps(1);
-
-    /* Divider */
-    --kami-divider-style: 2px solid #000;
+    /* Divider (tool-specific; not part of the shared system) */
+    --kami-divider-style: var(--kami-card-border);
     --kami-divider-marker: "";
-
-    /* Input */
-    --kami-input-bg: #ffffff;
-    --kami-input-border: 2px solid #000;
-    --kami-input-radius: 0;
-    --kami-input-focus-ring: 0 4px 0 #d946ef;
-    --kami-caret: #d946ef;
   }
 
   * {

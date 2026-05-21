@@ -80,4 +80,40 @@
   --kami-input-border:     1px solid var(--kami-border-strong);
   --kami-input-radius:     0.5rem;
   --kami-input-focus:      0 0 0 2px rgba(37,99,235,0.25);
+
+  /* ── Extended token set (consumed by tools + toys chrome) ──
+     Defined as var() aliases so they reskin automatically with the
+     base tokens each skin overrides — no per-skin duplication needed.
+     ─────────────────────────────────────────────────────── */
+
+  /* Name aliases (tools use the short names; hub uses the long ones) */
+  --kami-breadcrumb:        var(--kami-breadcrumb-color);
+  --kami-footer:            var(--kami-footer-text);
+
+  /* Secondary CTA (bordered button) */
+  --kami-cta2-bg:           var(--kami-surface-solid);
+  --kami-cta2-bg-hover:     var(--kami-accent);
+  --kami-cta2-text:         var(--kami-text);
+  --kami-cta2-border:       var(--kami-border-strong);
+
+  /* Tile/card hover overlay (the flip) */
+  --kami-overlay-bg:        var(--kami-text);
+  --kami-overlay-text:      var(--kami-bg);
+  --kami-overlay-text-dim:  var(--kami-text-dim);
+
+  /* Aliases for tool-specific names */
+  --kami-card-hover-transform: var(--kami-card-hover-lift);
+  --kami-input-focus-ring:  var(--kami-input-focus);
+  --kami-caret:             var(--kami-accent);
+
+  /* Semantic status colours — intentionally constant across skins */
+  --kami-error:            #ef4444;
+  --kami-error-bg:         #fef2f2;
+  --kami-error-border:     #fecaca;
+  --kami-success:          #16a34a;
+  --kami-success-bg:       #f0fdf4;
+  --kami-success-border:   #bbf7d0;
+  --kami-warning:          #f59e0b;
+  --kami-warning-bg:       #fffbeb;
+  --kami-warning-border:   #fde68a;
 }
