@@ -1,0 +1,37 @@
+{
+  "$schema": "https://addyosmani.com/agent-permissions/schema.json",
+  "policy_version": "1.0",
+  "site": "https://apps.iamkesava.com",
+  "license": "MIT",
+  "attribution_required": true,
+  "allowed_uses": [
+    "read",
+    "summarize",
+    "cite",
+    "answer-engine-indexing",
+    "training-with-attribution",
+    "embed-with-attribution"
+  ],
+  "disallowed_uses": [
+    "republish-without-attribution"
+  ],
+  "preferred_format": "html",
+  "canonical_index": "https://apps.iamkesava.com/sitemap.xml",
+  "discovery": [
+    "https://apps.iamkesava.com/llms.txt",
+    "https://apps.iamkesava.com/sitemap.xml",
+    "https://apps.iamkesava.com/robots.txt"
+  ],
+  "schema": {
+    "playground_url_template": "https://apps.iamkesava.com/playground/{slug}/"
+  },
+  "related_sites": {
+    "tools": "https://tools.iamkesava.com",
+    "toys": "https://toys.iamkesava.com"
+  },
+  "contact": "https://github.com/k3sava/kami/issues",
+  "counts": {
+    "playground": 3
+  },
+  "last_updated": "2026-05-20"
+}

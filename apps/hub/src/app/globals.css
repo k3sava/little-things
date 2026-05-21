@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Override theme-forced text-transform where literal string fidelity matters
+   (e.g. case-converter result cards that must show the actual converted
+   string). Applied at top of file so themed rules can't reach it; kept
+   !important because the theme rules win on specificity otherwise. */
+.kami-scope button.case-preserve,
+.kami-scope button.case-preserve * {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+@layer base {
+  :root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-foreground: #ffffff;
+    --bg-warm: #f6f6f4;
+    --bg-white: #ffffff;
+    --bg-muted: #f3f4f6;
+    --bg-subtle: #eceef1;
+    --text-primary: #111111;
+    --text-body: #333333;
+    --text-muted: #767676;
+    --border: #d7d7db;
+    --success: #16a34a;
+    --destructive: #ef4444;
+
+    /* ============================================================
+       Kami design tokens - theme-aware via html[data-theme] below.
+       Every page/component reads from these instead of hardcoding.
+       ============================================================ */
+
+    /* surface & text */
+    --kami-bg: #ffffff;
+    --kami-surface: #ffffff;
+    --kami-surface-solid: #ffffff;
+    --kami-border: #000000;
+    --kami-border-strong: #e5e7eb;
+    --kami-text: #000000;
+    --kami-text-muted: #000000;
+    --kami-text-dim: #666666;
+
+    /* primary CTA (solid link-button) */
+    --kami-cta-bg: #000000;
+    --kami-cta-bg-hover: #1f2937;
+    --kami-cta-text: #ffffff;
+    --kami-cta-radius: 0;
+    --kami-cta-shadow: none;
+
+    /* secondary CTA (bordered link-button) */
+    --kami-cta2-bg: #ffffff;
+    --kami-cta2-bg-hover: #f9fafb;
+    --kami-cta2-text: #374151;
+    --kami-cta2-border: #e5e7eb;
+
+    /* tile hover overlay (the card flip) */
+    --kami-overlay-bg: #000000;
+    --kami-overlay-text: #fafafa;
+    --kami-overlay-text-dim: #d1d5db;
+
+    /* breadcrumb */
+    --kami-breadcrumb: #bbbbbb;
+    --kami-breadcrumb-hover: #1d1d1f;
+
+    /* footer */
+    --kami-footer: #bbbbbb;
+    --kami-footer-link: #6b7280;
+    --kami-footer-link-hover: #1d1d1f;
+
+    /* ---- design-language tokens (new) ---- */
+    /* Typography per theme */
+    --kami-font-display: var(--font-mono), ui-monospace, monospace;
+    --kami-font-body: var(--font-mono), ui-monospace, monospace;
+    --kami-font-mono: var(--font-mono), ui-monospace, monospace;
+    --kami-heading-case: uppercase;
+    --kami-heading-tracking: 0.08em;
+    --kami-heading-weight: 600;
+    --kami-body-tracking: 0;
+    --kami-body-leading: 1.6;
+
+    /* Card construction */
+    --kami-card-radius: 0;
+    --kami-card-border: 1px solid var(--kami-border-strong);
+    --kami-card-shadow: 4px 4px 0 #000;
+    --kami-card-shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+    --kami-card-hover-transform: translateY(-2px);
+
+    /* Motion */
+    --kami-motion-fast: 150ms;
+    --kami-motion-base: 220ms;
+    --kami-motion-slow: 400ms;
+    --kami-motion-ease: steps(1);
+
+    /* Divider */
+    --kami-divider-style: 1px solid var(--kami-border-strong);
+    --kami-divider-marker: "";
+
+    /* Input */
+    --kami-input-bg: #ffffff;
+    --kami-input-border: 1px solid var(--kami-border-strong);
+    --kami-input-radius: 0;
+    --kami-input-focus-ring: 0 0 0 2px rgba(37,99,235,0.2);
+    --kami-caret: #2563eb;
+
+    /* Single accent */
+    --kami-accent: #d946ef;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--bg-warm);
+    color: var(--text-primary);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DARK MODE — Phase 8
+   Auto: prefers-color-scheme: dark
+   Manual: html[data-dark] (set by ThemeSwitcher, persisted in kami.dark)
+   Per-theme overrides follow the base block for themes with hardcoded colours.
+   ══════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) { :root { --kami-dark: 1; } }
+html[data-dark] { --kami-dark: 1; }
+
+/* Base dark tokens (default + brutalist + zen pick these up automatically) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kami-bg: #111111;
+    --kami-surface: rgba(28,28,30,0.85);
+    --kami-surface-solid: #1c1c1e;
+    --kami-border: rgba(60,60,67,0.29);
+    --kami-border-strong: #38383a;
+    --kami-text: #f5f5f7;
+    --kami-text-muted: #aeaeb2;
+    --kami-text-dim: #636366;
+    --kami-cta-bg: #f5f5f7;
+    --kami-cta-bg-hover: #e0e0e2;
+    --kami-cta-text: #111111;
+    --kami-cta2-bg: #1c1c1e;
+    --kami-cta2-bg-hover: #2c2c2e;
+    --kami-cta2-text: #aeaeb2;
+    --kami-cta2-border: #38383a;
+    --kami-input-bg: #1c1c1e;
+    --kami-input-border: 1px solid #38383a;
+    --kami-accent: #4db3ff;
+    --kami-card-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    --kami-card-shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+    --bg-warm: #111111;
+    --bg-white: #1c1c1e;
+    --text-primary: #f5f5f7;
+    --text-body: #aeaeb2;
+    --text-muted: #636366;
+    --border: #38383a;
+  }
+}
+
+/* Terminal is already true-black — no dark override needed */
+
+/* Editorial dark — warm dark paper */
+
+/* Glass dark — deep indigo frost */
+
+/* Material dark — MD3 dark scheme */
+
+/* Metro dark — flat dark with bold accent */
+
+/* Hub-page dark overrides — brutalist/editorial/zen body:not(:has(.kami-playground)) */
+
+/* Help Center Article Prose */
+@layer components {
+  .article-content h2 {
+    @apply text-2xl font-semibold mt-10 mb-4 text-[var(--text-primary)] scroll-mt-20;
+  }
+  .article-content h3 {
+    @apply text-xl font-semibold mt-8 mb-3 text-[var(--text-primary)] scroll-mt-20;
+  }
+  .article-content p {
+    @apply text-base leading-relaxed text-[var(--text-body)] mb-4;
+  }
+  .article-content ul, .article-content ol {
+    @apply mb-4 pl-6;
+  }
+  .article-content ul {
+    @apply list-disc;
+  }
+  .article-content ol {
+    @apply list-decimal;
+  }
+  .article-content li {
+    @apply text-base leading-relaxed text-[var(--text-body)] mb-1.5;
+  }
+  .article-content a {
+    @apply text-[var(--primary)] hover:underline;
+  }
+  .article-content strong {
+    @apply font-semibold text-[var(--text-primary)];
+  }
+  .article-content code {
+    @apply rounded bg-[var(--bg-muted)] px-1.5 py-0.5 text-sm font-mono;
+  }
+  .article-content pre {
+    @apply rounded-lg bg-[var(--bg-muted)] p-4 mb-4 overflow-x-auto;
+  }
+  .article-content pre code {
+    @apply bg-transparent p-0;
+  }
+  .article-content table {
+    @apply w-full text-sm mb-4;
+  }
+  .article-content thead {
+    @apply border-b;
+  }
+  .article-content th {
+    @apply px-3 py-2 text-left font-semibold text-[var(--text-primary)];
+  }
+  .article-content td {
+    @apply px-3 py-2 text-[var(--text-body)] border-b;
+  }
+  .article-content hr {
+    @apply my-8 border-t;
+  }
+  .article-content .callout p {
+    @apply mb-0;
+  }
+}
+
+/* ===== Tools Design System ===== */
+
+/* Light theme variables - used by command palette, copy toast */
+.tools-light {
+  --tools-bg: #fafafa;
+  --tools-surface: #ffffff;
+  --tools-surface-alt: #f5f5f5;
+  --tools-surface-hover: #f0f0f0;
+  --tools-border: #e5e5ea;
+  --tools-border-hover: #d4d4d4;
+  --tools-text: #1d1d1f;
+  --tools-text-secondary: #525252;
+  --tools-text-muted: #bbb;
+}
+
+/* Command palette */
+.command-palette {
+  background: var(--tools-surface);
+  border-color: var(--tools-border);
+  color: var(--tools-text);
+  animation: cmdPaletteIn 0.15s ease-out;
+}
+.command-palette input { color: var(--tools-text); }
+.command-palette kbd { border-color: var(--tools-border); color: var(--tools-text-muted); }
+.command-palette-selected { background: var(--tools-surface-hover); }
+
+/* Copy toast */
+.copy-toast {
+  background: var(--tools-surface);
+  border-color: var(--tools-border);
+  color: var(--tools-text);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  animation: toastIn 0.2s ease-out;
+}
+
+/* ===== Animations ===== */
+@keyframes cmdPaletteIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Theme Engine ===== */
+
+/* Theme transition */
+html[data-theme] body,
+html[data-theme] body * {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ============================================================
+   BRUTALIST - "Concrete Press"
+   School: Total Design + Mevis & Van Deursen + Berlin techno flyer
+   Philosophy: monospace shouting on white paper. Magenta is the
+   only non-black/white color. Zero radius. Offset-solid shadows.
+   Hover = slam. Motion = instant.
+   ============================================================ */

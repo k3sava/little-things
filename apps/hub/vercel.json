@@ -1,0 +1,14 @@
+{
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</llms.txt>; rel=\"service-doc\", </.well-known/api-catalog>; rel=\"api-catalog\", </.well-known/agent-permissions.json>; rel=\"describedby\", </sitemap.xml>; rel=\"sitemap\""
+        }
+      ]
+    }
+  ]
+}

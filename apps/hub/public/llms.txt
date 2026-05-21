@@ -1,0 +1,43 @@
+# Kami Studios apps
+
+> AI playground experiments and creative work by Kesava. Free, ad-free, no signup. apps.iamkesava.com is the home for kami's playground; tools and toys live on their own subdomains.
+
+## Index
+
+- [Sitemap](https://apps.iamkesava.com/sitemap.xml): every canonical URL on apps.
+- [Home](https://apps.iamkesava.com/): playground entry, links out to tools + toys.
+- [Tools](https://tools.iamkesava.com/): 60+ free browser tools (separate domain, same builder). Collection pages live there now: https://tools.iamkesava.com/for/<slug>/.
+- [Toys](https://toys.iamkesava.com/): creative experiments (audio, visual, generative).
+
+## Agent discovery
+
+- [apps.json](https://apps.iamkesava.com/apps.json): machine-readable catalog of playground entries.
+- [Agent permissions](https://apps.iamkesava.com/.well-known/agent-permissions.json): use rights, attribution, license.
+- [API catalog](https://apps.iamkesava.com/.well-known/api-catalog): RFC 9727 linkset to discoverable resources.
+- [Agent skills](https://apps.iamkesava.com/.well-known/agent-skills/index.json): Agent Skills Discovery v0.2 index.
+
+## Playground (real iamkesava routes)
+
+- [DemoKit](https://apps.iamkesava.com/playground/demokit/): Capture and play back any web page as a demo. Bookmarklet for authenticated pages, URL fetch for public ones.
+- [Stem Studio](https://apps.iamkesava.com/playground/stem-studio/): Upload any song. AI splits it into vocals, drums, bass, and other stems. Effects, pitch shift, time stretch, sample maker, mix export.
+- [Zen Garden](https://apps.iamkesava.com/playground/zen-garden/): Ink and Void: a CSS Zen Garden submission. 1800 lines of pure CSS, scroll-driven animations, oklch color, @property, subgrid. Zero images, zero JS.
+
+## Tool collections (canonical URLs are on tools.iamkesava.com)
+
+- [Developers](https://tools.iamkesava.com/for/developers/): Encoding, hashing, formatting, and debugging utilities.
+- [Designers](https://tools.iamkesava.com/for/designers/): Color, layout, animation, and visual design tools.
+- [Writers](https://tools.iamkesava.com/for/writers/): Headline testing, readability scoring, and text editing.
+- [PMM](https://tools.iamkesava.com/for/pmm/): Positioning, competitive analysis, and go-to-market tools.
+- [Ads](https://tools.iamkesava.com/for/ads/): Campaign tracking, copy testing, and creative utilities.
+- [PM](https://tools.iamkesava.com/for/pm/): Specs, competitive research, and stakeholder communication.
+- [SEO](https://tools.iamkesava.com/for/seo/): Meta tags, structured data, and content optimization.
+- [Everyone](https://tools.iamkesava.com/for/everyone/): PDF tools, file conversion, and everyday utilities.
+
+## URL templates
+
+- Playground: `https://apps.iamkesava.com/playground/<slug>/`
+- Tool collection: `https://tools.iamkesava.com/for/<slug>/` (off-site, redirected from `https://apps.iamkesava.com/for/<slug>`)
+
+## License
+
+MIT for code; cite content with attribution to Kesava.

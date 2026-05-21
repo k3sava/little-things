@@ -1,0 +1,12 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://apps.iamkesava.com/",
+      "links": [
+        { "rel": "service-doc", "href": "https://apps.iamkesava.com/llms.txt" },
+        { "rel": "describedby", "href": "https://apps.iamkesava.com/.well-known/agent-permissions.json" },
+        { "rel": "sitemap", "href": "https://apps.iamkesava.com/sitemap.xml" }
+      ]
+    }
+  ]
+}
