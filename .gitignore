@@ -13,3 +13,6 @@ dist/
 test/shots/
 
 apps/hub/test/shots/
+
+apps/tools/test/shots/
+apps/tools/out/
