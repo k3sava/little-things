@@ -14,6 +14,7 @@
 // Run via `npm run prebuild` (auto-runs before `next build`).
 
 import { writeFile, mkdir, rm } from "node:fs/promises";
+import { copyFileSync } from "node:fs";
 import { Buffer } from "node:buffer";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -730,6 +731,15 @@ function ogSvg(toy) {
 
 async function main() {
   let ok = 0, fail = 0;
+  // Ship the shared design system into the chrome dir so injected toy HTML
+  // can reference /_chrome/kami.css (8 skins + dark mode).
+  try {
+    copyFileSync(join(ROOT, "node_modules", "kami-css", "kami.css"), join(PUB, "_chrome", "kami.css"));
+    console.log("aggregate-toys: copied kami-css → public/_chrome/kami.css");
+  } catch (e) {
+    console.error("aggregate-toys: FAILED to copy kami.css:", e.message);
+    process.exit(1);
+  }
   for (const toy of TOYS) {
     const dir = join(PUB, toy.slug);
     await rm(dir, { recursive: true, force: true });

@@ -1,50 +1,18 @@
-/* ── kami toy chrome — brutalist edition ── */
+/* ── kami toy chrome ──
+   Tokens, 8 skins, and dark mode now come from the shared design system. */
+@import "./kami.css";
 
+/* Toy-only tokens kami-css doesn't define, aliased to shared tokens so they
+   reskin with every theme. (kami-css owns --kami-bg/surface/border/text/
+   accent/header-*/font-* and the 8 [data-theme] skins + dark mode.) */
 :root {
-  /* surface */
-  --kami-bg: #ffffff;
-  --kami-surface: #f5f5f5;
-  --kami-border: #000000;
-  --kami-border-subtle: #e0e0e0;
-
-  /* type */
-  --kami-text: #000000;
-  --kami-text-muted: #555555;
-  --kami-font-sans: system-ui, sans-serif;
-  --kami-font-mono: ui-monospace, monospace;
-
-  /* accent */
-  --kami-accent: #d946ef;
-  --kami-accent-fg: #ffffff;
-
-  /* chrome dimensions */
-  --kami-header-bg: rgba(255,255,255,0.92);
-  --kami-header-border: #000000;
-  --kami-header-height: 44px;
-
-  /* radius — brutalist = 0 */
-  --kami-radius: 0px;
-
-  /* shadow — hard offset, no blur */
-  --kami-shadow: 2px 2px 0 #000000;
-  --kami-shadow-lg: 4px 4px 0 #000000;
-
-  /* motion — instant */
-  --kami-transition: none;
-}
-
-/* ── dark mode ── */
-html[data-dark] {
-  --kami-bg: #000000;
-  --kami-surface: #111111;
-  --kami-border: #ffffff;
-  --kami-border-subtle: #333333;
-  --kami-text: #ffffff;
-  --kami-text-muted: #aaaaaa;
-  --kami-header-bg: rgba(0,0,0,0.92);
-  --kami-header-border: #ffffff;
-  --kami-shadow: 2px 2px 0 #ffffff;
-  --kami-shadow-lg: 4px 4px 0 #ffffff;
+  --kami-border-subtle: var(--kami-border);
+  --kami-font-sans:     var(--kami-font-body);
+  --kami-accent-fg:     var(--kami-accent-text);
+  --kami-radius:        var(--kami-card-radius);
+  --kami-shadow:        var(--kami-card-shadow);
+  --kami-shadow-lg:     var(--kami-card-shadow-hover);
+  --kami-transition:    var(--kami-motion-base) var(--kami-motion-ease);
 }
 
 /* ── header bar ── */
@@ -149,8 +117,21 @@ html, body {
   background: var(--kami-bg);
   color: var(--kami-text);
   font-family: var(--kami-font-mono);
-  overflow: hidden;
 }
+
+/* Allow page scroll (hub effect grids were clipped by overflow:hidden) while
+   keeping horizontal bleed contained. */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100%;
+}
+
+/* Clear the fixed 44px kami-header. Fixed/absolute full-bleed canvases
+   (position:fixed; inset:0) ignore this padding, so full-canvas toys keep
+   their full-bleed look while flow content (titles, controls) drops below
+   the header instead of bunching under it. */
+body { padding-top: var(--kami-header-height); }
 
 .kami-canvas-body {
   position: fixed;
