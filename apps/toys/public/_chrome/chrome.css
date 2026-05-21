@@ -15,6 +15,30 @@
   --kami-transition:    var(--kami-motion-base) var(--kami-motion-ease);
 }
 
+/* Toys hardcode their own page vars (--bg/--ink/--text/etc., usually dark) and
+   their canvases assume that backdrop. kami chrome was overriding body bg to a
+   light theme color → dark art toys showed a white void (e.g. synth-pad).
+   Alias each toy's page vars to kami tokens so the WHOLE toy follows the active
+   skin (one toggle skins chrome + toy alike). chrome.css loads after each toy's
+   <style>, so these win for non-theme-scoped vars. (Toys already re-map their
+   own --ov-* per [data-theme], which has higher specificity and is preserved.) */
+:root {
+  --bg:     var(--kami-bg);
+  --ink:    var(--kami-text);
+  --text:   var(--kami-text);
+  --fg:     var(--kami-text);
+  --dim:    var(--kami-text-dim);
+  --mid:    var(--kami-text-muted);
+  --muted:  var(--kami-text-muted);
+  --bd:     var(--kami-border);
+  --border: var(--kami-border);
+  --border-strong: var(--kami-border-strong);
+  --accent: var(--kami-accent);
+  --accent-soft: var(--kami-accent-text);
+  --font:   var(--kami-font-body);
+  --canvas-bg: var(--kami-bg);
+}
+
 /* ── header bar ── */
 .kami-header {
   position: fixed;
@@ -314,6 +338,40 @@ body { padding-top: var(--kami-header-height); }
   padding: 0.75rem;
   border-top: 1px solid var(--kami-border-subtle);
   font-family: var(--kami-font-mono);
+}
+
+/* ── aggregator footer for standalone toys ──
+   Was unstyled → rendered in normal flow under the header (footer-at-top bug).
+   Toys are fullscreen fixed canvases, so a flow footer collapses to the top;
+   it must be fixed. Toys' own controls sit center-bottom, so tuck this in the
+   bottom-right corner, compact and subtle. */
+.wa-bottom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 6px 10px;
+  font-family: var(--kami-font-mono);
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--kami-text-muted);
+  background: color-mix(in srgb, var(--kami-header-bg, var(--kami-bg)) 82%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top-left-radius: 6px;
+  max-width: 70vw;
+}
+.wa-bottom .row { white-space: nowrap; }
+.wa-bottom a { color: var(--kami-text-muted); text-decoration: none; }
+.wa-bottom a:hover { color: var(--kami-accent); }
+.wa-bottom .sep { opacity: 0.4; margin: 0 3px; }
+.wa-bottom .current { font-weight: 700; color: var(--kami-text); }
+@media (max-width: 640px) {
+  .wa-bottom { font-size: 9px; padding: 4px 7px; }
 }
 
 /* ── related strip ── */
