@@ -11,3 +11,5 @@ dist/
 
 # visual QC screenshots
 test/shots/
+
+apps/hub/test/shots/
