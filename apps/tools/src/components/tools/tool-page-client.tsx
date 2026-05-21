@@ -7,6 +7,7 @@ import { BreadcrumbContext } from "@/contexts/breadcrumb-context";
 import type { BreadcrumbItem } from "@/contexts/breadcrumb-context";
 import { allTools, getPrimaryCollection } from "@/data/tools";
 import { RelatedTools } from "./related-tools";
+import { Footer } from "@/components/footer";
 
 const RECENT_KEY = "tools-recent";
 const RECENT_MAX = 6;
@@ -56,11 +57,14 @@ export function ToolPageClient({ href: hrefProp, breadcrumbs: breadcrumbsProp, c
     <ShortcutProvider>
       <BreadcrumbContext.Provider value={resolvedBreadcrumbs}>
         {children}
-        {tool && (
-          <div className="px-4 pb-12 lg:px-6">
-            <RelatedTools currentHref={tool.href} />
-          </div>
-        )}
+        <div className="kami-scope kami-text">
+          {tool && (
+            <div className="px-4 pb-12 lg:px-6">
+              <RelatedTools currentHref={tool.href} />
+            </div>
+          )}
+          <Footer />
+        </div>
       </BreadcrumbContext.Provider>
     </ShortcutProvider>
   );

@@ -1,4 +1,3 @@
-import { Footer } from "@/components/footer";
 import { allTools, getPrimaryCollection } from "@/data/tools";
 import { ToolPageClient } from "./tool-page-client";
 import type { BreadcrumbItem } from "@/contexts/breadcrumb-context";
@@ -31,7 +30,6 @@ export function ToolPageWrapper({ href, children }: ToolPageWrapperProps) {
     <ToolPageClient href={href?.replace(/\/$/, "") || href} breadcrumbs={breadcrumbs}>
       <div className="kami-scope kami-text">
         <div>{children}</div>
-        <Footer />
       </div>
     </ToolPageClient>
   );
