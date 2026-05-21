@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kami-css visual confirmation</title>
+  <link rel="stylesheet" href="../packages/kami-css/kami.css">
+  <style>
+    body { padding: var(--kami-header-height) 0 0; }
+    .confirm-section { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .confirm-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 8px; }
+    .skin-switcher { position: fixed; top: 50px; right: 12px; z-index: 500; display: flex; flex-direction: column; gap: 4px; }
+    .skin-switcher button { font-size: 0.6rem; padding: 3px 8px; cursor: pointer; background: var(--kami-surface-solid); border: 1px solid var(--kami-border-strong); border-radius: var(--kami-cta-radius); color: var(--kami-text); }
+    .skin-switcher button.active { background: var(--kami-accent); color: var(--kami-accent-text); border-color: var(--kami-accent); }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+  </style>
+</head>
+<body data-theme="brutalist">
+
+<!-- Header -->
+<div class="kami-header">
+  <div class="kami-header-left">
+    <button class="kami-theme-pill">
+      <span class="kami-theme-pill-icon">■</span>
+      <span id="skin-label">brutalist</span>
+    </button>
+  </div>
+  <div class="kami-header-center">
+    <div class="kami-header-name">visual confirmation</div>
+    <div class="kami-header-desc">kami-css component test — all 8 skins</div>
+    <nav class="kami-header-crumb">
+      <a href="#">home</a>
+      <span class="kami-header-crumb-sep">·</span>
+      <a href="#">test</a>
+    </nav>
+  </div>
+  <div class="kami-header-right">
+    <div class="kami-shortcut-hint"><kbd>T</kbd> skin<span style="margin:0 4px">·</span><kbd>?</kbd> help</div>
+  </div>
+</div>
+
+<!-- Skin switcher overlay -->
+<div class="skin-switcher">
+  <button onclick="setSkin('default')" id="btn-default">○ default</button>
+  <button onclick="setSkin('brutalist')" id="btn-brutalist" class="active">■ brutalist</button>
+  <button onclick="setSkin('editorial')" id="btn-editorial">¶ editorial</button>
+  <button onclick="setSkin('terminal')" id="btn-terminal">&gt; terminal</button>
+  <button onclick="setSkin('zen')" id="btn-zen">◯ zen</button>
+  <button onclick="setSkin('glass')" id="btn-glass">◎ glass</button>
+  <button onclick="setSkin('material')" id="btn-material">◆ material</button>
+  <button onclick="setSkin('metro')" id="btn-metro">▣ metro</button>
+</div>
+
+<main class="confirm-section">
+  <div class="confirm-label">Buttons</div>
+  <div class="row">
+    <button class="kami-btn">Primary CTA</button>
+    <button class="kami-btn" style="background:var(--kami-surface-solid);color:var(--kami-text);border:var(--kami-card-border)">Secondary</button>
+    <button class="kami-share-btn">↑ Share</button>
+  </div>
+
+  <div class="confirm-label" style="margin-top:24px">Cards</div>
+  <div class="row">
+    <div class="kami-card" style="flex:1;min-width:200px">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:6px">Card Title</div>
+      <div style="font-size:0.8rem;opacity:0.65">Card description text goes here. Should be readable against the card background.</div>
+    </div>
+    <div class="kami-card" style="flex:1;min-width:200px">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:6px">Another Card</div>
+      <div style="font-size:0.8rem;opacity:0.65">Hover over each card to see the shadow and lift effect.</div>
+    </div>
+  </div>
+
+  <div class="confirm-label" style="margin-top:24px">Breadcrumb</div>
+  <nav class="kami-breadcrumb">
+    <a href="#">home</a>
+    <span class="kami-breadcrumb-sep">·</span>
+    <a href="#">tools</a>
+    <span class="kami-breadcrumb-sep">·</span>
+    <span aria-current="page">json formatter</span>
+  </nav>
+
+  <div class="confirm-label" style="margin-top:24px">Typography</div>
+  <div style="font-family:var(--kami-font-display);font-size:2rem;font-weight:var(--kami-heading-weight);text-transform:var(--kami-heading-case);letter-spacing:var(--kami-heading-tracking);margin-bottom:8px">Display Heading</div>
+  <div style="font-family:var(--kami-font-body);font-size:0.95rem;color:var(--kami-text-muted);line-height:var(--kami-body-leading)">Body text. Should be clearly legible and well-contrasted against the page background. Check readability across all skins.</div>
+  <div style="font-family:var(--kami-font-mono);font-size:0.82rem;color:var(--kami-text-dim);margin-top:8px">Monospace: code goes here</div>
+
+  <div class="confirm-label" style="margin-top:24px">FAQ</div>
+  <section class="kami-faq" style="margin-top:0;border-top:none;padding-top:0">
+    <h2 class="kami-faq__heading">About this tool</h2>
+    <div class="kami-faq__entry">
+      <h3 class="kami-faq__q">What does this tool do?</h3>
+      <p class="kami-faq__a">This is a test FAQ entry to verify that the kami-faq component renders correctly across all 8 skins.</p>
+    </div>
+    <div class="kami-faq__entry">
+      <h3 class="kami-faq__q">Is the spacing correct?</h3>
+      <p class="kami-faq__a">Check that the question and answer have appropriate visual hierarchy and that the text is readable.</p>
+    </div>
+  </section>
+
+  <div class="confirm-label" style="margin-top:24px">Related strip</div>
+  <div class="kami-related" style="padding:0">
+    <span class="kami-related__heading">Related</span>
+    <div class="kami-related__list">
+      <a href="#" class="kami-related__item">yaml formatter</a>
+      <a href="#" class="kami-related__item">json validator</a>
+      <a href="#" class="kami-related__item">base64</a>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="kami-footer">
+  <div class="kami-footer-aeo">
+    <a href="#">llms.txt</a>
+    <span class="kami-footer-sep">·</span>
+    <a href="#">sitemap</a>
+    <span class="kami-footer-sep">·</span>
+    <a href="#">tools.json</a>
+  </div>
+  <nav class="kami-footer-nav">
+    <a href="#">apps</a>
+    <span class="kami-footer-sep">·</span>
+    <span class="kami-footer-current">tools</span>
+    <span class="kami-footer-sep">·</span>
+    <a href="#">toys</a>
+    <span class="kami-footer-sep">·</span>
+    <a href="#">codex</a>
+  </nav>
+  <div class="kami-footer-credit">made by <a href="#">kesava</a> · <a href="#">github</a></div>
+</footer>
+
+<script>
+function setSkin(skin) {
+  document.documentElement.setAttribute('data-theme', skin === 'default' ? '' : skin);
+  if (skin === 'default') document.documentElement.removeAttribute('data-theme');
+  document.getElementById('skin-label').textContent = skin;
+  document.querySelectorAll('.skin-switcher button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + skin)?.classList.add('active');
+}
+</script>
+</body>
+</html>
