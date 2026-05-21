@@ -1,0 +1,328 @@
+/* ============================================================
+   KAMI CSS — Chrome Layer
+   Splash overlay, FAQ, related strip, shortcut overlay.
+   Used by toy HTML (injected by aggregator) and Next.js apps.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   SPLASH OVERLAY
+   sessionStorage-gated per toy. Dismissed on any interaction.
+   ═══════════════════════════════════════════════════════════ */
+.kami-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--kami-splash-bg);
+  font-family: var(--kami-font-body);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.kami-splash.kami-splash--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.kami-splash-name {
+  font-family: var(--kami-font-display);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: var(--kami-heading-weight);
+  text-transform: var(--kami-heading-case);
+  letter-spacing: var(--kami-heading-tracking);
+  color: var(--kami-text);
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+.kami-splash-tag {
+  font-size: 0.85rem;
+  color: var(--kami-text-muted);
+  max-width: 40ch;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.kami-splash-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--kami-splash-dot);
+  margin-top: 24px;
+  animation: kamiBlink 1.2s ease-in-out infinite;
+}
+
+.kami-splash-skip {
+  font-size: 0.68rem;
+  color: var(--kami-text-dim);
+  margin-top: 16px;
+  text-align: center;
+}
+
+.kami-splash-skip kbd {
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0 3px;
+  font-size: 0.6rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FAQ SECTION
+   Rendered below fold in toys (shell.js) and tools (ToolShell).
+   ═══════════════════════════════════════════════════════════ */
+.kami-faq {
+  margin: 64px auto 0;
+  padding: 32px 24px 48px;
+  border-top: 1px solid var(--kami-border);
+  max-width: 660px;
+  font-family: var(--kami-font-body);
+}
+
+.kami-faq__heading {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--kami-text-dim);
+  margin: 0 0 24px;
+}
+
+.kami-faq__entry {
+  margin-bottom: 20px;
+}
+
+.kami-faq__entry:last-child {
+  margin-bottom: 0;
+}
+
+.kami-faq__q {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--kami-text);
+  margin: 0 0 5px;
+  line-height: 1.4;
+}
+
+.kami-faq__a {
+  font-size: 0.84rem;
+  color: var(--kami-text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NATIVE NOTE (iOS/iPadOS availability callout)
+   ═══════════════════════════════════════════════════════════ */
+.kami-native-note {
+  margin: 32px auto 0;
+  padding: 16px 20px;
+  max-width: 660px;
+  border: 1px solid var(--kami-border-strong);
+  border-radius: var(--kami-card-radius);
+  font-size: 0.82rem;
+  color: var(--kami-text-muted);
+  line-height: 1.5;
+  font-family: var(--kami-font-body);
+}
+
+.kami-native-note a {
+  color: var(--kami-accent);
+  text-decoration: none;
+}
+
+.kami-native-note a:hover {
+  text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RELATED STRIP
+   ═══════════════════════════════════════════════════════════ */
+.kami-related {
+  margin: 28px auto 0;
+  max-width: 660px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--kami-font-body);
+}
+
+.kami-related__heading {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--kami-text-dim);
+  white-space: nowrap;
+}
+
+.kami-related__list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kami-related__item {
+  font-size: 0.78rem;
+  color: var(--kami-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.kami-related__item:hover {
+  color: var(--kami-text);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHORTCUTS OVERLAY (? key)
+   ═══════════════════════════════════════════════════════════ */
+.kami-shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--kami-font-body);
+  backdrop-filter: blur(4px);
+}
+
+.kami-shortcuts-overlay__panel {
+  background: var(--kami-surface-solid);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: var(--kami-card-radius);
+  box-shadow: var(--kami-card-shadow-hover);
+  padding: 28px;
+  min-width: 260px;
+  max-width: 400px;
+  width: 90vw;
+}
+
+.kami-shortcuts-overlay__title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--kami-text-dim);
+  margin-bottom: 20px;
+}
+
+.kami-shortcuts-overlay__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.84rem;
+  color: var(--kami-text);
+}
+
+.kami-shortcuts-overlay__row kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--kami-border-strong);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--kami-font-mono);
+  font-size: 0.72rem;
+  min-width: 24px;
+  background: var(--kami-surface-elevated);
+  color: var(--kami-text);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WA-BOTTOM (toy footer — used in standalone toy HTML)
+   ═══════════════════════════════════════════════════════════ */
+.wa-bottom {
+  width: 100%;
+  padding: 20px 16px;
+  border-top: 1px solid var(--kami-border);
+  background: var(--kami-footer-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--kami-font-body);
+  font-size: 0.72rem;
+  color: var(--kami-footer-text);
+}
+
+.wa-bottom .row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wa-bottom .sep {
+  opacity: 0.35;
+}
+
+.wa-bottom a {
+  color: var(--kami-footer-link);
+  text-decoration: none;
+  transition: color var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.wa-bottom a:hover {
+  color: var(--kami-footer-link-hover);
+}
+
+.wa-bottom .current {
+  font-weight: 600;
+  color: var(--kami-text);
+}
+
+/* ── Tool FAQ (used by little-tools ToolShell) ────────────── */
+.tool-faq {
+  margin: 64px auto 0;
+  padding: 32px 0 48px;
+  border-top: 1px solid var(--kami-border);
+  max-width: 660px;
+  font-family: var(--kami-font-body);
+}
+
+.tool-faq-heading {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--kami-text-dim);
+  margin: 0 0 24px;
+}
+
+.tool-faq-list {
+  margin: 0;
+  padding: 0;
+}
+
+.tool-faq-item {
+  margin-bottom: 20px;
+}
+
+.tool-faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.tool-faq-question {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--kami-text);
+  margin: 0 0 5px;
+}
+
+.tool-faq-answer {
+  font-size: 0.84rem;
+  color: var(--kami-text-muted);
+  line-height: 1.65;
+  margin: 0;
+}

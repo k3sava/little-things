@@ -1,0 +1,83 @@
+/* ============================================================
+   KAMI CSS — Token Layer
+   Default (classic) values. Skin overrides in 02-skins.css.
+   ============================================================ */
+
+:root {
+  /* ── Surface ─────────────────────────────────────────── */
+  --kami-bg:               #fafafa;
+  --kami-surface:          #ffffff;
+  --kami-surface-solid:    #ffffff;
+  --kami-surface-elevated: #f5f5f7;
+
+  /* ── Text ────────────────────────────────────────────── */
+  --kami-text:             #1d1d1f;
+  --kami-text-muted:       #525252;
+  --kami-text-dim:         #8e8e93;
+
+  /* ── Border ──────────────────────────────────────────── */
+  --kami-border:           #e5e5ea;
+  --kami-border-strong:    #d1d1d6;
+
+  /* ── Primary CTA ─────────────────────────────────────── */
+  --kami-cta-bg:           #000000;
+  --kami-cta-bg-hover:     #1f2937;
+  --kami-cta-text:         #ffffff;
+  --kami-cta-radius:       0.5rem;
+  --kami-cta-shadow:       none;
+
+  /* ── Card ────────────────────────────────────────────── */
+  --kami-card-radius:      0.75rem;
+  --kami-card-border:      1px solid var(--kami-border);
+  --kami-card-shadow:      0 1px 3px rgba(0,0,0,0.08);
+  --kami-card-shadow-hover:0 8px 24px rgba(0,0,0,0.12);
+  --kami-card-hover-lift:  translateY(-2px);
+  --kami-card-bg:          var(--kami-surface);
+
+  /* ── Typography ──────────────────────────────────────── */
+  --kami-font-display:     system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --kami-font-body:        system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --kami-font-mono:        ui-monospace, 'JetBrains Mono', 'Fira Code', monospace;
+  --kami-heading-case:     none;
+  --kami-heading-tracking: -0.02em;
+  --kami-heading-weight:   600;
+  --kami-body-tracking:    0;
+  --kami-body-leading:     1.6;
+
+  /* ── Header chrome ───────────────────────────────────── */
+  --kami-header-height:    44px;
+  --kami-header-bg:        rgba(250,250,250,0.92);
+  --kami-header-border:    var(--kami-border);
+  --kami-header-text:      var(--kami-text);
+  --kami-header-blur:      saturate(180%) blur(12px);
+
+  /* ── Motion ──────────────────────────────────────────── */
+  --kami-motion-fast:      150ms;
+  --kami-motion-base:      220ms;
+  --kami-motion-slow:      400ms;
+  --kami-motion-ease:      cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Accent ──────────────────────────────────────────── */
+  --kami-accent:           #2563eb;
+  --kami-accent-text:      #ffffff;
+
+  /* ── Breadcrumb ──────────────────────────────────────── */
+  --kami-breadcrumb-color: var(--kami-text-dim);
+  --kami-breadcrumb-hover: var(--kami-text);
+
+  /* ── Footer ──────────────────────────────────────────── */
+  --kami-footer-bg:        var(--kami-bg);
+  --kami-footer-text:      var(--kami-text-dim);
+  --kami-footer-link:      var(--kami-text-muted);
+  --kami-footer-link-hover:var(--kami-text);
+
+  /* ── Splash ──────────────────────────────────────────── */
+  --kami-splash-bg:        var(--kami-bg);
+  --kami-splash-dot:       var(--kami-accent);
+
+  /* ── Input ───────────────────────────────────────────── */
+  --kami-input-bg:         var(--kami-surface);
+  --kami-input-border:     1px solid var(--kami-border-strong);
+  --kami-input-radius:     0.5rem;
+  --kami-input-focus:      0 0 0 2px rgba(37,99,235,0.25);
+}

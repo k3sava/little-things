@@ -1,0 +1,164 @@
+/* ============================================================
+   KAMI CSS — Dark Mode
+   Applied when html[data-dark] is set (manual toggle).
+   Also applied when prefers-color-scheme: dark for default/classic.
+   Skins with own colour systems (terminal, glass) are excluded.
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --kami-bg:               #111111;
+    --kami-surface:          rgba(28,28,30,0.85);
+    --kami-surface-solid:    #1c1c1e;
+    --kami-surface-elevated: #2c2c2e;
+    --kami-text:             #f5f5f7;
+    --kami-text-muted:       #aeaeb2;
+    --kami-text-dim:         #636366;
+    --kami-border:           rgba(60,60,67,0.29);
+    --kami-border-strong:    #38383a;
+    --kami-cta-bg:           #f5f5f7;
+    --kami-cta-bg-hover:     #e0e0e2;
+    --kami-cta-text:         #111111;
+    --kami-card-shadow:      0 1px 3px rgba(0,0,0,0.4);
+    --kami-card-shadow-hover:0 8px 24px rgba(0,0,0,0.5);
+    --kami-header-bg:        rgba(17,17,17,0.92);
+    --kami-header-border:    rgba(60,60,67,0.29);
+    --kami-accent:           #4db3ff;
+    --kami-input-bg:         #1c1c1e;
+    --kami-footer-bg:        #111111;
+  }
+}
+
+html[data-dark]:not([data-theme]),
+html[data-dark][data-theme="default"] {
+  --kami-bg:               #111111;
+  --kami-surface:          rgba(28,28,30,0.85);
+  --kami-surface-solid:    #1c1c1e;
+  --kami-surface-elevated: #2c2c2e;
+  --kami-text:             #f5f5f7;
+  --kami-text-muted:       #aeaeb2;
+  --kami-text-dim:         #636366;
+  --kami-border:           rgba(60,60,67,0.29);
+  --kami-border-strong:    #38383a;
+  --kami-cta-bg:           #f5f5f7;
+  --kami-cta-bg-hover:     #e0e0e2;
+  --kami-cta-text:         #111111;
+  --kami-card-shadow:      0 1px 3px rgba(0,0,0,0.4);
+  --kami-card-shadow-hover:0 8px 24px rgba(0,0,0,0.5);
+  --kami-header-bg:        rgba(17,17,17,0.92);
+  --kami-header-border:    rgba(60,60,67,0.29);
+  --kami-accent:           #4db3ff;
+  --kami-input-bg:         #1c1c1e;
+  --kami-footer-bg:        #111111;
+}
+
+/* Brutalist dark — invert black/white, keep magenta */
+html[data-dark][data-theme="brutalist"] {
+  --kami-bg:               #000000;
+  --kami-surface:          #000000;
+  --kami-surface-solid:    #111111;
+  --kami-text:             #ffffff;
+  --kami-text-muted:       #cccccc;
+  --kami-text-dim:         #888888;
+  --kami-border:           #ffffff;
+  --kami-border-strong:    #ffffff;
+  --kami-cta-bg:           #ffffff;
+  --kami-cta-text:         #000000;
+  --kami-card-border:      1px solid #ffffff;
+  --kami-card-shadow:      4px 4px 0 #ffffff;
+  --kami-card-shadow-hover:6px 6px 0 #ffffff;
+  --kami-card-bg:          #000000;
+  --kami-header-bg:        rgba(0,0,0,0.98);
+  --kami-header-border:    #ffffff;
+  --kami-footer-bg:        #000000;
+}
+
+/* Editorial dark — warm dark paper */
+html[data-dark][data-theme="editorial"] {
+  --kami-bg:               #1a1410;
+  --kami-surface:          #211a13;
+  --kami-surface-solid:    #211a13;
+  --kami-text:             #e8ddd0;
+  --kami-text-muted:       #b0a090;
+  --kami-text-dim:         #6a5a4a;
+  --kami-border:           #3a2e22;
+  --kami-border-strong:    #4a3e2e;
+  --kami-cta-bg:           #e8ddd0;
+  --kami-cta-text:         #1a1410;
+  --kami-card-border:      1px solid #3a2e22;
+  --kami-card-bg:          #211a13;
+  --kami-header-bg:        rgba(26,20,16,0.97);
+  --kami-footer-bg:        #141008;
+}
+
+/* Zen dark — deep grey serenity */
+html[data-dark][data-theme="zen"] {
+  --kami-bg:               #1a1917;
+  --kami-surface:          #201f1c;
+  --kami-surface-solid:    #201f1c;
+  --kami-text:             #e8e4de;
+  --kami-text-muted:       #a09880;
+  --kami-text-dim:         #5a5248;
+  --kami-border:           rgba(255,255,255,0.06);
+  --kami-border-strong:    rgba(255,255,255,0.12);
+  --kami-cta-bg:           #e8e4de;
+  --kami-cta-text:         #1a1917;
+  --kami-card-border:      1px solid rgba(255,255,255,0.08);
+  --kami-card-bg:          #201f1c;
+  --kami-header-bg:        rgba(26,25,23,0.97);
+  --kami-footer-bg:        #141310;
+}
+
+/* Glass dark — deep space frost */
+html[data-dark][data-theme="glass"] {
+  --kami-bg:               linear-gradient(135deg, #0d1829 0%, #160d29 40%, #1a0d1f 100%);
+  --kami-surface:          rgba(30,30,45,0.70);
+  --kami-surface-solid:    rgba(30,30,45,0.90);
+  --kami-text:             #f5f5f7;
+  --kami-text-muted:       #aeaeb2;
+  --kami-text-dim:         #636366;
+  --kami-border:           rgba(255,255,255,0.12);
+  --kami-border-strong:    rgba(255,255,255,0.20);
+  --kami-card-bg:          rgba(30,30,45,0.65);
+  --kami-card-shadow:      0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  --kami-header-bg:        rgba(10,10,30,0.80);
+}
+
+/* Material dark — MD3 dark scheme */
+html[data-dark][data-theme="material"] {
+  --kami-bg:               #1c1b1f;
+  --kami-surface:          #1c1b1f;
+  --kami-surface-solid:    #1c1b1f;
+  --kami-surface-elevated: #2b2930;
+  --kami-text:             #e6e1e5;
+  --kami-text-muted:       #cac4d0;
+  --kami-text-dim:         #938f99;
+  --kami-border:           #49454f;
+  --kami-border-strong:    #938f99;
+  --kami-cta-bg:           #d0bcff;
+  --kami-cta-text:         #381e72;
+  --kami-card-bg:          #2b2930;
+  --kami-card-shadow:      0 1px 3px rgba(0,0,0,0.4);
+  --kami-header-bg:        rgba(28,27,31,0.95);
+  --kami-header-border:    #49454f;
+  --kami-footer-bg:        #2b2930;
+}
+
+/* Metro dark — Fluent dark mode */
+html[data-dark][data-theme="metro"] {
+  --kami-bg:               #202020;
+  --kami-surface:          #2c2c2c;
+  --kami-surface-solid:    #2c2c2c;
+  --kami-surface-elevated: #383838;
+  --kami-text:             #ffffff;
+  --kami-text-muted:       #c0c0c0;
+  --kami-text-dim:         #808080;
+  --kami-border:           #3c3c3c;
+  --kami-border-strong:    #545454;
+  --kami-cta-bg:           #4da6ff;
+  --kami-card-bg:          #2c2c2c;
+  --kami-card-border:      1px solid #3c3c3c;
+  --kami-header-bg:        rgba(32,32,32,0.95);
+  --kami-header-border:    #3c3c3c;
+  --kami-footer-bg:        #1c1c1c;
+}

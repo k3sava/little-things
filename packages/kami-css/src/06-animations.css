@@ -1,0 +1,60 @@
+/* ============================================================
+   KAMI CSS — Animations
+   ============================================================ */
+
+@keyframes kamiBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+@keyframes kamiScanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes kamiSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kamiSlideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kamiFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Terminal scanline effect (applied via ::after on body in terminal skin) */
+[data-theme="terminal"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  z-index: 9999;
+}
+
+/* Theme transition (applied to all elements when theme changes) */
+html[data-theme] body,
+html[data-theme] body * {
+  transition:
+    background-color var(--kami-motion-base) var(--kami-motion-ease),
+    color var(--kami-motion-base) var(--kami-motion-ease),
+    border-color var(--kami-motion-base) var(--kami-motion-ease),
+    box-shadow var(--kami-motion-base) var(--kami-motion-ease);
+}
+
+/* Glass background is a gradient — needs special handling */
+[data-theme="glass"] body {
+  background: var(--kami-bg);
+  min-height: 100vh;
+}

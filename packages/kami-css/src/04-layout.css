@@ -1,0 +1,406 @@
+/* ============================================================
+   KAMI CSS — Layout Layer
+   Structural classes for header, footer, breadcrumb, card.
+   All values read from tokens — no hardcoded colours.
+   ============================================================ */
+
+/* ── Base reset (scoped — only when kami.css is loaded) ───── */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Body defaults ────────────────────────────────────────── */
+body {
+  margin: 0;
+  background: var(--kami-bg);
+  color: var(--kami-text);
+  font-family: var(--kami-font-body);
+  font-size: 16px;
+  line-height: var(--kami-body-leading);
+  letter-spacing: var(--kami-body-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Page offset (add to body or main when header is fixed) ── */
+.kami-page {
+  padding-top: var(--kami-header-height);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER
+   Fixed top bar, full-width, three-column flex layout.
+   ═══════════════════════════════════════════════════════════ */
+.kami-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--kami-header-height);
+  display: flex;
+  align-items: center;
+  background: var(--kami-header-bg);
+  border-bottom: 1px solid var(--kami-header-border);
+  color: var(--kami-header-text, var(--kami-text));
+  font-family: var(--kami-font-body);
+  -webkit-backdrop-filter: var(--kami-header-blur);
+  backdrop-filter: var(--kami-header-blur);
+  z-index: 100;
+}
+
+.kami-header-left {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-width: 120px;
+}
+
+.kami-header-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 8px;
+}
+
+.kami-header-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-width: 120px;
+  justify-content: flex-end;
+}
+
+.kami-header-name {
+  font-family: var(--kami-font-display);
+  font-size: 0.78rem;
+  font-weight: var(--kami-heading-weight);
+  text-transform: var(--kami-heading-case);
+  letter-spacing: var(--kami-heading-tracking);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.kami-header-desc {
+  font-size: 0.62rem;
+  opacity: 0.55;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin-top: 1px;
+}
+
+.kami-header-crumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.62rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kami-header-crumb a {
+  color: var(--kami-breadcrumb-color);
+  text-decoration: none;
+  transition: color var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.kami-header-crumb a:hover {
+  color: var(--kami-breadcrumb-hover);
+}
+
+.kami-header-crumb-sep {
+  opacity: 0.35;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BREADCRUMB (standalone, used in Next.js apps)
+   ═══════════════════════════════════════════════════════════ */
+.kami-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-family: var(--kami-font-body);
+  color: var(--kami-breadcrumb-color);
+}
+
+.kami-breadcrumb a {
+  color: var(--kami-breadcrumb-color);
+  text-decoration: none;
+  transition: color var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.kami-breadcrumb a:hover {
+  color: var(--kami-breadcrumb-hover);
+}
+
+.kami-breadcrumb-sep {
+  opacity: 0.35;
+  user-select: none;
+}
+
+.kami-breadcrumb [aria-current="page"] {
+  color: var(--kami-text);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+   Three-row layout: AEO links, sister sites, credit.
+   ═══════════════════════════════════════════════════════════ */
+.kami-footer {
+  width: 100%;
+  background: var(--kami-footer-bg);
+  color: var(--kami-footer-text);
+  border-top: 1px solid var(--kami-border);
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--kami-font-body);
+}
+
+.kami-footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.kami-footer-nav a {
+  color: var(--kami-footer-link);
+  text-decoration: none;
+  transition: color var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.kami-footer-nav a:hover {
+  color: var(--kami-footer-link-hover);
+}
+
+.kami-footer-aeo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+.kami-footer-aeo a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.kami-footer-aeo a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.kami-footer-sep {
+  opacity: 0.35;
+  user-select: none;
+}
+
+.kami-footer-current {
+  font-weight: 600;
+  color: var(--kami-text);
+}
+
+.kami-footer-credit {
+  font-size: 0.68rem;
+  opacity: 0.38;
+  text-align: center;
+}
+
+.kami-footer-credit a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.kami-footer-credit a:hover {
+  text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD
+   ═══════════════════════════════════════════════════════════ */
+.kami-card {
+  background: var(--kami-card-bg);
+  border: var(--kami-card-border);
+  border-radius: var(--kami-card-radius);
+  box-shadow: var(--kami-card-shadow);
+  padding: 20px;
+  transition:
+    box-shadow var(--kami-motion-base) var(--kami-motion-ease),
+    transform var(--kami-motion-base) var(--kami-motion-ease);
+}
+
+.kami-card:hover {
+  box-shadow: var(--kami-card-shadow-hover);
+  transform: var(--kami-card-hover-lift, none);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THEME PILL (in header left)
+   ═══════════════════════════════════════════════════════════ */
+.kami-theme-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--kami-font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  background: transparent;
+  color: var(--kami-text-dim);
+  border: 1px solid var(--kami-border-strong);
+  border-radius: var(--kami-cta-radius);
+  padding: 3px 7px;
+  line-height: 1;
+  transition:
+    color var(--kami-motion-fast) var(--kami-motion-ease),
+    border-color var(--kami-motion-fast) var(--kami-motion-ease);
+  white-space: nowrap;
+}
+
+.kami-theme-pill:hover {
+  color: var(--kami-text);
+  border-color: var(--kami-border-strong);
+}
+
+.kami-theme-pill-icon {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHARE BUTTON
+   ═══════════════════════════════════════════════════════════ */
+.kami-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--kami-font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  background: var(--kami-surface-solid);
+  color: var(--kami-text);
+  border: var(--kami-card-border);
+  border-radius: var(--kami-card-radius);
+  padding: 4px 12px;
+  height: 30px;
+  transition:
+    background var(--kami-motion-fast) var(--kami-motion-ease),
+    opacity var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.kami-share-btn:hover {
+  opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHORTCUT HINT (top-right in header)
+   ═══════════════════════════════════════════════════════════ */
+.kami-shortcut-hint {
+  font-size: 0.62rem;
+  opacity: 0.38;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--kami-font-body);
+  white-space: nowrap;
+}
+
+.kami-shortcut-hint kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0 3px;
+  font-family: var(--kami-font-mono);
+  font-size: 0.58rem;
+  min-width: 16px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CTA BUTTON
+   ═══════════════════════════════════════════════════════════ */
+.kami-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--kami-cta-bg);
+  color: var(--kami-cta-text);
+  border: none;
+  border-radius: var(--kami-cta-radius);
+  box-shadow: var(--kami-cta-shadow, none);
+  padding: 8px 20px;
+  font-family: var(--kami-font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-transform: var(--kami-heading-case);
+  letter-spacing: var(--kami-heading-tracking);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background var(--kami-motion-fast) var(--kami-motion-ease),
+    opacity var(--kami-motion-fast) var(--kami-motion-ease);
+}
+
+.kami-btn:hover {
+  background: var(--kami-cta-bg-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE BAR (thin top accent stripe on mobile)
+   ═══════════════════════════════════════════════════════════ */
+.kami-mobile-bar {
+  display: none;
+  height: 2px;
+  background: var(--kami-accent);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+}
+
+@media (max-width: 640px) {
+  .kami-mobile-bar {
+    display: block;
+  }
+
+  .kami-header-desc {
+    display: none;
+  }
+
+  .kami-shortcut-hint {
+    display: none;
+  }
+
+  .kami-header-left,
+  .kami-header-right {
+    min-width: 80px;
+    padding: 0 8px;
+  }
+}
