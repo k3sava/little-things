@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description:
     "Record, annotate, and share interactive web page demos. Everything runs in your browser.",
   authors: [{ name: "Kesava" }],
+  robots: { index: false, follow: false },
   alternates: { canonical: "https://apps.iamkesava.com/playground/demokit" },
   openGraph: {
     title: "DemoKit — capture and showcase web demos",

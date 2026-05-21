@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   description:
     "Upload any song and split it into vocals, drums, bass, and other stems using AI. Apply effects, pitch shift, time stretch, create samples, and export remixes.",
   authors: [{ name: "Kesava" }],
+  robots: { index: false, follow: false },
   alternates: { canonical: "https://apps.iamkesava.com/playground/stem-studio" },
   openGraph: {
     title: "Stem Studio: split, manipulate, sample, remix",

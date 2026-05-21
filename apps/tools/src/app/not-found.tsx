@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Footer } from "@/components/footer";
+
+export const metadata: Metadata = {
+  title: "Page not found (404) — little tools",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (

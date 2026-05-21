@@ -18,8 +18,6 @@
 
 ## Playground (real iamkesava routes)
 
-- [DemoKit](https://apps.iamkesava.com/playground/demokit/): Capture and play back any web page as a demo. Bookmarklet for authenticated pages, URL fetch for public ones.
-- [Stem Studio](https://apps.iamkesava.com/playground/stem-studio/): Upload any song. AI splits it into vocals, drums, bass, and other stems. Effects, pitch shift, time stretch, sample maker, mix export.
 - [Zen Garden](https://apps.iamkesava.com/playground/zen-garden/): Ink and Void: a CSS Zen Garden submission. 1800 lines of pure CSS, scroll-driven animations, oklch color, @property, subgrid. Zero images, zero JS.
 
 ## Tool collections (canonical URLs are on tools.iamkesava.com)

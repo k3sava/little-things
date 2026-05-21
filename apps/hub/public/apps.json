@@ -4,21 +4,9 @@
   "license": "MIT",
   "last_updated": "2026-05-21",
   "counts": {
-    "playground": 3
+    "playground": 1
   },
   "playground": [
-    {
-      "slug": "demokit",
-      "title": "DemoKit",
-      "url": "https://apps.iamkesava.com/playground/demokit/",
-      "description": "Capture and play back any web page as a demo. Bookmarklet for authenticated pages, URL fetch for public ones."
-    },
-    {
-      "slug": "stem-studio",
-      "title": "Stem Studio",
-      "url": "https://apps.iamkesava.com/playground/stem-studio/",
-      "description": "Upload any song. AI splits it into vocals, drums, bass, and other stems. Effects, pitch shift, time stretch, sample maker, mix export."
-    },
     {
       "slug": "zen-garden",
       "title": "Zen Garden",

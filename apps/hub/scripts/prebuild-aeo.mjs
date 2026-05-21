@@ -28,8 +28,6 @@ const COLLECTIONS = [
 ];
 
 const PLAYGROUND = [
-  { slug: "demokit", title: "DemoKit", description: "Capture and play back any web page as a demo. Bookmarklet for authenticated pages, URL fetch for public ones." },
-  { slug: "stem-studio", title: "Stem Studio", description: "Upload any song. AI splits it into vocals, drums, bass, and other stems. Effects, pitch shift, time stretch, sample maker, mix export." },
   { slug: "zen-garden", title: "Zen Garden", description: "Ink and Void: a CSS Zen Garden submission. 1800 lines of pure CSS, scroll-driven animations, oklch color, @property, subgrid. Zero images, zero JS." },
 ];
 

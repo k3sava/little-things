@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 const BASE = "https://apps.iamkesava.com";
 
-const playgroundItems = ["demokit", "stem-studio", "zen-garden"];
+const playgroundItems = ["zen-garden"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
