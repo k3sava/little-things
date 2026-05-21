@@ -374,7 +374,14 @@ export default function MetaTagGeneratorContent({ faqPassages }: { faqPassages?:
       description: "Learn proven strategies for creating high-converting landing pages. Step-by-step guide with real examples, templates, and optimization tips.",
       url: "https://example.com/blog/landing-page-guide",
     });
-    setImage("https://example.com/images/landing-page-og.jpg");
+    // Self-contained 1200×630 OG image so the preview demonstrates the feature
+    // without a network request that would 404 (and log a console error).
+    setImage(
+      "data:image/svg+xml," +
+        encodeURIComponent(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs><rect width="1200" height="630" fill="url(#g)"/><text x="600" y="330" font-family="system-ui,sans-serif" font-size="68" font-weight="700" fill="#ffffff" text-anchor="middle">Landing Page Guide</text></svg>`
+        )
+    );
     setSiteName("Example Blog");
     setTwitterHandle("@exampleblog");
     setOgType("article");
