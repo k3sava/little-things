@@ -21,3 +21,5 @@ apps/toys/test/shots/
 apps/toys/out/
 apps/toys/public/_chrome/kami.css
 apps/toys/public/*/
+
+.sync-tmp/
