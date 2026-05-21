@@ -16,3 +16,8 @@ apps/hub/test/shots/
 
 apps/tools/test/shots/
 apps/tools/out/
+
+apps/toys/test/shots/
+apps/toys/out/
+apps/toys/public/_chrome/kami.css
+apps/toys/public/*/
