@@ -24,3 +24,4 @@ apps/toys/public/*/
 
 .sync-tmp/
 .deploy-tmp/
+.vercel

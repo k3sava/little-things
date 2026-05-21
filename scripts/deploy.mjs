@@ -17,7 +17,7 @@
 //   node scripts/deploy.mjs --no-build      # reuse existing out/ (skip build)
 
 import { execFileSync } from "node:child_process";
-import { cpSync, rmSync, mkdirSync, existsSync, readdirSync } from "node:fs";
+import { cpSync, rmSync, mkdirSync, existsSync, readdirSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -72,6 +72,9 @@ async function main() {
         rmSync(join(dir, entry), { recursive: true, force: true });
       }
       cpSync(out, dir, { recursive: true });
+      // GitHub Pages runs Jekyll, which ignores `_next/` (underscore dirs) →
+      // all Next.js CSS/JS 404 and pages render unstyled. .nojekyll disables it.
+      writeFileSync(join(dir, ".nojekyll"), "");
       sh(["git", "add", "-A"], dir);
       const status = sh(["git", "status", "--porcelain"], dir).trim();
       if (!status) {
