@@ -24,6 +24,12 @@ const PUB = join(ROOT, "public");
 const SITE = "https://toys.iamkesava.com";
 const GH = "https://raw.githubusercontent.com/k3sava";
 
+// Reads the shared kami.theme / kami.dark cookie on load and sets data-theme /
+// data-dark on <html>, then listens for postMessage from a parent shell. Lets
+// pages that ship their own toolbar (poster, the .wa-top effect pages) reskin
+// with the one global toggle instead of ignoring it.
+const THEME_INIT_SCRIPT = `<script>(function(){var k="kami.theme";function read(){try{var ck=('; '+document.cookie).split('; '+k+'=')[1];return ck?ck.split(';')[0]:(localStorage.getItem(k)||localStorage.getItem('theme'));}catch(e){return null;}}function apply(t){var h=document.documentElement;if(t&&t!=='default')h.setAttribute('data-theme',t);else h.removeAttribute('data-theme');}function dark(d){document.documentElement.toggleAttribute('data-dark',!!d);}function sync(){apply(read());try{dark(localStorage.getItem('kami.dark')==='1');}catch(e){}}sync();document.addEventListener('DOMContentLoaded',sync);window.addEventListener('load',sync);window.addEventListener('message',function(e){var d=e&&e.data;if(!d||typeof d!=='object')return;if('kamiTheme' in d)apply(d.kamiTheme);if('kamiDark' in d)dark(d.kamiDark);});})();</script>`;
+
 // Single-canvas toys served un-chromed at /e/<slug>/ and rendered through the
 // shared ToyShell (Next route + iframe). Keep aligned with `embed: true` in
 // src/data/toys.ts. These have NO header of their own, so the ToyShell header
@@ -480,7 +486,10 @@ function injectChrome(html, slug, name, description, isSubpage, toyMeta) {
   if (hasWaTop || (hasSoniccTheme && hasSoniccCrumb)) {
     let result = rewriteOwnBreadcrumb(html, slug, name);
     if (hasWaTop) {
-      const patchLink = `<link rel="stylesheet" href="/_chrome/theme-patch.css">`;
+      // theme-patch.css reskins .wg-* panels for the kami themes; THEME_INIT
+      // sets data-theme from the shared cookie so the global toggle actually
+      // drives these pages (they ship their own switcher but ignored the cookie).
+      const patchLink = `<link rel="stylesheet" href="/_chrome/theme-patch.css">\n  ${THEME_INIT_SCRIPT}`;
       if (/<\/head>/i.test(result)) {
         result = result.replace(/<\/head>/i, `  ${patchLink}\n  </head>`);
       } else if (/<head[^>]*>/i.test(result)) {
