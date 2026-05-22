@@ -1386,26 +1386,48 @@ html[data-theme] [style*="color:#bbb"] {
 }
 
 /* --- Toy shell: single-canvas toys rendered in the shared iframe ---
-   The toy fills the viewport; the breadcrumb + floating ThemeSwitcher/
-   ShareButton from the root layout sit on top, and the footer follows below.
-   This is the same chrome the hub uses — identical by construction. */
-.toy-frame {
-  display: block;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  border: 0;
-  margin: 0;
+   A fixed, non-scrolling flex column: a solid top bar (so the breadcrumb sits
+   on a real surface instead of bleeding over the canvas) + the iframe filling
+   the exact remaining height. No page scroll and no element taller than the
+   viewport, so there is exactly ONE scrollbar context (the toy's, only if it
+   needs one). The floating ThemeSwitcher/ShareButton from the root layout sit
+   over the bar's corners. */
+.toy-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: var(--kami-bg);
 }
-/* Legibility for the fixed breadcrumb over a full-bleed canvas. */
-.kami-breadcrumb-fixed {
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--kami-bg, #fff) 70%, transparent);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+.toy-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  /* left padding clears the floating theme pill; right clears the share button */
+  padding: 0 5rem 0 3.75rem;
+  background: var(--kami-header-bg, var(--kami-surface-solid, var(--kami-surface)));
+  border-bottom: 1px solid var(--kami-border);
+  position: relative;
+  z-index: 50;
+  -webkit-backdrop-filter: var(--kami-header-blur, blur(8px));
+  backdrop-filter: var(--kami-header-blur, blur(8px));
 }
+.toy-bar .kami-breadcrumb { font-size: 0.78rem; }
+.toy-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  display: block;
+  background: var(--kami-bg);
+}
+/* The floating layout chrome aligns to the 52px bar on toy pages. */
+.toy-page ~ .theme-switcher-container,
+body:has(.toy-page) .theme-switcher-container { top: 10px !important; left: 14px !important; }
+body:has(.toy-page) .kami-share-btn { top: 10px !important; right: 14px !important; }
 
 /* ===== Mobile Top Bar ===== */
 .kami-mobile-bar {

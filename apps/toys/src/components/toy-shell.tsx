@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { Breadcrumb } from "./breadcrumb";
-import { Footer } from "./footer";
 
 interface ToyShellProps {
   slug: string;
@@ -10,17 +9,16 @@ interface ToyShellProps {
   tagline: string;
 }
 
-// Shared shell for single-canvas toys. The toy itself is served un-chromed at
-// /e/<slug>/ and loaded in an isolated <iframe>; the chrome around it — fixed
-// breadcrumb, footer, and the floating ThemeSwitcher/ShareButton from the root
-// layout — is the SAME chrome the hub uses. So every toy has identical chrome
-// by construction, and the toy's own CSS/JS can never leak into or crowd it.
+// Shared shell for single-canvas toys. The toy is served un-chromed at
+// /e/<slug>/ and loaded in an isolated <iframe>. The page is a fixed,
+// non-scrolling flex column: a solid top bar (breadcrumb; the floating
+// ThemeSwitcher + ShareButton from the root layout sit over its corners) and
+// the iframe filling exactly the remaining height. No page scroll and no footer
+// below the iframe — that was producing a second scrollbar — and the solid bar
+// stops the breadcrumb bleeding over the toy canvas.
 export function ToyShell({ slug, title, tagline }: ToyShellProps) {
   const frameRef = useRef<HTMLIFrameElement>(null);
 
-  // Mirror the active theme into the iframe. Same-origin in production, so we
-  // set data-theme directly; postMessage is the resilient fallback (and the
-  // path the iframe's own listener uses).
   const syncTheme = useCallback(() => {
     const frame = frameRef.current;
     if (!frame) return;
@@ -51,14 +49,17 @@ export function ToyShell({ slug, title, tagline }: ToyShellProps) {
   }, [syncTheme]);
 
   return (
-    <>
-      <Breadcrumb
-        items={[
-          { label: "home", href: "https://apps.iamkesava.com" },
-          { label: "toys", href: "/" },
-          { label: title.toLowerCase() },
-        ]}
-      />
+    <div className="toy-page">
+      <header className="toy-bar">
+        <Breadcrumb
+          fixed={false}
+          items={[
+            { label: "home", href: "https://apps.iamkesava.com" },
+            { label: "toys", href: "/" },
+            { label: title.toLowerCase() },
+          ]}
+        />
+      </header>
       <iframe
         ref={frameRef}
         src={`/e/${slug}/`}
@@ -67,7 +68,6 @@ export function ToyShell({ slug, title, tagline }: ToyShellProps) {
         className="toy-frame"
         allow="microphone; midi; clipboard-write; fullscreen; accelerometer; gyroscope"
       />
-      <Footer />
-    </>
+    </div>
   );
 }
