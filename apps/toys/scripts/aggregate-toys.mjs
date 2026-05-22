@@ -442,6 +442,28 @@ function injectChrome(html, slug, name, description, isSubpage, toyMeta) {
 
   const AEO_ROW = `  <div class="row aeo"><a href="${SITE}/llms.txt">llms.txt</a><span class="sep">·</span><a href="${SITE}/sitemap.xml">sitemap</a><span class="sep">·</span><a href="${SITE}/toys.json">toys.json</a></div>\n`;
 
+  // Bespoke toys that ship their own full chrome AND already drive their palette
+  // from CSS custom properties using kami-style names (--bg/--text/--accent/...).
+  // They just (a) never read the shared kami.theme cookie and (b) only define a
+  // few themes. Load kami.css (tokens only — NOT chrome.css, whose 44px body
+  // padding would shove their flow toolbars down), alias their vars to kami
+  // tokens so all 8 skins drive them, and inject the cookie-reader. Their own
+  // [data-theme] rules (higher specificity than :root) still win where present.
+  const FORCE_KAMI = new Set(["sonicc", "poster-maker"]);
+  if (FORCE_KAMI.has(slug.split("/")[0])) {
+    let result = rewriteOwnBreadcrumb(html, slug, name);
+    const alias = `  <link rel="stylesheet" href="/_chrome/kami.css">
+  <style id="kami-token-bridge">:root{--bg:var(--kami-bg);--ink:var(--kami-text);--text:var(--kami-text);--fg:var(--kami-text);--text-dim:var(--kami-text-dim);--text-muted:var(--kami-text-muted);--muted:var(--kami-text-muted);--label:var(--kami-text-muted);--placeholder:var(--kami-text-muted);--surface:var(--kami-surface);--surface-solid:var(--kami-surface);--border:var(--kami-border);--border-strong:var(--kami-border-strong);--card-border:var(--kami-border);--accent:var(--kami-accent);--accent-soft:var(--kami-accent-text);--accent-contrast:var(--kami-accent-text);--footer:var(--kami-text-muted);--footer-link:var(--kami-text-muted);--breadcrumb:var(--kami-text-muted);--breadcrumb-hover:var(--kami-text);--canvas-bg:var(--kami-bg);--canvas-edge:var(--kami-border);--track:var(--kami-border);--thumb:var(--kami-accent);--font-ui:var(--kami-font-body);--font-label:var(--kami-font-mono);}</style>
+  ${THEME_INIT_SCRIPT}`;
+    if (/<\/head>/i.test(result)) result = result.replace(/<\/head>/i, alias + "\n  </head>");
+    else if (/<head[^>]*>/i.test(result)) result = result.replace(/<head[^>]*>/i, (m) => m + "\n" + alias);
+    if (toyMeta && !isSubpage && !result.includes("window.kamiMeta")) {
+      const metaScript = buildKamiMetaScript(toyMeta, name, toyMeta.tagline);
+      if (/<\/head>/i.test(result)) result = result.replace(/<\/head>/i, `  ${metaScript}\n  </head>`);
+    }
+    return result;
+  }
+
   // Already has the new global header — just ensure breadcrumb is canonical,
   // AEO row is present in the footer, kamiMeta is declared, and shell.js loads.
   if (hasKamiHeader) {
