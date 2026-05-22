@@ -195,7 +195,12 @@ export default function ReleaseNotesFormatterContent({ faqPassages }: { faqPassa
   const [rawText, setRawText] = useState(EXAMPLE_RAW);
   const [items, setItems] = useState<ChangeItem[]>(() => parseRawText(EXAMPLE_RAW));
   const [version, setVersion] = useState("v2.4.0");
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState("");
+
+  // Set today's date after mount to avoid SSR/hydration mismatch (build-time date != client date).
+  useEffect(() => {
+    setDate((d) => d || new Date().toISOString().slice(0, 10));
+  }, []);
   const [title, setTitle] = useState("");
   const [exportFormat, setExportFormat] = useState<"markdown" | "html" | "plain">("markdown");
   const [copied, setCopied] = useState(false);
