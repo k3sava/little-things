@@ -24,6 +24,15 @@ const PUB = join(ROOT, "public");
 const SITE = "https://toys.iamkesava.com";
 const GH = "https://raw.githubusercontent.com/k3sava";
 
+// Single-canvas toys served un-chromed at /e/<slug>/ and rendered through the
+// shared ToyShell (Next route + iframe). Keep aligned with `embed: true` in
+// src/data/toys.ts. These have NO header of their own, so the ToyShell header
+// is the only chrome — guaranteeing parity with the hub and tools.
+const EMBED = new Set([
+  "synth-pad", "plink", "kaleidoscopic", "aurora",
+  "string-art", "gravity-type", "particle-life", "aurea",
+]);
+
 // Per-toy metadata. Keep aligned with src/data/toys.ts.
 const TOYS = [
   {
@@ -630,6 +639,31 @@ ${hasOwnSplash ? "" : `<div class="kami-splash" role="status" aria-live="polite"
   return out;
 }
 
+// Embed mode: the toy is rendered inside the shared ToyShell <iframe>, so it
+// gets NO site chrome (no header/footer/splash). It only needs:
+//   1. kami-css (via chrome.css) so its --bg/--ink/etc. alias to kami tokens
+//      and the whole canvas reskins with the active theme.
+//   2. A theme-init script that reads the shared kami.theme cookie on load and
+//      listens for postMessage from the parent shell for live theme changes.
+// Same-origin (toys.iamkesava.com/e/<slug>/) so the parent can also drive it
+// directly; the listener is the resilient path.
+function injectEmbed(html, slug, name) {
+  let out = html;
+  const head = `  <link rel="stylesheet" href="/_chrome/chrome.css">
+  <script>(function(){var k="kami.theme";function read(){try{var ck=('; '+document.cookie).split('; '+k+'=')[1];return ck?ck.split(';')[0]:(localStorage.getItem(k)||localStorage.getItem('theme'));}catch(e){return null;}}function apply(t){var h=document.documentElement;if(t&&t!=='default')h.setAttribute('data-theme',t);else h.removeAttribute('data-theme');}function dark(d){document.documentElement.toggleAttribute('data-dark',!!d);}apply(read());try{dark(localStorage.getItem('kami.dark')==='1');}catch(e){}window.addEventListener('message',function(e){var d=e&&e.data;if(!d||typeof d!=='object')return;if('kamiTheme' in d)apply(d.kamiTheme);if('kamiDark' in d)dark(d.kamiDark);});})();</script>
+`;
+  if (/<\/head>/i.test(out)) {
+    out = out.replace(/<\/head>/i, head + "  </head>");
+  } else if (/<head[^>]*>/i.test(out)) {
+    out = out.replace(/<head[^>]*>/i, (m) => m + "\n" + head);
+  } else if (/<html[^>]*>/i.test(out)) {
+    out = out.replace(/<html[^>]*>/i, (m) => m + "\n<head>\n" + head + "</head>");
+  } else {
+    out = head + out;
+  }
+  return out;
+}
+
 function escapeHtml(s) {
   return (s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
@@ -741,7 +775,12 @@ async function main() {
     process.exit(1);
   }
   for (const toy of TOYS) {
-    const dir = join(PUB, toy.slug);
+    const isEmbed = EMBED.has(toy.slug);
+    // Embed toys live at /e/<slug>/ (the Next route owns /<slug>/). Always
+    // remove any stale chromed copy at public/<slug>/ so it can't shadow the
+    // Next-generated shell page in the static export.
+    await rm(join(PUB, toy.slug), { recursive: true, force: true });
+    const dir = isEmbed ? join(PUB, "e", toy.slug) : join(PUB, toy.slug);
     await rm(dir, { recursive: true, force: true });
     await mkdir(dir, { recursive: true });
 
@@ -793,7 +832,11 @@ async function main() {
           const subSlug = toy.slug + (sub ? "/" + sub : "");
           const pageName = sub === "" ? toy.name : `${toy.name} — ${sub[0].toUpperCase() + sub.slice(1)}`;
           let enriched = injectCanonical(content, subSlug, pageName, toy.description, toy.keywords);
-          enriched = injectChrome(enriched, subSlug, pageName, toy.description, sub !== "", toy);
+          // Embed toys (single-canvas, no own header) render inside the shared
+          // ToyShell iframe — give them theme wiring only, no site chrome.
+          enriched = isEmbed
+            ? injectEmbed(enriched, toy.slug, toy.name)
+            : injectChrome(enriched, subSlug, pageName, toy.description, sub !== "", toy);
           await writeFile(fullLocal, enriched);
         }
       } catch (e) {
