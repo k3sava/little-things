@@ -624,6 +624,7 @@ export default function GridContent({ faqPassages }: { faqPassages?: FaqEntry[] 
               <button
                 key={`${r}-${c}`}
                 type="button"
+                aria-label={`grid cell row ${r + 1}, column ${c + 1}${an ? `, area ${an}` : ""}`}
                 onClick={() => !occupied && handleCellClick(r, c)}
                 disabled={occupied}
                 style={{

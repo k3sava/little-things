@@ -1,0 +1,8 @@
+# Build caches — large, regenerated on build, must not be uploaded (Vercel 100MB/file cap).
+.turbo
+**/.turbo
+**/.next/cache
+# Other apps' build output — the hub builds itself; these aren't needed in its deploy context.
+apps/tools/out
+apps/toys/out
+test

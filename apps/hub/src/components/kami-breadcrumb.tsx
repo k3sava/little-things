@@ -16,7 +16,14 @@ export function KamiBreadcrumb({ items }: KamiBreadcrumbProps) {
         <span key={`${item.label}-${i}`} style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
           {i > 0 ? <span className="kami-breadcrumb-sep">·</span> : null}
           {item.href ? (
-            <Link href={item.href}>{item.label}</Link>
+            // Absolute/cross-origin hrefs must be plain anchors — a Next <Link>
+            // RSC-prefetches them and fails CORS, logging console errors on
+            // otherwise-fine pages.
+            /^https?:\/\//.test(item.href) ? (
+              <a href={item.href}>{item.label}</a>
+            ) : (
+              <Link href={item.href}>{item.label}</Link>
+            )
           ) : (
             <span aria-current="page">{item.label}</span>
           )}

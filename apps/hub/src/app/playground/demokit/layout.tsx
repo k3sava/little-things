@@ -38,7 +38,7 @@ export default function DemoKitLayout({
         <KamiBreadcrumb
           items={[
             { label: "home", href: "/" },
-            { label: "playground", href: "/playground" },
+            { label: "playground", href: "https://toys.iamkesava.com/" },
             { label: "demokit" },
           ]}
         />
