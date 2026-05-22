@@ -410,19 +410,20 @@ body:has(.kami-playground) {
   border-color: #ccc;
 }
 
+/* Token-driven so the pill reskins with every theme instead of being a static
+   white box (was an unscoped brutalist override applied to all themes). */
 .theme-switcher-pill {
-  background: #fff;
-  border: 2px solid #000;
-  border-radius: 0;
-  color: #000;
-  box-shadow: 2px 2px 0 #000;
+  background: var(--kami-surface-solid, var(--kami-surface, #fff));
+  border: 1px solid var(--kami-border, #000);
+  border-radius: var(--kami-cta-radius, 8px);
+  color: var(--kami-text, #000);
+  box-shadow: var(--kami-card-shadow, none);
   font-weight: 700;
 }
 .theme-switcher-pill:hover {
-  background: #d946ef;
-  color: #000;
-  box-shadow: 3px 3px 0 #000;
-  transform: translate(-1px, -1px);
+  background: var(--kami-accent, #d946ef);
+  color: var(--kami-accent-text, #fff);
+  box-shadow: var(--kami-card-shadow-hover, var(--kami-card-shadow, none));
 }
 
 .theme-switcher-pill-icon {
@@ -444,10 +445,10 @@ body:has(.kami-playground) {
   min-width: 140px;
 }
 .theme-switcher-picker {
-  background: #fff;
-  border: 2px solid #000;
-  border-radius: 0;
-  box-shadow: 4px 4px 0 #000;
+  background: var(--kami-surface-solid, var(--kami-surface, #fff));
+  border: 1px solid var(--kami-border, #000);
+  border-radius: var(--kami-card-radius, 0);
+  box-shadow: var(--kami-card-shadow-hover, var(--kami-card-shadow, none));
 }
 
 .theme-switcher-option {

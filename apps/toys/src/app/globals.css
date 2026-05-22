@@ -1056,17 +1056,19 @@ html[data-theme="zen"] .kami-scope .grid > *:nth-child(10) { animation-delay: 0.
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1px solid var(--border, #e5e5ea);
-  border-radius: 8px;
-  background: rgba(255,255,255,0.85);
+  /* Token-driven base so themes without an explicit override below
+     (glass/material/metro) still reskin instead of showing a white box. */
+  border: 1px solid var(--kami-border, #e5e5ea);
+  border-radius: var(--kami-cta-radius, 8px);
+  background: var(--kami-surface-solid, var(--kami-surface, rgba(255,255,255,0.85)));
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  color: var(--text-primary, #1d1d1f);
+  color: var(--kami-text, #1d1d1f);
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: var(--kami-card-shadow, 0 1px 4px rgba(0,0,0,0.06));
 }
 .theme-switcher-pill:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
