@@ -2086,7 +2086,7 @@ html[data-theme] .kami-scope a.bg-gray-900:hover {
   .tools-hub-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 900px) {
-  .tools-hub-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .tools-hub-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
 [data-theme="brutalist"] .tools-hub-search { border-radius: 0; border: 2px solid #000; box-shadow: 4px 4px 0 #000; }
@@ -3532,6 +3532,9 @@ img {
   padding: 2rem var(--tool-shell-px, 1rem);
   border-top: 2px solid var(--kami-border, #000);
   margin-top: 2rem;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .tool-faq-heading {
   font-size: 0.75rem;
