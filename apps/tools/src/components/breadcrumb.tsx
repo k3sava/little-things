@@ -14,10 +14,6 @@ export function Breadcrumb({ items, fixed = true }: BreadcrumbProps) {
   return (
     <nav
       className={`kami-breadcrumb${fixed ? " kami-breadcrumb-fixed" : ""}`}
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: ".75rem",
-      }}
     >
       {items.map((item, i) => (
         <span key={i}>

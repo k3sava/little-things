@@ -1,8 +1,8 @@
 "use client";
 
-import { AppCard } from "@/components/app-card";
+import { AppCard } from "kami-ui";
 import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { Footer } from "kami-ui";
 import type { CollectionMeta, Tool } from "@/data/tools";
 
 interface CollectionPageProps {
@@ -66,7 +66,7 @@ export function CollectionPage({ collection, tools }: CollectionPageProps) {
           ))}
         </div>
       </main>
-      <Footer />
+      <Footer current="tools" dataFile={{ label: "tools.json", href: "/tools.json" }} feedHref="/feed.xml" />
     </div>
   );
 }

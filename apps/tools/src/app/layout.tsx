@@ -5,7 +5,7 @@ import {
 } from "next/font/google";
 import { BlobCanvas } from "@/components/blob-canvas";
 import { ShareButton } from "@/components/share-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ThemeSwitcher } from "kami-ui";
 import { CommandPalette } from "@/components/tools/command-palette";
 import { CopyToastContainer } from "@/components/tools/copy-toast";
 import { JsonLd, rootLd } from "@/lib/json-ld";

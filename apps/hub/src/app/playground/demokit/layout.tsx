@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { KamiBreadcrumb } from "@/components/kami-breadcrumb";
-import { KamiFooter } from "@/components/kami-footer";
+import { Footer } from "kami-ui";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +59,7 @@ export default function DemoKitLayout({
         </div>
       </header>
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">{children}</main>
-      <KamiFooter current="apps" />
+      <Footer current="apps" dataFile={{ label: "apps.json", href: "/apps.json" }} />
     </div>
   );
 }

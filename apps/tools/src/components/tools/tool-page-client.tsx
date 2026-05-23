@@ -7,7 +7,7 @@ import { BreadcrumbContext } from "@/contexts/breadcrumb-context";
 import type { BreadcrumbItem } from "@/contexts/breadcrumb-context";
 import { allTools, getPrimaryCollection } from "@/data/tools";
 import { RelatedTools } from "./related-tools";
-import { Footer } from "@/components/footer";
+import { Footer } from "kami-ui";
 
 const RECENT_KEY = "tools-recent";
 const RECENT_MAX = 6;
@@ -63,7 +63,7 @@ export function ToolPageClient({ href: hrefProp, breadcrumbs: breadcrumbsProp, c
               <RelatedTools currentHref={tool.href} />
             </div>
           )}
-          <Footer />
+          <Footer current="tools" dataFile={{ label: "tools.json", href: "/tools.json" }} feedHref="/feed.xml" />
         </div>
       </BreadcrumbContext.Provider>
     </ShortcutProvider>

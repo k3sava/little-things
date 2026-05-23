@@ -8,7 +8,7 @@ import {
 } from "next/font/google";
 import { BlobCanvas } from "@/components/blob-canvas";
 import { ShareButton } from "@/components/share-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ThemeSwitcher } from "kami-ui";
 import { JsonLd, rootLd } from "@/lib/json-ld";
 import "./globals.css";
 

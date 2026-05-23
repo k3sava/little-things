@@ -31,6 +31,7 @@
   --kami-card-bg:          #ffffff;
   --kami-font-display:     ui-monospace, 'JetBrains Mono', 'Courier New', monospace;
   --kami-font-body:        ui-monospace, 'JetBrains Mono', 'Courier New', monospace;
+  --kami-body-leading:     1.75;
   --kami-heading-case:     uppercase;
   --kami-heading-tracking: 0.08em;
   --kami-heading-weight:   700;

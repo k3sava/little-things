@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JsonLd, solutionLd } from "@/lib/json-ld";
 import { KamiBreadcrumb } from "@/components/kami-breadcrumb";
-import { KamiFooter } from "@/components/kami-footer";
+import { Footer } from "kami-ui";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +48,7 @@ export default function ZenGardenPage() {
         className="w-full flex-1 border-0"
         title="Ink and Void, CSS Zen Garden"
       />
-      <KamiFooter current="apps" />
+      <Footer current="apps" dataFile={{ label: "apps.json", href: "/apps.json" }} />
     </div>
   </>
   );

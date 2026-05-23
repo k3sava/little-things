@@ -18,12 +18,14 @@ export interface Toy {
 
 export interface ToyGroup {
   label: string;
+  accentHex: string;
   apps: Toy[];
 }
 
 export const groups: ToyGroup[] = [
   {
     label: "Audio",
+    accentHex: "#f97316",
     apps: [
       { slug: "sonicc",     title: "sonicc",      badge: "music",    description: "Keys, drums, pattern sequencer, sampler, and mic recorder. 16 presets, 9 waveforms, 12 FX, stereo knobs, MIDI support, WAV export.", href: "/sonicc/" },
       { slug: "plink",      title: "Plink",       badge: "audio",    description: "Drop marbles and hear them play. A pentatonic plinko board where every bounce is a note. Click pegs to toggle them.", href: "/plink/", embed: true },
@@ -32,6 +34,7 @@ export const groups: ToyGroup[] = [
   },
   {
     label: "Visual",
+    accentHex: "#8b5cf6",
     apps: [
       { slug: "kaleidoscopic", title: "Kaleidoscopic", badge: "WebGL",      description: "Upload any image and watch it fold into living geometry. 8 symmetry patterns, real-time WebGL rendering, video recording.", href: "/kaleidoscopic/", embed: true },
       { slug: "aurora",        title: "Aurora",        badge: "ambient",    description: "Move your cursor through living light. An interactive aurora borealis rendered in real time.", href: "/aurora/", embed: true },
@@ -40,6 +43,7 @@ export const groups: ToyGroup[] = [
   },
   {
     label: "Simulation",
+    accentHex: "#0ea5e9",
     apps: [
       { slug: "gravity-type",  title: "Gravity Type",  badge: "physics",    description: "Type anything and watch it fall. Letters tumble, stack, and scatter with real physics. Click to explode.", href: "/gravity-type/", embed: true },
       { slug: "particle-life", title: "Particle Life", badge: "simulation", description: "Colored particles follow simple attraction rules and create complex, organic behavior. Click to create a new universe.", href: "/particle-life/", embed: true },
@@ -47,6 +51,7 @@ export const groups: ToyGroup[] = [
   },
   {
     label: "Generative",
+    accentHex: "#10b981",
     apps: [
       { slug: "aurea", title: "Aurea", badge: "math art", description: "Fibonacci-driven parametric line art. 6 original forms, 4K rendering, video recording. Thousands of lines from pure equations, biology from math.", href: "/aurea/", embed: true },
       { slug: "form", title: "FORM", badge: "typography", description: "Type a phrase, the system arranges it like a typographer. Five design philosophies (Swiss, Editorial, Brutalist, Kinetic, Painterly) plus a blend lab. PNG or video.", href: "/form/" },
@@ -57,6 +62,7 @@ export const groups: ToyGroup[] = [
   },
   {
     label: "Craft",
+    accentHex: "#f43f5e",
     apps: [
       { title: "Zen Garden", badge: "CSS art", description: "Ink and Void, a CSS Zen Garden submission. 1800+ lines of pure CSS: scroll-driven animations, oklch color, @property, subgrid. Zero images, zero JS.", href: "https://apps.iamkesava.com/playground/zen-garden", external: true },
     ],

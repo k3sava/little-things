@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ["kami-ui"],
   eslint: {
     ignoreDuringBuilds: true,
   },

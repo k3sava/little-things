@@ -15,6 +15,12 @@ interface AppCardProps {
   ctaLabel?: string;
   /** Minimum card height in px. Defaults to 172. */
   minHeight?: number;
+  /**
+   * Next.js link prefetch. Defaults to true. Set false for hrefs that map to
+   * static HTML files rather than Next routes (prefetch would 404 on the RSC
+   * payload).
+   */
+  prefetch?: boolean;
 }
 
 export function AppCard({
@@ -26,6 +32,7 @@ export function AppCard({
   external = false,
   ctaLabel = "Open",
   minHeight = 172,
+  prefetch = true,
 }: AppCardProps) {
   const body = (
     <>
@@ -105,13 +112,11 @@ export function AppCard({
       </a>
     );
   }
-  // Internal hub-aggregated toys are plain HTML files served from /<slug>/
-  // (not Next.js routes), so disable Next.js prefetch — it would try to
-  // fetch index.txt for RSC payloads that don't exist and surface 404s in
-  // the console.
   return (
-    <Link href={href} prefetch={false} className={className} style={style}>
+    <Link href={href} prefetch={prefetch} className={className} style={style}>
       {body}
     </Link>
   );
 }
+
+export default AppCard;

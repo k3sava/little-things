@@ -65,11 +65,17 @@ function applyTheme(theme: ThemeId) {
 export function ThemeSwitcher() {
   const [theme, setTheme] = useState<ThemeId>(DEFAULT);
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(false);
 
   useEffect(() => {
     const saved = readStored();
     setTheme(saved);
     applyTheme(saved);
+    const stored = localStorage.getItem("kami.dark");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = stored === "1" || (stored === null && prefersDark);
+    setDark(isDark);
+    document.documentElement.toggleAttribute("data-dark", isDark);
   }, []);
 
   const select = useCallback((id: ThemeId) => {
@@ -78,6 +84,15 @@ export function ThemeSwitcher() {
     try { localStorage.setItem(STORAGE_KEY, id); } catch { /* noop */ }
     writeCookie(id);
     setOpen(false);
+  }, []);
+
+  const toggleDark = useCallback(() => {
+    setDark(v => {
+      const next = !v;
+      document.documentElement.toggleAttribute("data-dark", next);
+      try { localStorage.setItem("kami.dark", next ? "1" : "0"); } catch { /* noop */ }
+      return next;
+    });
   }, []);
 
   // T key cycles themes, consistent with toys and wordart/pixart.
@@ -135,9 +150,19 @@ export function ThemeSwitcher() {
                 <span>{t.label}</span>
               </button>
             ))}
+            <div className="theme-switcher-divider" />
+            <button
+              className={`theme-switcher-option theme-dark-toggle${dark ? " active" : ""}`}
+              onClick={toggleDark}
+            >
+              <span className="theme-switcher-option-icon">{dark ? "◐" : "○"}</span>
+              <span>{dark ? "dark" : "light"}</span>
+            </button>
           </div>
         )}
       </div>
     </>
   );
 }
+
+export default ThemeSwitcher;

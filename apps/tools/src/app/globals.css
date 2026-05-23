@@ -466,7 +466,7 @@ body:has(.kami-playground) {
   transition: background 0.15s ease;
   text-align: left;
 }
-.theme-switcher-option {
+[data-theme="brutalist"] .theme-switcher-option {
   border-radius: 0;
   font-family: var(--font-mono), monospace;
   letter-spacing: 0.05em;
@@ -474,7 +474,7 @@ body:has(.kami-playground) {
 .theme-switcher-option:hover {
   background: rgba(0,0,0,0.05);
 }
-.theme-switcher-option:hover {
+[data-theme="brutalist"] .theme-switcher-option:hover {
   background: #d946ef;
   color: #000;
 }
@@ -482,7 +482,7 @@ body:has(.kami-playground) {
   background: rgba(0,0,0,0.06);
   font-weight: 600;
 }
-.theme-switcher-option.active {
+[data-theme="brutalist"] .theme-switcher-option.active {
   background: #000;
   color: #fff;
 }
@@ -603,59 +603,7 @@ html[data-theme] [style*="color:#bbb"] {
   color: var(--kami-text-dim) !important;
 }
 
-/* --- Footer (`.kami-footer`) --- */
-.kami-footer {
-  font-family: var(--kami-font-body, 'DM Sans', sans-serif);
-  font-size: 0.8rem;
-  padding: 3rem 0 2rem;
-  text-align: center;
-  color: var(--kami-footer);
-}
-.kami-footer a {
-  color: var(--kami-footer-link) !important;
-  text-decoration: none !important;
-  border-bottom: none !important;
-  transition: color 0.2s ease;
-}
-.kami-footer a:hover {
-  color: var(--kami-footer-link-hover) !important;
-  background: transparent !important;
-}
-.kami-footer-aeo {
-  font-family: var(--kami-font-mono, ui-monospace, monospace);
-  font-size: 0.72rem;
-  color: var(--kami-text-muted, #4a4a4a);
-  margin-bottom: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.kami-footer-nav {
-  font-family: var(--kami-font-mono, ui-monospace, monospace);
-  font-size: 0.72rem;
-  display: flex;
-  align-items: center;
-  gap: 0;
-  justify-content: center;
-  flex-wrap: wrap;
-  color: var(--kami-text-muted, #4a4a4a);
-  margin-bottom: 0.6rem;
-}
-.kami-footer-credit {
-  font-family: var(--kami-font-body, 'DM Sans', sans-serif);
-  font-size: 0.75rem;
-  opacity: 0.85;
-}
-.kami-footer-sep {
-  opacity: 0.4;
-  margin: 0 0.35rem;
-  user-select: none;
-}
-.kami-footer-current {
-  font-weight: 600;
-  color: var(--kami-text);
-}
+/* --- Footer styles now come from kami-css chrome layer --- */
 .kami-breadcrumb {
   color: var(--kami-breadcrumb);
 }
@@ -727,7 +675,7 @@ html[data-theme] [style*="color:#bbb"] {
   }
 
   /* Per-theme bar backgrounds */
-  .kami-mobile-bar {
+  [data-theme="brutalist"] .kami-mobile-bar {
     background: #fff;
     border-bottom: 2px solid #000;
     border-radius: 0;
@@ -2138,15 +2086,11 @@ html[data-theme] .kami-scope a.bg-gray-900:hover {
   .tools-hub-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 900px) {
-  .tools-hub-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 1200px) {
-  .tools-hub-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tools-hub-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
 }
 
-/* Brutalist overrides */
-.tools-hub-search { border-radius: 0; border: 2px solid #000; box-shadow: 4px 4px 0 #000; }
-.tools-hub-chip { border-radius: 0; border: 2px solid #000; }
+[data-theme="brutalist"] .tools-hub-search { border-radius: 0; border: 2px solid #000; box-shadow: 4px 4px 0 #000; }
+[data-theme="brutalist"] .tools-hub-chip { border-radius: 0; border: 2px solid #000; }
 
 
 /* Tool pages own their header chrome — hide the global mobile bar. */

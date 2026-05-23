@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { allTools, collections } from "@/data/tools";
-import { AppCard } from "@/components/app-card";
+import { AppCard } from "kami-ui";
 import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { Footer } from "kami-ui";
 import { JsonLd, collectionLd } from "@/lib/json-ld";
 import { CollectionHeader } from "./collection-header";
 
@@ -162,7 +162,7 @@ export default async function CollectionPage(props: { params: Promise<Params> })
         </section>
       </div>
 
-      <Footer />
+      <Footer current="tools" dataFile={{ label: "tools.json", href: "/tools.json" }} feedHref="/feed.xml" />
     </div>
   );
 }

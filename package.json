@@ -2,7 +2,8 @@
   "name": "little-things",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build": "node scripts/check-parity.mjs && turbo build",
+    "check:parity": "node scripts/check-parity.mjs",
     "dev": "turbo dev",
     "css:build": "pnpm --filter kami-css build",
     "css:watch": "pnpm --filter kami-css dev"

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AppCard } from "@/components/app-card";
+import { AppCard } from "kami-ui";
 import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { Footer } from "kami-ui";
 import { allTools, collections, getToolsByCollection } from "@/data/tools";
 import type { Collection } from "@/data/tools";
 
@@ -251,7 +251,7 @@ export function ToolsHubContent() {
           </div>
         )}
       </main>
-      <Footer />
+      <Footer current="tools" dataFile={{ label: "tools.json", href: "/tools.json" }} feedHref="/feed.xml" />
     </div>
   );
 }

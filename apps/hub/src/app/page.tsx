@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { AppCard } from "@/components/app-card";
+import { AppCard } from "kami-ui";
 import { KamiHeader } from "@/components/kami-header";
-import { KamiFooter } from "@/components/kami-footer";
+import { Footer } from "kami-ui";
 import { allTools } from "@/data/tools";
 
 export const dynamic = "force-dynamic";
@@ -212,7 +212,7 @@ export default function Home() {
         </div>
       </main>
 
-      <KamiFooter current="apps" />
+      <Footer current="apps" dataFile={{ label: "apps.json", href: "/apps.json" }} />
     </div>
   );
 }

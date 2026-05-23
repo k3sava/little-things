@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { AppCard } from "@/components/app-card";
+import { AppCard } from "kami-ui";
 import { allTools, getRelatedTools } from "@/data/tools";
 
 interface RelatedToolsProps {

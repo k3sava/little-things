@@ -1353,8 +1353,13 @@ html[data-theme] [style*="color:#bbb"] {
   color: var(--kami-text-dim) !important;
 }
 
-/* --- Footer + Breadcrumb (rendered via `.kami-footer` / `.kami-breadcrumb` classes) --- */
+/* --- Footer (kami-ui <Footer>). Must match kami-css 05-chrome.css .kami-footer*
+   rules; toys is self-contained and does not @import kami.css. --- */
 .kami-footer {
+  font-family: var(--kami-font-body, 'DM Sans', sans-serif);
+  font-size: 0.8rem;
+  padding: 3rem 0 2rem;
+  text-align: center;
   color: var(--kami-footer);
 }
 .kami-footer a {
@@ -1366,6 +1371,41 @@ html[data-theme] [style*="color:#bbb"] {
 .kami-footer a:hover {
   color: var(--kami-footer-link-hover) !important;
   background: transparent !important;
+}
+.kami-footer-aeo {
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  color: var(--kami-text-muted, #4a4a4a);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.kami-footer-nav {
+  font-family: var(--kami-font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: var(--kami-text-muted, #4a4a4a);
+  margin-bottom: 0.6rem;
+}
+.kami-footer-credit {
+  font-family: var(--kami-font-body, 'DM Sans', sans-serif);
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+.kami-footer-sep {
+  opacity: 0.4;
+  margin: 0 0.35rem;
+  user-select: none;
+}
+.kami-footer-current {
+  font-weight: 600;
+  color: var(--kami-text);
 }
 .kami-breadcrumb {
   color: var(--kami-breadcrumb);
@@ -3384,10 +3424,7 @@ html[data-theme="zen"] .tool-icon-btn[data-active="true"] {
   .tools-hub-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 900px) {
-  .tools-hub-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 1200px) {
-  .tools-hub-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tools-hub-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
 }
 
 /* Brutalist overrides */
@@ -4970,18 +5007,18 @@ html[data-theme="metro"] .tool-shell-accent-dot {
   }
 }
 
-/* Material: enforce 4-col from 900px with 12px gap */
+/* Material: 3-col from 900px with 12px gap */
 @media (min-width: 900px) {
   html[data-theme="material"] .tools-hub-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 12px !important;
   }
 }
 
-/* Metro: 4-col from 900px with 8px gap */
+/* Metro: 3-col from 900px with 8px gap */
 @media (min-width: 900px) {
   html[data-theme="metro"] .tools-hub-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 8px !important;
   }
 }
@@ -6771,7 +6808,7 @@ html[data-theme="metro"] .tools-hub-chips {
 
 /* Metro hub: compact card grid */
 html[data-theme="metro"] .tools-hub-grid {
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+  grid-template-columns: repeat(3, 1fr) !important;
   gap: 1px !important;
   background: #d1d1d1 !important;
   border: 1px solid #d1d1d1 !important;

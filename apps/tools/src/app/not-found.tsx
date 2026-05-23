@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { Footer } from "kami-ui";
 
 export const metadata: Metadata = {
   title: "Page not found (404) — little tools",
@@ -54,7 +54,7 @@ export default function NotFound() {
           </a>
         </div>
       </div>
-      <Footer />
+      <Footer current="tools" dataFile={{ label: "tools.json", href: "/tools.json" }} feedHref="/feed.xml" />
     </div>
   );
 }

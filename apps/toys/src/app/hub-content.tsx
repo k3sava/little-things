@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AppCard } from "@/components/app-card";
+import { AppCard } from "kami-ui";
 import { Breadcrumb } from "@/components/breadcrumb";
-import { Footer } from "@/components/footer";
+import { Footer } from "kami-ui";
 import { groups, allToys as allApps } from "@/data/toys";
 
 // Mirror of the tools hub search so the two index pages are laid out identically.
@@ -175,7 +175,13 @@ export function ToysHubContent() {
                   onClick={() => setActiveGroup(isActive ? null : g.label)}
                   data-active={isActive}
                   className="tools-hub-chip"
+                  style={
+                    isActive
+                      ? { background: g.accentHex, color: "#fff", borderColor: g.accentHex }
+                      : undefined
+                  }
                 >
+                  <span aria-hidden="true" className="tools-hub-chip-dot" style={{ background: g.accentHex }} />
                   {g.label} <span className="tools-hub-chip-count">{g.apps.length}</span>
                 </button>
               );
@@ -213,7 +219,7 @@ export function ToysHubContent() {
           </div>
         )}
       </main>
-      <Footer />
+      <Footer current="toys" dataFile={{ label: "toys.json", href: "/toys.json" }} />
     </div>
   );
 }

@@ -2,7 +2,7 @@
   "$schema": "https://apps.iamkesava.com/apps.schema.json",
   "site": "https://apps.iamkesava.com",
   "license": "MIT",
-  "last_updated": "2026-05-21",
+  "last_updated": "2026-05-22",
   "counts": {
     "playground": 1
   },

@@ -1,0 +1,19 @@
+{
+  "name": "kami-ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "next": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "next": "14.2.35",
+    "react": "^18"
+  }
+}
