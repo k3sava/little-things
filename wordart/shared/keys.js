@@ -1,0 +1,249 @@
+// Global keyboard shortcuts + splash + nav overlay for wordart.
+// 24 effects total; keys 1-9 map to first 9 alphabetically. Overlay (⌘K / /) also
+// available for completeness so the chrome matches pixart byte-for-byte.
+(function(){
+  'use strict';
+  // Source of truth — mirrored in wordart/index.html.
+  const EFFECTS = [
+    'aurora','blur','cascade','chromatic','clutter','coil','collapse','constellation','construct','cylinder','dither',
+    'glitch','halftone','interference','line','liquid','mesh',
+    'noise','pixel','ribbon','ripple','slice','type','wave',
+  ];
+  // Categories: same partition as the homepage chips.
+  const CATEGORIES = [
+    ['3D',        ['cylinder','ribbon']],
+    ['Stripe',    ['line','slice']],
+    ['Type',      ['aurora','cascade','clutter','collapse','mesh','type','wave']],
+    ['Halftone',  ['construct','dither','halftone','interference','noise','pixel']],
+    ['Cinematic', ['blur','chromatic','coil','constellation','glitch','liquid','ripple']],
+  ];
+  window.WORDART_EFFECTS = EFFECTS;
+  window.WORDART_CATEGORIES = CATEGORIES;
+
+  const KEY_MAP = {};
+  for(let i = 0; i < EFFECTS.length && i < 9; i++) KEY_MAP[String(i+1)] = EFFECTS[i];
+  const SEEN = 'wa.splash.seen';
+
+  function clickRow(key){
+    const row = document.querySelector(`.wg-row[data-key="${key}"]`);
+    row?.querySelector('input[type=checkbox]')?.click();
+  }
+  function basePath(){
+    const parts = location.pathname.split('/').filter(Boolean);
+    const px = parts.indexOf('wordart');
+    return px >= 0 ? '/' + parts.slice(0, px + 1).join('/') + '/' : '../';
+  }
+  function go(slug){ location.href = basePath() + slug + '/'; }
+  function currentSlug(){
+    for(const s of EFFECTS) if(location.pathname.indexOf(`/${s}/`) >= 0) return s;
+    return null;
+  }
+  function cycle(delta){
+    const cur = currentSlug();
+    if(!cur) return;
+    const i = EFFECTS.indexOf(cur);
+    const next = EFFECTS[(i + delta + EFFECTS.length) % EFFECTS.length];
+    go(next);
+  }
+
+  const CMDS = {
+    'a': () => clickRow('animate'),
+    'i': () => clickRow('interactive'),
+    ' ': () => clickRow('animate'),
+    'p': () => document.getElementById('export-png')?.click(),
+    'm': () => document.getElementById('export-mp4')?.click(),
+    'c': () => document.getElementById('toggle-controls')?.click(),
+    'arrowright': () => cycle(+1),
+    'arrowleft':  () => cycle(-1),
+    '?': () => showSplash(),
+    'escape': () => { hideOverlay(); hideSplash(); },
+  };
+
+  function typingTarget(t){
+    if(!t) return false;
+    if(typeof t.matches === 'function' && t.matches('input, textarea, select')) return true;
+    return t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')){
+      e.preventDefault();
+      showOverlay();
+      return;
+    }
+    if(typingTarget(e.target)) return;
+    if(e.key === '/'){
+      e.preventDefault();
+      showOverlay();
+      return;
+    }
+    if(KEY_MAP[e.key]){
+      const slug = KEY_MAP[e.key];
+      if(slug && location.pathname.indexOf(`/${slug}/`) < 0){ go(slug); e.preventDefault(); }
+      return;
+    }
+    if(e.key === 't' || e.key === 'T') return; // theme.js owns
+    const k = e.key.toLowerCase();
+    const fn = CMDS[k];
+    if(fn){ e.preventDefault(); fn(e); }
+  });
+
+  // ---------- Nav overlay (⌘K / / / chevron) ----------
+  function buildOverlay(){
+    if(document.getElementById('pix-nav-overlay')) return;
+    const el = document.createElement('div');
+    el.id = 'pix-nav-overlay';
+    el.className = 'pix-nav-overlay';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-label', 'Browse effects');
+    const cur = currentSlug();
+    const groupsHTML = CATEGORIES.map(([cat, slugs]) => {
+      const items = slugs.map(s =>
+        `<a href="${basePath()}${s}/" data-slug="${s}" class="pix-nav-item${s === cur ? ' active' : ''}">${s}</a>`
+      ).join('');
+      return `<div class="pix-nav-group">
+        <div class="pix-nav-group-title">${cat.toLowerCase()}</div>
+        <div class="pix-nav-group-items">${items}</div>
+      </div>`;
+    }).join('');
+    el.innerHTML = `
+      <div class="pix-nav-overlay-bg"></div>
+      <div class="pix-nav-overlay-panel" role="document">
+        <div class="pix-nav-overlay-head">
+          <span class="pix-nav-overlay-icon">⌕</span>
+          <input type="search" id="pix-nav-search" autocomplete="off" placeholder="search ${EFFECTS.length} effects…" aria-label="Search effects">
+          <button type="button" class="pix-nav-overlay-close" aria-label="Close">esc</button>
+        </div>
+        <div class="pix-nav-overlay-body">${groupsHTML}</div>
+        <div class="pix-nav-overlay-foot">
+          <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+          <span><kbd>↵</kbd> open</span>
+          <span><kbd>esc</kbd> close</span>
+        </div>
+      </div>`;
+    document.body.appendChild(el);
+
+    const $bg    = el.querySelector('.pix-nav-overlay-bg');
+    const $close = el.querySelector('.pix-nav-overlay-close');
+    const $input = el.querySelector('#pix-nav-search');
+    const $body  = el.querySelector('.pix-nav-overlay-body');
+
+    $bg.addEventListener('click', hideOverlay);
+    $close.addEventListener('click', hideOverlay);
+
+    $input.addEventListener('input', () => {
+      const q = $input.value.trim().toLowerCase();
+      $body.querySelectorAll('.pix-nav-item').forEach(a => {
+        const m = !q || a.dataset.slug.includes(q);
+        a.style.display = m ? '' : 'none';
+      });
+      $body.querySelectorAll('.pix-nav-group').forEach(g => {
+        const any = [...g.querySelectorAll('.pix-nav-item')].some(a => a.style.display !== 'none');
+        g.style.display = any ? '' : 'none';
+      });
+    });
+
+    $input.addEventListener('keydown', (e) => {
+      const items = [...$body.querySelectorAll('.pix-nav-item')].filter(a => a.style.display !== 'none');
+      let idx = items.indexOf(document.activeElement);
+      if(e.key === 'ArrowDown'){ e.preventDefault(); (items[idx + 1] || items[0])?.focus(); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[idx - 1] || items[items.length - 1])?.focus(); }
+      else if(e.key === 'Enter'){
+        e.preventDefault();
+        const target = items[idx] || items[0];
+        if(target) location.href = target.href;
+      } else if(e.key === 'Escape'){ hideOverlay(); }
+    });
+
+    $body.addEventListener('keydown', (e) => {
+      const items = [...$body.querySelectorAll('.pix-nav-item')].filter(a => a.style.display !== 'none');
+      const idx = items.indexOf(document.activeElement);
+      if(e.key === 'ArrowDown'){ e.preventDefault(); (items[idx + 1] || items[0])?.focus(); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[idx - 1] || items[items.length - 1])?.focus(); }
+      else if(e.key === 'Escape'){ hideOverlay(); }
+      else if(e.key.length === 1 && /[a-z0-9-]/.test(e.key)){
+        $input.focus(); $input.value += e.key; $input.dispatchEvent(new Event('input'));
+      }
+    });
+  }
+  function showOverlay(){
+    buildOverlay();
+    const el = document.getElementById('pix-nav-overlay');
+    if(!el) return;
+    el.classList.add('visible');
+    document.getElementById('effect-nav-open')?.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => document.getElementById('pix-nav-search')?.focus());
+  }
+  function hideOverlay(){
+    const el = document.getElementById('pix-nav-overlay');
+    if(el) el.classList.remove('visible');
+    document.getElementById('effect-nav-open')?.setAttribute('aria-expanded', 'false');
+  }
+  window.WordartNav = { open: showOverlay, close: hideOverlay };
+
+  // ---------- Splash (help / first-run) ----------
+  function buildSplash(){
+    if(document.getElementById('pix-splash')) return;
+    const el = document.createElement('div');
+    el.id = 'pix-splash';
+    el.className = 'wa-splash';
+    const numbered = EFFECTS.slice(0, 9).map((s, i) => `<kbd>${i+1}</kbd>`).join('');
+    el.innerHTML = `
+      <div class="wa-splash-inner">
+        <div class="wa-splash-title">wordart</div>
+        <div class="wa-splash-tag">${EFFECTS.length} typography effects. type a phrase. play.</div>
+        <div class="wa-splash-grid">
+          <span>${numbered}</span><span>jump to first 9 effects</span>
+          <span><kbd>←</kbd> <kbd>→</kbd></span><span>previous / next</span>
+          <span><kbd>/</kbd> or <kbd>⌘</kbd><kbd>K</kbd></span><span>open nav · search</span>
+          <span><kbd>T</kbd></span><span>cycle theme</span>
+          <span><kbd>A</kbd> / <kbd>Space</kbd></span><span>animate</span>
+          <span><kbd>I</kbd></span><span>interactive</span>
+          <span><kbd>P</kbd></span><span>export PNG</span>
+          <span><kbd>M</kbd></span><span>export MP4</span>
+          <span><kbd>C</kbd></span><span>collapse panel</span>
+          <span><kbd>?</kbd></span><span>show this again</span>
+        </div>
+        <div class="wa-splash-tap">click anywhere to begin</div>
+      </div>`;
+    document.body.appendChild(el);
+    el.addEventListener('click', hideSplash);
+  }
+  function showSplash(){ buildSplash(); document.getElementById('pix-splash')?.classList.add('visible'); }
+  function hideSplash(){
+    const el = document.getElementById('pix-splash');
+    if(el && el.classList.contains('visible')){
+      el.classList.remove('visible');
+      try { localStorage.setItem(SEEN, '1'); } catch(_){}
+    }
+  }
+
+  function fuseSwitcher(){
+    const nav = document.querySelector('.effect-nav.compact');
+    if(!nav) return;
+    const arrows = [...nav.querySelectorAll('.effect-nav-arrow')];
+    const current = nav.querySelector('.effect-nav-current');
+    if(arrows.length < 2 || !current) return;
+    const prev = arrows[0], next = arrows[arrows.length - 1];
+    const g = document.createElement('div');
+    g.className = 'effect-switcher';
+    prev.after(g);
+    g.appendChild(prev);
+    g.appendChild(current);
+    g.appendChild(next);
+  }
+
+  function init(){
+    buildSplash();
+    fuseSwitcher();
+    const helpBtn = document.getElementById('help-btn');
+    if(helpBtn) helpBtn.addEventListener('click', showSplash);
+    const openBtn = document.getElementById('effect-nav-open');
+    if(openBtn) openBtn.addEventListener('click', showOverlay);
+    if(!localStorage.getItem(SEEN)) showSplash();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+
+  window.WAKeys = { show: showSplash, hide: hideSplash };
+})();

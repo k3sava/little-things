@@ -1,0 +1,222 @@
+/* GUI panel — slider-based control surface. UI fonts + element styles follow
+   the global theme via --kami-font-* variables. Numeric inputs stay mono for
+   legibility. Canvas text rendering is independent (set inside each effect.js). */
+.wg{
+  position:fixed; top:54px; right:8px; width:304px;
+  /* Always-full-height panel: reaches from below the top bar (54px) to
+     just above the footer (~56px). Consistent on every effect regardless
+     of how many control rows it ships. When content overflows the body
+     scrolls; when it doesn't, the empty space sits at the bottom of the
+     body so the title stays in the same place. */
+  height:calc(100dvh - 54px - 56px);
+  display:flex; flex-direction:column;
+  background:var(--panel-bg); border:1px solid var(--panel-border);
+  color:var(--panel-text);
+  box-shadow:0 4px 18px rgba(0,0,0,0.12);
+  border-radius:4px;
+  font-family:var(--kami-font-body); font-size:12px;
+  z-index:9;
+  user-select:none;
+  transition:transform .22s cubic-bezier(.2,0,0,1);
+  overflow:hidden; /* body owns its own scroll */
+}
+.wg-title{
+  padding:8px 12px 8px 34px;
+  background:var(--panel-title-bg); color:var(--panel-title-text);
+  border-bottom:1px solid var(--panel-border);
+  font-weight:600; font-family:var(--kami-font-display);
+  cursor:default; letter-spacing:.02em;
+  flex:0 0 auto;
+}
+.wg-body{
+  padding:4px 0;
+  flex:1 1 auto;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  position:relative;
+  /* Always-on visible scrollbar so users know when more controls exist
+     below the fold. */
+  scrollbar-width:auto;
+  scrollbar-color:var(--text) transparent;
+}
+.wg-body::-webkit-scrollbar{ width:8px; }
+.wg-body::-webkit-scrollbar-track{ background:transparent; }
+.wg-body::-webkit-scrollbar-thumb{
+  background:var(--panel-border);
+  border-radius:4px;
+  border:1px solid transparent;
+  background-clip:content-box;
+}
+.wg-body::-webkit-scrollbar-thumb:hover{ background:var(--text); background-clip:content-box; }
+/* Bottom fade hint when there's more content scrolled out of view.
+   Sits inside the panel via a pseudo element on .wg. */
+.wg::after{
+  content:"";
+  position:absolute;
+  left:0; right:8px; bottom:0;
+  height:24px;
+  pointer-events:none;
+  background:linear-gradient(to top, var(--panel-bg) 0%, transparent 100%);
+  opacity:.85;
+  border-radius:0 0 4px 4px;
+}
+.wg.is-collapsed .wg-body{ display:none; }
+
+.wg-row{ display:grid; grid-template-columns:46% 54%; align-items:center; padding:4px 12px; min-height:24px; }
+.wg-row + .wg-row{ border-top:1px solid var(--panel-border); }
+.wg-name{ font-size:12px; font-family:var(--kami-font-body); opacity:.85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* Slider row */
+.wg-slider .wg-widget{ display:grid; grid-template-columns:1fr 50px; align-items:center; gap:6px; }
+.wg-track{ position:relative; height:18px; background:var(--slider-track); cursor:ew-resize; border-radius:1px; overflow:hidden; border:1px solid var(--input-border); touch-action:none; }
+.wg-fill{ position:absolute; left:0; top:0; bottom:0; background:var(--slider-fill); width:0%; }
+.wg-track::after{ content:""; position:absolute; top:0; bottom:0; left:var(--wg-knob-x, 0%); width:2px; background:var(--slider-knob); transform:translateX(-1px); }
+.wg-slider input[type=number]{ width:100%; height:20px; background:transparent; border:none; color:var(--panel-text); font-family:var(--kami-font-mono); font-size:11px; text-align:right; padding:0 4px; outline:none; }
+.wg-slider input[type=number]:focus{ background:var(--input-bg); }
+
+/* Boolean row */
+.wg-bool .wg-widget{ display:flex; }
+.wg-bool input[type=checkbox]{ margin:0; accent-color:var(--accent); }
+
+/* Text row */
+.wg-text .wg-widget{ display:grid; grid-template-columns:1fr 24px; gap:6px; align-items:center; }
+.wg-text input[type=text]{ width:100%; height:22px; background:var(--input-bg); border:1px solid var(--input-border); color:var(--input-text); font-family:var(--kami-font-body); font-size:12px; padding:0 6px; outline:none; }
+.wg-text .wg-shuffle{ width:22px; height:22px; padding:0; display:flex; align-items:center; justify-content:center; background:var(--button-bg); border:1px solid var(--input-border); color:var(--button-text); font-family:var(--kami-font-mono); font-size:12px; border-radius:3px; cursor:pointer; transition:background .15s, color .15s; }
+.wg-text .wg-shuffle:hover{ background:var(--button-bg-hover); color:var(--button-text-hover) }
+
+/* Color row */
+.wg-color .wg-widget{ display:grid; grid-template-columns:1fr 50px; gap:6px; align-items:center; }
+.wg-swatch{ position:relative; height:18px; overflow:hidden; border-radius:1px; cursor:pointer; border:1px solid var(--input-border); }
+.wg-swatch input[type=color]{ position:absolute; inset:0; width:100%; height:100%; border:none; padding:0; background:none; cursor:pointer; opacity:1; }
+.wg-color input[type=text]{ width:100%; height:20px; background:transparent; border:none; color:var(--input-text); font-family:var(--kami-font-mono); font-size:11px; outline:none; text-align:left; }
+
+/* Select row → rendered as a radio-pill group by shared/gui.js. The native
+   <select> is hidden but kept for state/serialisation. Pills give instant
+   visible feedback on click — no dropdown step. */
+.wg-select .wg-widget{ display:flex }
+.wg-pills{ display:flex; flex-wrap:wrap; gap:3px; width:100%; }
+.wg-pill{
+  flex:1 1 auto; min-width:0;
+  height:22px; padding:0 8px;
+  background:var(--input-bg);
+  color:var(--input-text);
+  border:1px solid var(--input-border);
+  border-radius:3px;
+  font-family:var(--kami-font-body); font-size:11px;
+  letter-spacing:.01em;
+  cursor:pointer;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  transition:background .12s, color .12s, border-color .12s;
+}
+.wg-pill:hover{ border-color:var(--text); }
+.wg-pill.active{
+  background:var(--accent);
+  color:var(--bg);
+  border-color:var(--accent);
+}
+.wg-pill:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
+
+/* File row — label + open button + shuffle-sample button */
+.wg-file .wg-widget{ display:grid; grid-template-columns:1fr 24px 24px; gap:6px; align-items:center; }
+.wg-file .wg-file-label{ height:22px; display:flex; align-items:center; padding:0 8px; background:var(--input-bg); border:1px solid var(--input-border); color:var(--input-text); font-family:var(--kami-font-mono); font-size:11px; border-radius:3px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; cursor:pointer; }
+.wg-file .wg-file-open, .wg-file .wg-shuffle{ width:22px; height:22px; padding:0; display:flex; align-items:center; justify-content:center; background:var(--button-bg); border:1px solid var(--input-border); color:var(--button-text); font-family:var(--kami-font-mono); font-size:12px; border-radius:3px; cursor:pointer; }
+.wg-file .wg-file-open:hover, .wg-file .wg-shuffle:hover{ background:var(--button-bg-hover); color:var(--button-text-hover); }
+.wg-file input[type=file]{ display:none; }
+
+/* Button row */
+.wg-spacer{ height:10px; }
+.wg-button{ grid-template-columns:1fr; padding:0 12px 6px; }
+.wg-button button{ width:100%; padding:7px 0; background:var(--button-bg); border:1px solid var(--panel-border); color:var(--button-text); font-family:var(--kami-font-body); font-size:12px; cursor:pointer; border-radius:2px; letter-spacing:.02em; }
+.wg-button button:hover{ background:var(--button-bg-hover); color:var(--button-text-hover); }
+
+/* Mode bottom bar — hidden on desktop, fixed above footer on mobile */
+.wa-mode-bottom{ display:none; }
+
+/* ---------- MOBILE PANEL (<=640px) ----------
+   Panel starts hidden, slides up when body.panel-open.
+   Animate/Cursor buttons live in .wa-mode-bottom above the footer. */
+@media (max-width:640px){
+  .wg{
+    top:auto;
+    right:0;
+    left:0;
+    bottom:86px; /* above mode bar (44px) + footer (~42px) */
+    width:100%;
+    max-height:55dvh;
+    border-radius:12px 12px 0 0;
+    border-left:none; border-right:none; border-bottom:none;
+    box-shadow:0 -6px 24px rgba(0,0,0,.18);
+    transition:transform .22s cubic-bezier(.2,0,0,1);
+    display:flex; flex-direction:column;
+    transform:translateY(calc(100% + 1px)); /* hidden off-screen by default */
+  }
+  body.panel-open .wg{
+    transform:translateY(0);
+  }
+  .wg-title{ padding:10px 12px; flex:0 0 auto; }
+  .wg-body{ overflow-y:auto; -webkit-overflow-scrolling:touch; flex:1 1 auto; padding-bottom:8px; }
+  .wg-row{ min-height:36px; padding:8px 12px; }
+  .wg-track{ height:22px; }
+  .wg input[type="checkbox"]{ width:40px; height:22px; }
+  .wg input[type="checkbox"]::after{ width:18px; height:18px; top:1px; left:1px; }
+  .wg input[type="checkbox"]:checked::after{ transform:translateX(18px); }
+
+  /* Mode bottom bar */
+  .wa-mode-bottom{
+    position:fixed; left:0; right:0; bottom:42px;
+    height:44px;
+    display:flex;
+    z-index:49;
+    background:var(--bar-bg);
+    border-top:1px solid var(--bar-border);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  }
+  .wa-mode-btn{
+    flex:1; height:100%;
+    border:none !important; border-radius:0 !important;
+    border-right:1px solid var(--bar-border) !important;
+    box-shadow:none !important; transform:none !important;
+    background:transparent; color:var(--text);
+    font-family:var(--kami-font-body); font-size:12px; font-weight:500;
+    letter-spacing:.04em; text-transform:uppercase;
+    cursor:pointer;
+    padding:0;
+    transition:background .15s, color .15s;
+  }
+  .wa-mode-btn:last-child{ border-right:none !important; }
+  .wa-mode-btn.active{ background:var(--accent); color:var(--bg); }
+  /* suppress terminal bracket pseudo-elements in the bottom bar */
+  .wa-mode-bottom .wa-mode-btn::before,
+  .wa-mode-bottom .wa-mode-btn::after{ display:none !important; }
+
+  /* Settings/toggle-controls button when moved into bottom bar on mobile */
+  .wa-mode-bottom #toggle-controls{
+    flex:1; height:100%;
+    border:none !important; border-radius:0 !important;
+    border-right:1px solid var(--bar-border) !important;
+    box-shadow:none !important; transform:none !important;
+    background:transparent; color:var(--text);
+    font-family:var(--kami-font-body); font-size:12px; font-weight:500;
+    letter-spacing:.04em; text-transform:uppercase;
+    cursor:pointer; padding:0;
+    transition:background .15s, color .15s;
+  }
+  .wa-mode-bottom #toggle-controls::before,
+  .wa-mode-bottom #toggle-controls::after{ display:none !important; }
+  .wa-mode-bottom #toggle-controls.active{ background:var(--accent); color:var(--bg); }
+}
+
+/* Inspiration credit, anchored to the bottom of the panel as a flex sibling
+   of .wg-body. position:relative + bg so it sits above the .wg::after fade. */
+.wg-credit{
+  flex:0 0 auto;
+  padding:8px 12px 10px;
+  font-family:var(--kami-font-mono); font-size:10px;
+  text-align:center; opacity:.6;
+  border-top:1px solid var(--panel-border);
+  background:var(--panel-bg);
+  letter-spacing:.04em;
+  position:relative; z-index:2;
+}
+.wg-credit a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
+.wg-credit a:hover{ opacity:.85; }

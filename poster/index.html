@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>poster — deterministic typographic posters</title>
+<meta name="description" content="Type a phrase. Two art directors compose. 10 template families, 45,408 variants, every decision shown.">
+<link rel="stylesheet" href="shared/chrome.css">
+<link rel="stylesheet" href="shared/gui.css">
+<link rel="stylesheet" href="shared/theme-tokens.css">
+<link rel="stylesheet" href="shared/style.css">
+<script src="shared/theme.js"></script>
+
+    <link rel="canonical" href="https://toys.iamkesava.com/poster/">
+    <meta property="og:url" content="https://toys.iamkesava.com/poster/">
+    <meta property="og:title" content="poster, by Kesava">
+    <meta property="og:description" content="Type a phrase, idea, or article. Two art directors compose two completely different posters. 12 directors, 10 template families, 45,408 variants. Every decision is shown. Every decision is editable. Deterministic — same input, same output.">
+    <meta property="og:image" content="https://toys.iamkesava.com/poster/og.svg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="poster, by Kesava">
+    <meta name="twitter:description" content="Type a phrase, idea, or article. Two art directors compose two completely different posters. 12 directors, 10 template families, 45,408 variants. Every decision is shown. Every decision is editable. Deterministic — same input, same output.">
+    <meta name="twitter:image" content="https://toys.iamkesava.com/poster/og.svg">
+    <meta name="author" content="Kesava">
+    <meta name="description" content="Type a phrase, idea, or article. Two art directors compose two completely different posters. 12 directors, 10 template families, 45,408 variants. Every decision is shown. Every decision is editable. Deterministic — same input, same output.">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://toys.iamkesava.com/poster/","name":"poster","description":"Type a phrase, idea, or article. Two art directors compose two completely different posters. 12 directors, 10 template families, 45,408 variants. Every decision is shown. Every decision is editable. Deterministic — same input, same output.","url":"https://toys.iamkesava.com/poster/","keywords":"typography, poster, generative, design, art direction, editorial","author":{"@type":"Person","name":"Kesava","url":"https://iamkesava.com"},"publisher":{"@type":"Organization","name":"little toys","url":"https://toys.iamkesava.com"},"codeRepository":"https://github.com/k3sava/poster","license":"https://opensource.org/licenses/MIT"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"iamkesava","item":"https://iamkesava.com"},{"@type":"ListItem","position":2,"name":"toys","item":"https://toys.iamkesava.com/"},{"@type":"ListItem","position":3,"name":"poster","item":"https://toys.iamkesava.com/poster/"}]}]}</script>
+  
+    <link rel="stylesheet" href="/_chrome/theme-patch.css">
+  <script>(function(){var k="kami.theme";function read(){try{var ck=('; '+document.cookie).split('; '+k+'=')[1];return ck?ck.split(';')[0]:(localStorage.getItem(k)||localStorage.getItem('theme'));}catch(e){return null;}}function apply(t){var h=document.documentElement;if(t&&t!=='default')h.setAttribute('data-theme',t);else h.removeAttribute('data-theme');}function dark(d){document.documentElement.toggleAttribute('data-dark',!!d);}function sync(){apply(read());try{dark(localStorage.getItem('kami.dark')==='1');}catch(e){}}sync();document.addEventListener('DOMContentLoaded',sync);window.addEventListener('load',sync);window.addEventListener('message',function(e){var d=e&&e.data;if(!d||typeof d!=='object')return;if('kamiTheme' in d)apply(d.kamiTheme);if('kamiDark' in d)dark(d.kamiDark);});})();</script>
+    <script>window.kamiMeta = {"title":"poster","tagline":"Design a poster with generative backgrounds and bold type.","nativeNote":false,"shortcuts":[{"key":"G","label":"New background"},{"key":"S","label":"Save PNG"}],"faq":[{"q":"What is the poster maker?","a":"A quick poster design tool with generative backgrounds and bold typographic layouts. Add title, sub-title, and body text, pick a layout and background, download."},{"q":"What size is the output?","a":"1080x1080px (Instagram square) by default. Toggle to 1920x1080 (landscape) or 1080x1920 (portrait story)."}],"related":[{"slug":"wordart","title":"wordart"},{"slug":"pixart","title":"pixart"}]};</script>
+  </head>
+<body class="wa-effect poster-app">
+
+<header class="wa-top">
+  <div class="theme-switcher-container">
+    <button class="theme-switcher-pill" aria-label="Cycle theme" title="Cycle theme">
+      <span class="theme-switcher-pill-icon">●</span>
+    </button>
+  </div>
+  <nav class="kami-breadcrumb"><a href="https://apps.iamkesava.com">home</a><span class="sep">&middot;</span><a href="https://toys.iamkesava.com/">toys</a></nav>
+  <div class="grow"></div>
+  <div class="wa-actions">
+    <button id="edit-toggle" class="wa-action-btn" title="Edit copy per poster" aria-pressed="false">edit</button>
+    <button id="panel-toggle" class="wa-action-btn" title="Toggle control panel" aria-pressed="true">control</button>
+    <button id="help-btn" title="Keyboard shortcuts">?</button>
+  </div>
+</header>
+
+<main class="wa-stage poster-stage">
+  <section class="masthead">
+    <div class="masthead-rule"></div>
+    <div class="masthead-lede">
+      <h1 class="masthead-title">A typophile's autonomous studio.</h1>
+      <p class="masthead-sub">Type a phrase. Two art directors compose. Every decision shown. Every decision editable.</p>
+    </div>
+    <div class="masthead-rule"></div>
+  </section>
+
+  <section class="input-strip">
+    <textarea id="phrase" rows="2" spellcheck="false">less is more</textarea>
+    <div class="input-cta">
+      <button id="go" title="⌘/Ctrl + Enter">Compose</button>
+      <label class="tb" for="img-upload" style="text-align:center;cursor:pointer;justify-content:center;font-size:12px;">image substrate ↑</label>
+      <input id="img-upload" type="file" accept="image/*" style="display:none">
+    </div>
+  </section>
+  <div id="status">seed: ready</div>
+
+  <div class="diptych">
+    <article class="poster-card">
+      <div class="edit-strip" data-key="a">
+        <label class="edit-lbl">copy · A</label>
+        <textarea class="edit-copy" id="edit-a" rows="2" spellcheck="false"></textarea>
+        <button class="edit-revert" data-key="a" title="Revert to seed">↺</button>
+      </div>
+      <canvas id="poster-a" width="1080" height="1350"></canvas>
+      <div class="card-foot">
+        <span style="font-family:var(--kami-font-mono);font-size:11px;color:var(--text);opacity:.55">poster · A</span>
+        <button class="dl" id="dl-a">PNG</button>
+      </div>
+      <div class="trace" id="trace-a"></div>
+    </article>
+    <article class="poster-card">
+      <div class="edit-strip" data-key="b">
+        <label class="edit-lbl">copy · B</label>
+        <textarea class="edit-copy" id="edit-b" rows="2" spellcheck="false"></textarea>
+        <button class="edit-revert" data-key="b" title="Revert to seed">↺</button>
+      </div>
+      <canvas id="poster-b" width="1080" height="1350"></canvas>
+      <div class="card-foot">
+        <span style="font-family:var(--kami-font-mono);font-size:11px;color:var(--text);opacity:.55">poster · B</span>
+        <button class="dl" id="dl-b">PNG</button>
+      </div>
+      <div class="trace" id="trace-b"></div>
+    </article>
+  </div>
+</main>
+
+<aside class="wg" id="panel">
+  <button class="wg-collapse" id="wg-collapse" aria-label="Toggle control panel" title="Toggle control panel"></button>
+  <div class="wg-title">Control</div>
+  <div class="wg-body" id="control-body"></div>
+</aside>
+
+<footer class="wa-bottom">
+  <div class="row aeo"><a href="https://toys.iamkesava.com/llms.txt">llms.txt</a><span class="sep">·</span><a href="https://toys.iamkesava.com/sitemap.xml">sitemap</a><span class="sep">·</span><a href="https://toys.iamkesava.com/toys.json">toys.json</a></div>
+
+  <nav class="row sister" aria-label="Sister sites">
+    <span><a href="https://apps.iamkesava.com/">apps</a></span><span class="sep">·</span>
+    <span><a href="https://tools.iamkesava.com/">tools</a></span><span class="sep">·</span>
+    <span class="current">toys</span><span class="sep">·</span>
+    <span><a href="https://codex.iamkesava.com/">codex</a></span>
+  </nav>
+  <div class="row made">
+    made by <a href="https://iamkesava.com" rel="author">kesava</a> <span class="sep">·</span> <a href="https://github.com/k3sava/poster" rel="noopener">github</a>
+  </div>
+</footer>
+
+<script src="shared/parse.js"></script>
+<script src="shared/seed.js"></script>
+<script src="shared/article.js"></script>
+<script src="shared/templateParams.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/mycelium.js"></script>
+<script src="shared/conceit.js"></script>
+<script src="shared/archetypes.js"></script>
+<script src="shared/director.js"></script>
+<script src="shared/render.js"></script>
+<script src="shared/app.js"></script>
+</body>
+</html>
